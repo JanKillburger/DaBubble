@@ -100,3 +100,29 @@ a{
     }
 }
 
+.button-filled{
+  border-radius: 25px;
+  padding: 12px 25px 12px 25px;
+  background-color: #444DF2;
+  color: white;
+  border: none;
+  cursor: pointer;
+
+  &:hover{
+    background-color: #797EF3;
+  }
+}
+
+.button-noneFilled{
+  border-radius: 25px;
+  padding: 12px 25px 12px 25px;
+  background-color: white;
+  color:  #444DF2;
+  border: 1px solid #797EF3;
+  cursor: pointer;
+
+  &:hover{
+    color: white;
+    background-color: #444DF2;
+  }
+}

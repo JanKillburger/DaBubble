@@ -1,1 +1,45 @@
-<p>login-dialog works!</p>
+<section>
+  <div class="form-info">
+    <h2>Anmeldung</h2>
+    <span>
+      Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit
+      verwendest.
+    </span>
+  </div>
+  <form action="">
+    <div class="inputField-container">
+      <div class="inputFields">
+        <img src="./assets/img/login/mail.png" alt="" />
+        <input
+          type="email"
+          placeholder="beispielname@email.com"
+          formControlName="email"
+        />
+      </div>
+      <div class="inputFields">
+        <img src="./assets/img/login/lock.png" alt="" />
+        <input
+          type="password"
+          placeholder="Passwort"
+          formControlName="password"
+        />
+      </div>
+    </div>
+    <a class="forgot-passwort">Passwort vergessen?</a>
+    <div class="seperator">
+      <hr />
+      <span>ODER</span>
+      <hr />
+    </div>
+    <button class="google-Login-Button" type="button">
+      <div>
+        <img src="./assets/img/login/GoogleLogo.png" alt="Google Logo" />
+        <span>Anmelden mit Google</span>
+      </div>
+    </button>
+    <div class="login-buttons">
+      <button class="button-filled" type="submit">Anmelden</button>
+      <button class="button-noneFilled" type="button">Gäste-Login</button>
+    </div>
+  </form>
+</section>
