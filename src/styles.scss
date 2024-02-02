@@ -4,11 +4,45 @@
 //  Font
 //  Body-Size
 //  Padding for max-width
+
+//Resets
 *,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: unset;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  img,
+  picture,
+  svg,
+  canvas {
+    display: block;
+    max-inline-size: 100%;
+    block-size: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
 :root {
   --font-heading: Arial;
   --backgroundColor: #eceefe; 
@@ -38,7 +72,7 @@ body {
   
     scroll-behavior: smooth;
   }
-  
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
