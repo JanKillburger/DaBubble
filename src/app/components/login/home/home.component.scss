@@ -1,0 +1,45 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 1rem;
+}
+
+header {
+  display: flex;
+}
+
+.main {
+  flex: auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  column-gap: 1em;
+  
+}
+
+.main > * {
+  min-height: 400px;
+  background-color: white;
+  border-radius: 1em;
+}
+
+.primary-nav {
+  flex: 1 100px;
+}
+
+.channel-container {
+  flex: 4 400px;
+}
+
+.thread-container {
+  flex: 2 200px;
+}
+
+.toggle-primary-nav {
+  position: fixed;
+  left: 0;
+  bottom: 64px;
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+}
