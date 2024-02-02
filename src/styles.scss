@@ -11,8 +11,10 @@
 }
 :root {
   --font-heading: Arial;
-
-  @media (min-width: 500px) {
+  --backgroundColor: #eceefe; 
+  --buttonColor: #444DF2;
+  
+    @media (min-width: 500px) {
     --font-heading: monospace;
   }
 }
@@ -20,8 +22,32 @@
 body {
   font-family: var(--font-heading);
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+* {
+    ::-webkit-scrollbar {
+      width: 10px;
+      background: transparent;
+      z-index: 1;
+    }
+  
+    ::-webkit-scrollbar-thumb {
+      background: var(--buttonColor);
+      border-radius: 50px;
+      z-index: 1;
+    }
+  
+    scroll-behavior: smooth;
+  }
+
+
+html,body {
+   height: 100%; // ??? - Für was ist das? - verursacht einen Scrollbalken!
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--backgroundColor);
+}
 h1 {
   font-family: var(--font-heading);
 }
