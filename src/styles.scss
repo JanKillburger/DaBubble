@@ -4,7 +4,11 @@
 //  Font
 //  Body-Size
 //  Padding for max-width
-
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 :root {
   --font-heading: Arial;
 
