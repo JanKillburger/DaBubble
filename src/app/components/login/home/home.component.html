@@ -1,11 +1,15 @@
 <header class="header">
-  <img src="" alt="DA Bubble Logo">
-  <input type="text">
+  <img src="" alt="DA Bubble Logo" />
+  <input type="text" />
   <button class="toggle-menu">Toggle menu</button>
 </header>
 <main class="main">
-  <nav class="primary-nav">Navigation</nav>
-  <section class="channel-container">Channels</section>
-  <aside class="thread-container">Thread</aside>
+  <nav class="primary-nav main-item" [class.is-active]="navVisible || mdq.matches">
+    Navigation {{ navVisible }}
+  </nav>
+  <section class="channel-container main-item">Channels</section>
+  <aside class="thread-container main-item">Thread</aside>
 </main>
-<button class="toggle-primary-nav">Workspace-Menü schließen</button>
+<button (click)="toggleNav()" class="toggle-primary-nav">
+  Workspace-Menü schließen
+</button>
