@@ -7,8 +7,21 @@
   <nav class="primary-nav main-item" [class.is-active]="navVisible || mdq.matches">
     Navigation {{ navVisible }}
   </nav>
-  <section class="channel-container main-item">Channels</section>
-  <aside class="thread-container main-item">Thread</aside>
+  <section class="channel-container main-item">
+    Channels <button (click)="openThread()">Open Thread</button>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
+  </section>
+  <aside class="thread-container main-item" [class.is-active]="threadVisible">
+    Thread <button (click)="closeThread()">Close</button>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p></aside>
 </main>
 <button (click)="toggleNav()" class="toggle-primary-nav">
   Workspace-Menü schließen

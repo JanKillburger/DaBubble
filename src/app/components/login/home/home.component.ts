@@ -11,6 +11,7 @@ import { log } from 'console';
 })
 export class HomeComponent {
   navVisible = true;
+  threadVisible = true;
   mdq: MediaQueryList;
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
@@ -24,5 +25,13 @@ export class HomeComponent {
   }
   toggleNav() {
     this.navVisible = !this.navVisible;
+  }
+
+  closeThread() {
+    this.threadVisible = false;
+  }
+
+  openThread() {
+    this.threadVisible = true;
   }
 }
