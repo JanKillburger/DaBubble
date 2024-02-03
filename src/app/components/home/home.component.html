@@ -4,10 +4,10 @@
   <button class="toggle-menu">Toggle menu</button>
 </header>
 <main class="main">
-  <nav class="primary-nav main-item" [class.is-active]="navVisible || mdq.matches">
+  <nav class="primary-nav main-item" [class.is-active]="navVisible || mqlMaxWidth.matches">
     Navigation {{ navVisible }} <button #dialogTrigger (click)="openDialog()">Open Positioned Dialog</button>
   </nav>
-  <section class="channel-container main-item">
+  <section class="channel-container main-item" *ngIf="channelVisible">
     Channels <button (click)="openThread()">Open Thread</button>
   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
@@ -15,7 +15,7 @@
   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
   </section>
-  <aside class="thread-container main-item" [class.is-active]="threadVisible">
+  <aside class="thread-container main-item" [class.is-active]="threadVisible" *ngIf="threadVisibleMq">
     Thread <button (click)="closeThread()">Close</button>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
