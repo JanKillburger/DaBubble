@@ -5,7 +5,7 @@
 </header>
 <main class="main">
   <nav class="primary-nav main-item" [class.is-active]="navVisible || mdq.matches">
-    Navigation {{ navVisible }}
+    Navigation {{ navVisible }} <button #dialogTrigger (click)="openDialog()">Open Positioned Dialog</button>
   </nav>
   <section class="channel-container main-item">
     Channels <button (click)="openThread()">Open Thread</button>
