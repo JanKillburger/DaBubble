@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { log } from 'console';
+import { BoundElementProperty } from '@angular/compiler';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +13,7 @@ export class HomeComponent {
   navVisible = true;
   threadVisible = true;
   mdq: MediaQueryList;
+  @ViewChild('thread') threadContainer!: ElementRef;
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.mdq = media.matchMedia('(min-width: 1440px)');
@@ -33,5 +34,9 @@ export class HomeComponent {
 
   openThread() {
     this.threadVisible = true;
+    document.body.style.overflow = "hidden";
+    setTimeout(() => {
+      document.body.removeAttribute("style");
+    }, 2000);
   }
 }

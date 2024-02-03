@@ -31,12 +31,9 @@ header>input {
   border: 1px dashed red;
 }
 
-.main-item:not(:last-child) {
-  margin-right: 1rem;
-}
-
 .primary-nav {
   position: relative;
+  margin-right: 1rem;
   flex: 1 100px;
   transition: all 0.5s;
   left: 0;
@@ -61,10 +58,12 @@ header>input {
 .thread-container {
   flex: 2 200px;
   transition: all 0.5s;
+  margin-left: 1rem;
 
   &:not(.is-active) {
     flex: 0 0;
     opacity: 0;
+    margin-left: 0;
     max-height: 85vh;
     overflow: hidden;
   }
