@@ -13,7 +13,6 @@ export class HomeComponent {
   navVisible = true;
   threadVisible = true;
   mdq: MediaQueryList;
-  @ViewChild('thread') threadContainer!: ElementRef;
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.mdq = media.matchMedia('(min-width: 1440px)');
@@ -37,6 +36,6 @@ export class HomeComponent {
     document.body.style.overflow = "hidden";
     setTimeout(() => {
       document.body.removeAttribute("style");
-    }, 2000);
+    }, 500);
   }
 }

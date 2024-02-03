@@ -15,7 +15,7 @@
   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
   </section>
-  <aside class="thread-container main-item" [class.is-active]="threadVisible" #thread>
+  <aside class="thread-container main-item" [class.is-active]="threadVisible">
     Thread <button (click)="closeThread()">Close</button>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
@@ -24,5 +24,9 @@
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p></aside>
 </main>
 <button (click)="toggleNav()" class="toggle-primary-nav">
+  @if (navVisible) {
   Workspace-Menü schließen
+} @else {
+  Workspace-Menü öffnen
+}
 </button>
