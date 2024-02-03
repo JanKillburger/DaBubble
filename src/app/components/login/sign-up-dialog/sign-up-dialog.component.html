@@ -1,1 +1,49 @@
-<p>sign-up-dialog works!</p>
+<section>
+  <div class="form-info">
+    <h2>Konto erstellen</h2>
+    <span>
+      Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues
+      DABubble-Konto.
+    </span>
+  </div>
+  <form action="">
+    <div class="inputField-container">
+      <div class="inputFields">
+        <img src="./assets/img/login/person.png" alt="" />
+        <input
+          type="text"
+          placeholder="Name und Nachname"
+          formControlName="Name"
+        />
+      </div>
+      <div class="inputFields">
+        <img src="./assets/img/login/mail.png" alt="" />
+        <input
+          type="email"
+          placeholder="beispielname@email.com"
+          formControlName="email"
+        />
+      </div>
+      <div class="inputFields">
+        <img src="./assets/img/login/lock.png" alt="" />
+        <input
+          type="password"
+          placeholder="Passwort"
+          formControlName="password"
+        />
+      </div>
+      <label class="checkboxFields"
+        >Ich stimme der <a href=""> Datenschutzerklärung </a> zu.
+        <input
+          type="checkbox"
+          placeholder="Was los?"
+          formControlName="checkbox"
+        />
+        <span class="checkmark"></span>
+      </label>
+    </div>
+    <div class="singIn-buttons">
+      <button class="button-filled" type="submit">Weiter</button>
+    </div>
+  </form>
+</section>
