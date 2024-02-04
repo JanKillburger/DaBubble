@@ -34,7 +34,7 @@ header>input {
 .primary-nav {
   position: relative;
   margin-right: 1rem;
-  flex: 1 100px;
+  flex: 0 200px;
   transition: all 0.5s;
   left: 0;
   opacity: 1;
@@ -59,6 +59,10 @@ header>input {
   flex: 2 200px;
   transition: all 0.5s;
   margin-left: 1rem;
+  
+  @media (max-width: 991px) {
+    margin-left: 0;
+  }
 
   &:not(.is-active) {
     flex: 0 0;
