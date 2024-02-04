@@ -25,19 +25,24 @@ header>input {
   align-items: stretch;
 }
 
-.main>* {
+.main-item {
   background-color: white;
   border-radius: 1em;
   border: 1px dashed red;
+  flex: auto;
 }
 
 .primary-nav {
   position: relative;
-  margin-right: 1rem;
-  flex: 0 200px;
-  transition: all 0.5s;
-  left: 0;
-  opacity: 1;
+
+
+  @media (min-width: 600px) {
+    margin-right: 1rem;
+    flex: 0 200px;
+    transition: all 0.5s;
+    left: 0;
+    opacity: 1;
+  }
 
   &:not(.is-active) {
     flex: 0 0;
@@ -52,14 +57,13 @@ header>input {
 
 .channel-container {
   flex: 4 400px;
-  width: 400px;
 }
 
 .thread-container {
   flex: 2 200px;
   transition: all 0.5s;
   margin-left: 1rem;
-  
+
   @media (max-width: 991px) {
     margin-left: 0;
   }

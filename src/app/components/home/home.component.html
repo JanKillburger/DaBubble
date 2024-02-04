@@ -5,7 +5,9 @@
 </header>
 <main class="main">
   <nav class="primary-nav main-item" [class.is-active]="navVisible || mqlMaxWidth.matches">
-    Navigation {{ navVisible }} <button #dialogTrigger (click)="openDialog()">Open Positioned Dialog</button>
+    Navigation {{ navVisible }}
+    <button #dialogTrigger (click)="openDialog()">Open Positioned Dialog</button>
+    <button (click)="openChannel()">Open Channel</button>
   </nav>
   <section class="channel-container main-item" *ngIf="channelVisible">
     Channels <button (click)="openThread()">Open Thread</button>

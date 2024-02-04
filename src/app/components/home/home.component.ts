@@ -80,6 +80,10 @@ export class HomeComponent {
   }
 
   toggleNav() {
+    if (this.screenMode == "small") {
+      this.channelVisible = false;
+      this.threadVisibleMq = false;
+    }
     this.navVisible = !this.navVisible;
   }
 
@@ -94,13 +98,18 @@ export class HomeComponent {
   openThread() {
     this.threadVisibleMq = true;
     this.threadVisible = true;
-    if (this.screenMode == "medium") {
+    if (this.screenMode != "large") {
       this.channelVisible = false;
     }
     document.body.style.overflow = "hidden";
     setTimeout(() => {
       document.body.removeAttribute("style");
     }, 500);
+  }
+
+  openChannel() {
+    this.navVisible = false;
+    this.channelVisible = true;
   }
 
   openDialog() {
