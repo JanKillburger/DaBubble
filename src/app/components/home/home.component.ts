@@ -24,9 +24,9 @@ export class HomeComponent {
 
   constructor(public changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public dialog: MatDialog) {
     this.mqlSmallWidth = media.matchMedia('(min-width: 600px)');
-    this.mqlSmallWidth.addEventListener("change", (event) => this.handleSmallWidthChange(event));
+    this.mqlSmallWidth.onchange = (event) => this.handleSmallWidthChange(event);
     this.mqlMediumWidth = media.matchMedia('(min-width: 992px)');
-    this.mqlMediumWidth.addEventListener("change", (event) => this.handleMediumWidthChange(event));
+    this.mqlMediumWidth.onchange = (event) => this.handleMediumWidthChange(event);
     this.mqlMaxWidth = media.matchMedia('(min-width: 1440px)');
     this.mqlMaxWidth.onchange = (event) => {
       if (event.matches) {
@@ -66,7 +66,7 @@ export class HomeComponent {
     this.changeDetectorRef.detectChanges();
   }
 
-  handleSmallWidthChange(event: MediaQueryListEvent) {
+  handleSmallWidthChange(event: MediaQueryListEvent): void {
     if (!event.matches) {
       this.screenMode = "small";
       this.channelVisible = false;
