@@ -1,1 +1,26 @@
-<p>select-avatar works!</p>
+<section>
+  <div class="avata-info">
+    <h2>Wähle deinen Avatar</h2>
+    <img
+      class="empty-img"
+      src="./assets/img/login/SingIn/emptyProfile.png"
+    />
+  </div>
+  <div class="choose-content">
+    <h3>Max Mustermann</h3>
+    <span>Aus der Liste wählen</span>
+    <div class="avatar-img-content">
+      <img
+        *ngFor="let avatarImg of avatarImgs"
+        src="{{ avatarImg }}"
+      />
+    </div>
+  </div>
+  <div class="create-content">
+    <span>eigenes Bild verwenden</span>
+    <button class="button-noneFilled">Datei hochladen</button>
+  </div>
+  <div class="next-button">
+    <button class="button-filled">Weiter</button>
+  </div>
+</section>
