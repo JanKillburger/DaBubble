@@ -1,7 +1,7 @@
 <header class="header">
   <img src="assets/img/login/logo_header.png" alt="DA Bubble Logo" *ngIf="mqlSmallWidth.matches"/>
   <input type="text" />
-  <button class="toggle-menu">Toggle menu</button>
+  <button #triggerUserDialog class="toggle-menu" (click)="openUserDialog()">Toggle menu</button>
 </header>
 <main class="main">
   <nav class="primary-nav main-item" [class.is-active]="navVisible || mqlMaxWidth.matches">

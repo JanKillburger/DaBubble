@@ -22,6 +22,7 @@ export class HomeComponent {
   mqlMediumWidth: MediaQueryList;
   mqlSmallWidth: MediaQueryList;
   @ViewChild('dialogTrigger') dialogTrigger!: ElementRef;
+  @ViewChild('triggerUserDialog') triggerUserDialog!: ElementRef;
 
   constructor(public changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public dialog: MatDialog, public viewport: ViewportService) {
     this.mqlSmallWidth = media.matchMedia('(min-width: 600px)');
@@ -114,7 +115,12 @@ export class HomeComponent {
   }
 
   openDialog() {
-    const positionDetails = this.viewport.getPositionRelativeTo(this.dialogTrigger, "bottom", "right");
+    const positionDetails = this.viewport.getPositionRelativeTo(this.dialogTrigger, "top", "left");
+    this.dialog.open(ExampleDialogComponent, { position: positionDetails });
+  }
+
+  openUserDialog() {
+    const positionDetails = this.viewport.getPositionRelativeTo(this.triggerUserDialog, "bottom", "right");
     this.dialog.open(ExampleDialogComponent, { position: positionDetails });
   }
 }
