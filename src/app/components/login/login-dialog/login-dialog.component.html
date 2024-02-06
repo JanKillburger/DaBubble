@@ -6,7 +6,7 @@
       verwendest.
     </span>
   </div>
-  <form action="">
+  <form method="POST" onsubmit="return false">
     <div class="inputField-container">
       <div class="inputFields">
         <img src="./assets/img/login/mail.png" alt="" />
@@ -38,7 +38,7 @@
       </div>
     </button>
     <div class="login-buttons">
-      <button class="button-filled" type="submit">Anmelden</button>
+      <button class="button-filled" type="submit" (click)="loginFunction()">Anmelden</button>
       <button class="button-noneFilled" type="button">Gäste-Login</button>
     </div>
   </form>

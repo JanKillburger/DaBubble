@@ -2,26 +2,26 @@
   <div class="login-Container">
     <div class="loginHeader">
       <img src="./assets/img/login/logo_header.png" alt="" />
-      <div>
+      <div id="create-contact-button">
         <span>Neu bei DABubble</span>
-        <a href="">Konto erstellen</a>
+        <a (click)="createContact()">Konto erstellen</a>
       </div>
     </div>
-    <div class="display_none">
+    <div id="login-dialog">
       <app-login-dialog></app-login-dialog>
     </div>
-    <div class="display_none">
+    <div id="create-contact-dialog" class="display_none">
       <app-sign-up-dialog></app-sign-up-dialog>
     </div>
-    <div class="display_none">
+    <div id="select-avatar-dialog" class="display_none">
       <app-select-avatar></app-select-avatar>
     </div>
-    <div>
+    <div class="display_none">
       <app-forgot-password></app-forgot-password>
     </div>
     <div class="loginFooter">
-      <a href="">Impressum</a>
-      <a href="">Datenschutz</a>
+      <a [routerLink]="['imprint']">Impressum</a>
+      <a [routerLink]="['privacy-policy']">Datenschutz</a>
     </div>
   </div>
 </section>

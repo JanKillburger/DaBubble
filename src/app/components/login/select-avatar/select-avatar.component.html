@@ -1,4 +1,7 @@
 <section>
+  <div id="updloadDialog" class="display_none">
+    <app-img-upload></app-img-upload>
+  </div>
   <div class="avata-info">
     <h2>Wähle deinen Avatar</h2>
     <img
@@ -18,7 +21,7 @@
   </div>
   <div class="create-content">
     <span>eigenes Bild verwenden</span>
-    <button class="button-noneFilled">Datei hochladen</button>
+    <button class="button-noneFilled" (click)="addImgDialog()">Datei hochladen</button>
   </div>
   <div class="next-button">
     <button class="button-filled">Weiter</button>

@@ -8,5 +8,11 @@ import { Component } from '@angular/core';
   styleUrl: './sign-up-dialog.component.scss'
 })
 export class SignUpDialogComponent {
-
+  SingIn() {
+    let avatarDialog = document.getElementById('select-avatar-dialog')
+    let SingIn = document.getElementById('create-contact-dialog')
+    
+    SingIn?.classList.add('display_none')
+    avatarDialog?.classList.remove('display_none')
+  }
 }

@@ -1,1 +1,33 @@
-<p>img-upload works!</p>
+<section>
+  <div class="Upload-Dialog">
+    <div class="upload-info">
+      <img
+        (click)="closeUploadDialog()"
+        class="backArrow"
+        src="./assets/img/login/SingIn/arrow_back.png"
+        alt=""
+      />
+      <h2>Upload Avatar Bild</h2>
+    </div>
+    <span> Du kannst hier dein Bild hochladen: </span>
+    <div class="drag-and-drop-field">
+      <div
+        id="drag-area"
+        class="drag-area"
+        ondrop="upload_file(event)"
+        ondragover="return false"
+      >
+        <header>Drag &amp; Drop to Upload File</header>
+        <span>OR</span>
+        <button class="button-filled">Browse File</button>
+        <input type="file" name="file" id="file" hidden="" />
+      </div>
+    </div>
+
+    <!-- <form class="updloadField">
+      <label for="myfile">Wähle die Datei aus:</label>
+      <input type="file" id="myfile" name="myfile" multiple /><br /><br />
+      <input type="submit" />
+    </form> -->
+  </div>
+</section>
