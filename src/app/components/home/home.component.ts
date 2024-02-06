@@ -3,6 +3,7 @@ import { NgIf } from '@angular/common';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ExampleDialogComponent } from '../example-dialog/example-dialog.component';
+import { ViewportService } from '../../services/viewport.service';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +23,7 @@ export class HomeComponent {
   mqlSmallWidth: MediaQueryList;
   @ViewChild('dialogTrigger') dialogTrigger!: ElementRef;
 
-  constructor(public changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public dialog: MatDialog) {
+  constructor(public changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public dialog: MatDialog, public viewport: ViewportService) {
     this.mqlSmallWidth = media.matchMedia('(min-width: 600px)');
     this.mqlSmallWidth.onchange = (event) => this.handleSmallWidthChange(event);
     this.mqlMediumWidth = media.matchMedia('(min-width: 992px)');
@@ -113,7 +114,7 @@ export class HomeComponent {
   }
 
   openDialog() {
-    const bounds = this.dialogTrigger.nativeElement.getBoundingClientRect();
-    this.dialog.open(ExampleDialogComponent, { position: { top: bounds.bottom + "px", left: bounds.left + "px" } })
+    const positionDetails = this.viewport.getPositionRelativeTo(this.dialogTrigger, "bottom", "right");
+    this.dialog.open(ExampleDialogComponent, { position: positionDetails });
   }
 }
