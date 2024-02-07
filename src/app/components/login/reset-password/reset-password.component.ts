@@ -8,4 +8,8 @@ import { Component } from '@angular/core';
   styleUrl: './reset-password.component.scss',
 })
 export class ResetPasswordComponent {
+
+  resetPasswort(){
+    
+  }
 }

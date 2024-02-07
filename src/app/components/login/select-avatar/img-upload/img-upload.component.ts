@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-img-upload',
@@ -7,22 +7,21 @@ import { Component } from '@angular/core';
   templateUrl: './img-upload.component.html',
   styleUrl: './img-upload.component.scss',
 })
-export class ImgUploadComponent {
+export class ImgUploadComponent implements OnInit {
   fileobj: any
-  constructor() {}
 
-  ngOnInit(){
-    let dropArea = document.getElementById('drag-area');
-    if (dropArea) {
-      dropArea.addEventListener('dragover', (event) => {
-        event.preventDefault();
-        dropArea?.classList.add('drag-area-active');
-      });
+  ngOnInit(): void{
+    // let dropArea = document.getElementById('drag-area');
+    // if (dropArea) {
+    //   dropArea.addEventListener('dragover', (event) => {
+    //     event.preventDefault();
+    //     dropArea?.classList.add('drag-area-active');
+    //   });
   
-      dropArea.addEventListener('dragleave', () => {
-        dropArea?.classList.remove('drag-area-active');
-      }); 
-    }
+    //   dropArea.addEventListener('dragleave', () => {
+    //     dropArea?.classList.remove('drag-area-active');
+    //   }); 
+    // }
   }
 
   closeUploadDialog() {

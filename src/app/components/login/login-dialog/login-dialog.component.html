@@ -6,7 +6,7 @@
       verwendest.
     </span>
   </div>
-  <form method="POST" onsubmit="return false">
+  <form method="POST" onsubmit="loginFunction(); return false">
     <div class="inputField-container">
       <div class="inputFields">
         <img src="./assets/img/login/mail.png" alt="" />
@@ -14,6 +14,7 @@
           type="email"
           placeholder="beispielname@email.com"
           formControlName="email"
+          required
         />
       </div>
       <div class="inputFields">
@@ -22,6 +23,7 @@
           type="password"
           placeholder="Passwort"
           formControlName="password"
+          required
         />
       </div>
     </div>
@@ -38,8 +40,8 @@
       </div>
     </button>
     <div class="login-buttons">
-      <button class="button-filled" type="submit" (click)="loginFunction()">Anmelden</button>
-      <button class="button-noneFilled" type="button">Gäste-Login</button>
+      <button class="button-filled" type="submit">Anmelden</button>
+      <button class="button-noneFilled" type="button" (click)="guestLogin()">Gäste-Login</button>
     </div>
   </form>
 </section>

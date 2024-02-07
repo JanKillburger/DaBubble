@@ -17,4 +17,9 @@ export class ForgotPasswordComponent {
     contactButton?.classList.remove('display_none')
     loginDialog?.classList.remove('display_none')
   }
+
+
+  sendResetPasswortMail(){
+    
+  }
 }

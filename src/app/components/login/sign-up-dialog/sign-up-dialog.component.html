@@ -2,8 +2,8 @@
   <div class="form-info">
     <div class="info-header">
       <svg
-      (click)="backToLogIn()"
-      class="arrow-back-svg"
+        (click)="backToLogIn()"
+        class="arrow-back-svg"
         xmlns="http://www.w3.org/2000/svg"
         width="24"
         height="24"
@@ -35,43 +35,33 @@
       DABubble-Konto.
     </span>
   </div>
-  <form method="POST" onsubmit="return false;">
+  <form method="POST" onsubmit="return false">
     <div class="inputField-container">
       <div class="inputFields">
         <img src="./assets/img/login/person.png" alt="" />
-        <input
-          type="text"
-          placeholder="Name und Nachname"
-          formControlName="Name"
-        />
+        <input type="text" placeholder="Name und Nachname" />
       </div>
       <div class="inputFields">
         <img src="./assets/img/login/mail.png" alt="" />
-        <input
-          type="email"
-          placeholder="beispielname@email.com"
-          formControlName="email"
-        />
+        <input type="email" placeholder="beispielname@email.com" />
       </div>
+      <!-- <span *ngIf="name?.touched && name?.invalid"
+        >Bitte gib deinen Namen an.</span
+      > -->
       <div class="inputFields">
         <img src="./assets/img/login/lock.png" alt="" />
-        <input
-          type="password"
-          placeholder="Passwort"
-          formControlName="password"
-        />
+        <input type="password" placeholder="Passwort" />
       </div>
       <label class="checkboxFields"
         >Ich stimme der <a href=""> Datenschutzerklärung </a> zu.
-        <input
-          type="checkbox"
-          formControlName="checkbox"
-        />
+        <input id="consent" type="checkbox" required />
         <span class="checkmark"></span>
       </label>
     </div>
     <div class="singIn-buttons">
-      <button class="button-filled" type="button" (click)="SingIn()">Weiter</button>
+      <button class="button-filled" type="submit" (click)="SingIn()">
+        Weiter
+      </button>
     </div>
   </form>
 </section>

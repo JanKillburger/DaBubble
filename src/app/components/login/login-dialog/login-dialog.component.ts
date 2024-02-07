@@ -12,6 +12,10 @@ export class LoginDialogComponent {
     
   }
 
+  guestLogin(){
+    
+  }
+
   forgotPasswort(){
     let contactButton = document.getElementById('create-contact-button')
     let forgotPasswortDialog = document.getElementById('forgot-passwort-dialog')
