@@ -15,4 +15,14 @@ export class SignUpDialogComponent {
     SingIn?.classList.add('display_none')
     avatarDialog?.classList.remove('display_none')
   }
+
+  backToLogIn(){
+    let contactButton = document.getElementById('create-contact-button')
+    let SingIn = document.getElementById('create-contact-dialog')
+    let loginDialog = document.getElementById('login-dialog')
+    
+    SingIn?.classList.add('display_none')
+    contactButton?.classList.remove('display_none')
+    loginDialog?.classList.remove('display_none')
+  }
 }

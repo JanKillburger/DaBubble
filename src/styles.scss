@@ -130,3 +130,21 @@ a{
 .display_none{
   display: none!important;
 }
+
+.arrow-back-svg{
+  margin-right: 16px;
+  padding: 8px;
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
+
+  &:hover{
+    background-color: #ECEEFE;
+    
+    >g{
+      >path{
+        fill: #535AF1;
+      }
+    }
+  }
+}

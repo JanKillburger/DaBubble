@@ -23,4 +23,12 @@ export class SelectAvatarComponent {
     let updloadDialog = document.getElementById('updloadDialog')
     updloadDialog?.classList.remove('display_none')
   }
+
+  backToSingIn(){
+    let avatarDialog = document.getElementById('select-avatar-dialog')
+    let SingIn = document.getElementById('create-contact-dialog')
+    
+    SingIn?.classList.remove('display_none')
+    avatarDialog?.classList.add('display_none')
+  }
 }
