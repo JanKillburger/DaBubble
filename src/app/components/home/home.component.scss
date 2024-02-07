@@ -68,6 +68,10 @@ header>input {
     margin-left: 0;
   }
 
+  &.d-none {
+    display: none;
+  }
+
   &:not(.is-active) {
     flex: 0 0;
     opacity: 0;

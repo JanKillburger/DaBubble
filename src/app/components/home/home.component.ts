@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ExampleDialogComponent } from '../example-dialog/example-dialog.component';
@@ -8,7 +8,7 @@ import { ViewportService } from '../../services/viewport.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatDialogModule, NgIf],
+  imports: [MatDialogModule, NgIf, NgClass],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -40,7 +40,11 @@ export class HomeComponent {
   }
 
   initContainers() {
-    if (!this.mqlMediumWidth.matches) {
+    if (!this.mqlSmallWidth.matches) {
+      this.screenMode = "small";
+      this.channelVisible = false;
+    }
+    else if (!this.mqlMediumWidth.matches) {
       this.screenMode = "medium";
       this.threadVisibleMq = false;
       this.channelVisible = true;
@@ -48,10 +52,6 @@ export class HomeComponent {
       this.screenMode = "large";
       this.threadVisibleMq = true;
       this.channelVisible = true;
-    }
-    if (!this.mqlSmallWidth.matches) {
-      this.screenMode = "small";
-      this.channelVisible = false;
     }
   }
 
@@ -68,7 +68,7 @@ export class HomeComponent {
     this.changeDetectorRef.detectChanges();
   }
 
-  handleSmallWidthChange(event: MediaQueryListEvent): void {
+  handleSmallWidthChange(event: MediaQueryListEvent) {
     if (!event.matches) {
       this.screenMode = "small";
       this.channelVisible = false;
@@ -95,6 +95,7 @@ export class HomeComponent {
     }
     this.threadVisible = false;
     this.channelVisible = true;
+    this.changeDetectorRef.detectChanges();
   }
 
   openThread() {
@@ -103,6 +104,7 @@ export class HomeComponent {
     if (this.screenMode != "large") {
       this.channelVisible = false;
     }
+    this.changeDetectorRef.detectChanges();
     document.body.style.overflow = "hidden";
     setTimeout(() => {
       document.body.removeAttribute("style");
