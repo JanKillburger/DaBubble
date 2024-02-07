@@ -6,7 +6,7 @@
       DABubble-Konto.
     </span>
   </div>
-  <form action="">
+  <form method="POST" onsubmit="return false;">
     <div class="inputField-container">
       <div class="inputFields">
         <img src="./assets/img/login/person.png" alt="" />
@@ -36,14 +36,13 @@
         >Ich stimme der <a href=""> Datenschutzerklärung </a> zu.
         <input
           type="checkbox"
-          placeholder="Was los?"
           formControlName="checkbox"
         />
         <span class="checkmark"></span>
       </label>
     </div>
     <div class="singIn-buttons">
-      <button class="button-filled" type="submit">Weiter</button>
+      <button class="button-filled" type="button" (click)="SingIn()">Weiter</button>
     </div>
   </form>
 </section>

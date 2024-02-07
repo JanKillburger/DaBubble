@@ -8,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './login-dialog.component.scss'
 })
 export class LoginDialogComponent {
-
+  loginFunction(){
+    
+  }
 }
