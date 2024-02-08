@@ -71,12 +71,15 @@ export class HomeComponent {
   handleSmallWidthChange(event: MediaQueryListEvent) {
     if (!event.matches) {
       this.screenMode = "small";
-      this.channelVisible = false;
-      this.threadVisibleMq = false;
+      if (this.navVisible) {
+        this.channelVisible = false;
+        this.threadVisibleMq = false;
+      }
     } else {
       this.screenMode = "medium";
-      this.channelVisible = true;
-      this.threadVisibleMq = false;
+      if (this.navVisible) {
+        this.channelVisible = true;
+      }
     }
     this.changeDetectorRef.detectChanges();
   }
