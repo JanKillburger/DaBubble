@@ -6,7 +6,7 @@
       verwendest.
     </span>
   </div>
-  <form method="POST" onsubmit="loginFunction(); return false">
+  <form [formGroup]="logInForm" (ngSubmit)="loginFunction()">
     <div class="inputField-container">
       <div class="inputFields">
         <img src="./assets/img/login/mail.png" alt="" />
@@ -14,20 +14,28 @@
           type="email"
           placeholder="beispielname@email.com"
           formControlName="email"
-          required
         />
       </div>
+      <span class="errorMassageForm" *ngIf="email?.touched && email?.invalid"
+        >Bitte gib deine Email an.</span
+      >
       <div class="inputFields">
         <img src="./assets/img/login/lock.png" alt="" />
         <input
           type="password"
           placeholder="Passwort"
           formControlName="password"
-          required
         />
       </div>
+      <span
+        class="errorMassageForm"
+        *ngIf="password?.touched && password?.invalid"
+        >Bitte gib ein valides Password an. (min. 6 Werte)</span
+      >
     </div>
-    <a (click)="forgotPasswort()" class="forgot-passwort">Passwort vergessen?</a>
+    <a (click)="forgotPasswort()" class="forgot-passwort"
+      >Passwort vergessen?</a
+    >
     <div class="seperator">
       <hr />
       <span>ODER</span>
@@ -40,8 +48,16 @@
       </div>
     </button>
     <div class="login-buttons">
-      <button class="button-filled" type="submit">Anmelden</button>
-      <button class="button-noneFilled" type="button" (click)="guestLogin()">Gäste-Login</button>
+      <button
+        class="button-filled"
+        type="submit"
+        [disabled]="!logInForm.valid"
+        [ngClass]="{ 'button-filled-not-valid': !logInForm.valid }">
+        Anmelden
+      </button>
+      <button class="button-noneFilled" type="button" (click)="guestLogin()">
+        Gäste-Login
+      </button>
     </div>
   </form>
 </section>

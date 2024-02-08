@@ -1,13 +1,26 @@
+import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login-dialog',
   standalone: true,
-  imports: [],
+  imports: [NgIf, NgClass, CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './login-dialog.component.html',
   styleUrl: './login-dialog.component.scss'
 })
 export class LoginDialogComponent {
+  logInForm: FormGroup = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
+  });
+
+  get email() {return this.logInForm.get("email")}
+  get password() {return this.logInForm.get("password")}
+
   loginFunction(){
     
   }

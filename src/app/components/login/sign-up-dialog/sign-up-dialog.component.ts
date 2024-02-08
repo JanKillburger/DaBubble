@@ -1,36 +1,39 @@
-import { NgIf } from '@angular/common';
+import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   Validators,
-  FormsModule
+  FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-up-dialog',
   standalone: true,
-  imports: [NgIf, FormsModule],
+  imports: [NgIf, NgClass, CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './sign-up-dialog.component.html',
   styleUrl: './sign-up-dialog.component.scss',
 })
 export class SignUpDialogComponent {
-  // requires:boolean = false;
 
-  // form: FormGroup = new FormGroup({
-  //   name: new FormControl('', Validators.required),
-  //   email: new FormControl('', [Validators.required, Validators.email]),
-  //   passwort: new FormControl('', [Validators.required, Validators.minLength(6)]),
-  //   privacy: new FormControl(false, Validators.required)
-  // })
+  singInForm: FormGroup = new FormGroup({
+    name: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+    ]),
+    privacy: new FormControl(false, Validators.required),
+  });
 
-  // get name() {return this.form.get("name")}
-  // get email() {return this.form.get("email")}
-  // get passwort() {return this.form.get("passwort")}
-  // get privacy() {return this.form.get("privacy")}
+  get name() {return this.singInForm.get("name")}
+  get email() {return this.singInForm.get("email")}
+  get password() {return this.singInForm.get("password")}
+  get privacy() {return this.singInForm.get("privacy")}
 
-  SingIn() {
-    this.goOnToSelectAvatar()
+  onSubmit() {
+    this.goOnToSelectAvatar();
   }
 
   backToLogIn() {
@@ -43,11 +46,10 @@ export class SignUpDialogComponent {
     loginDialog?.classList.remove('display_none');
   }
 
-  goOnToSelectAvatar(){
+  goOnToSelectAvatar() {
     let avatarDialog = document.getElementById('select-avatar-dialog');
     let SingIn = document.getElementById('create-contact-dialog');
     SingIn?.classList.add('display_none');
     avatarDialog?.classList.remove('display_none');
   }
-
 }

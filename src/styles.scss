@@ -113,6 +113,18 @@ a{
   }
 }
 
+.button-filled-not-valid{
+  background-color: #797EF3!important;
+  cursor: not-allowed;
+}
+
+.errorMassageForm{
+  color: red;
+  font-size: 12px;
+  margin-top: -15px;
+  margin-bottom: -15px;
+}
+
 .button-noneFilled{
   border-radius: 25px;
   padding: 12px 25px 12px 25px;
