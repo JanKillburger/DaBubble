@@ -3,6 +3,40 @@
   padding: 1rem;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.heading span {
+  font-weight: 700;
+}
+
+.heading:hover {
+  color: var(--buttonColor);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: x-large;
+}
+
+button mat-icon {
+  transition: all 0.25s;
+}
+
+button:hover mat-icon {
+  color: var(--buttonColor);
+  font-weight: 600;
+}
+
+img {
+  margin-right: 0.5rem;
+}
+
 .icon-text {
   display: flex;
   align-items: center;

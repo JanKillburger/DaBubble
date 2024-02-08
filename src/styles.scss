@@ -46,17 +46,11 @@
 :root {
   --font-heading: Arial;
   --backgroundColor: #eceefe; 
-  --buttonColor: #444DF2;
+  --buttonColor: 237, 87%, 61%;
+  --buttonColor: #454ef2;
+  --accent-color: hsl(var(--buttonColor) / 0.2);
   --margin-left: 75px;
-  --margin-right: 75px;  
-  
-    @media (min-width: 500px) {
-    --font-heading: monospace;
-  }
-}
-
-body {
-  font-family: var(--font-heading);
+  --margin-right: 75px;
 }
 
 * {
@@ -77,12 +71,9 @@ body {
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Nunito, "Helvetica Neue", sans-serif;
   background-color: var(--backgroundColor);
   height: 100vh;
-}
-h1 {
-  font-family: var(--font-heading);
 }
 
 a{
