@@ -14,7 +14,7 @@
     class="primary-nav main-item"
     [class.is-active]="navVisible || mqlMaxWidth.matches"
   >
-    <app-nav-menu (toggleNavEvent)="toggleNav()" [navVisible]="navVisible"></app-nav-menu>
+    <app-nav-menu></app-nav-menu>
   </nav>
   <section class="channel-container main-item" *ngIf="channelVisible">
     <app-channel (openThreadEv)="openThread()"></app-channel>
