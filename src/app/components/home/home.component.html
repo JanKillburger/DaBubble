@@ -1,34 +1,32 @@
 <header class="header">
-  <img src="assets/img/login/logo_header.png" alt="DA Bubble Logo" *ngIf="mqlSmallWidth.matches"/>
+  <img
+    src="assets/img/login/logo_header.png"
+    alt="DA Bubble Logo"
+    *ngIf="mqlSmallWidth.matches"
+  />
   <input type="text" />
-  <button #triggerUserDialog class="toggle-menu" (click)="openUserDialog()">Toggle menu</button>
+  <button #triggerUserDialog class="toggle-menu" (click)="openUserDialog()">
+    Toggle menu
+  </button>
 </header>
 <main class="main">
-  <nav class="primary-nav main-item" [class.is-active]="navVisible || mqlMaxWidth.matches">
-    Navigation {{ navVisible }}
-    <button #dialogTrigger (click)="openDialog()">Open Positioned Dialog</button>
-    <button (click)="openChannel()">Open Channel</button>
+  <nav
+    class="primary-nav main-item"
+    [class.is-active]="navVisible || mqlMaxWidth.matches"
+  >
+    <app-nav-menu (toggleNavEvent)="toggleNav()" [navVisible]="navVisible"></app-nav-menu>
   </nav>
   <section class="channel-container main-item" *ngIf="channelVisible">
-    Channels <button (click)="openThread()">Open Thread</button>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
+    <app-channel (openThreadEv)="openThread()"></app-channel>
   </section>
-  <aside class="thread-container main-item" [class.is-active]="threadVisible" *ngIf="threadVisibleMq">
-    Thread <button (click)="closeThread()">Close</button>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam debitis saepe dolor ratione incidunt architecto quis adipisci illo facere. Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?</p></aside>
+  <aside
+    class="thread-container main-item"
+    [class.is-active]="threadVisible"
+    *ngIf="threadVisibleMq"
+  >
+    <app-thread (closeThreadEv)="closeThread()"></app-thread>
+  </aside>
 </main>
 <button (click)="toggleNav()" class="toggle-primary-nav">
-  @if (navVisible) {
-  Workspace-Menü schließen
-} @else {
-  Workspace-Menü öffnen
-}
+  @if (navVisible) { Workspace-Menü schließen } @else { Workspace-Menü öffnen }
 </button>

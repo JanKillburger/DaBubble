@@ -4,11 +4,14 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ExampleDialogComponent } from '../example-dialog/example-dialog.component';
 import { ViewportService } from '../../services/viewport.service';
+import { NavMenuComponent } from '../nav-menu/nav-menu.component';
+import { ChannelComponent } from '../channel/channel.component';
+import { ThreadComponent } from '../thread/thread.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatDialogModule, NgIf, NgClass],
+  imports: [NavMenuComponent, ChannelComponent, ThreadComponent, MatDialogModule, NgIf, NgClass],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
