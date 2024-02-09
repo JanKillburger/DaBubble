@@ -7,23 +7,48 @@
     <mat-icon fontSet="material-symbols-outlined">edit_square</mat-icon>
   </button>
 </div>
-<button class="icon-text heading" (click)="toggleChannels()">
-  <mat-icon fontSet="material-symbols-outlined" *ngIf="!channelsExpanded">arrow_right</mat-icon>
-  <mat-icon fontSet="material-symbols-outlined" *ngIf="channelsExpanded">arrow_drop_down</mat-icon>
-  <mat-icon fontSet="material-symbols-outlined" class="icon-text__icn"
-    >spoke</mat-icon
-  >
-  <span>Channels</span>
+<div class="flex jc-sb ai-c">
+  <button class="icon-text heading" (click)="toggleChannels()">
+    <mat-icon fontSet="material-symbols-outlined" *ngIf="!channelsExpanded"
+      >arrow_right</mat-icon
+    >
+    <mat-icon fontSet="material-symbols-outlined" *ngIf="channelsExpanded"
+      >arrow_drop_down</mat-icon
+    >
+    <mat-icon fontSet="material-symbols-outlined" class="icon-text__icn"
+      >spoke</mat-icon
+    >
+    <span>Channels</span>
+  </button>
+  <button mat-icon-button>
+    <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+  </button>
+</div>
+<menu *ngIf="channelsExpanded" class="flow">
+  <button class="icon-text btn">
+    <mat-icon class="icon-text__icn" fontSet="material-symbols-outlined"
+      >tag</mat-icon
+    >
+    Entwicklerteam
+  </button>
+  <button class="icon-text is-active btn">
+    <mat-icon class="icon-text__icn" fontSet="material-symbols-outlined"
+      >tag</mat-icon
+    >
+    <span>Office-Team</span>
+  </button>
+  <button class="btn icon-text btn--text">
+<mat-icon fontSet="material-symbols-outlined" class="icon-text__icn">add_circle</mat-icon>
+<span>Channel erstellen</span>  
 </button>
-<menu *ngIf="channelsExpanded">
-  <li class="icon-text"><mat-icon class="icon-text__icn" fontSet="material-symbols-outlined">tag</mat-icon>
-    Entwicklerteam</li>
-    <li class="icon-text"><mat-icon class="icon-text__icn" fontSet="material-symbols-outlined">tag</mat-icon>
-      Office-Team</li>
 </menu>
 <button class="icon-text heading" (click)="toggleMessages()">
-  <mat-icon fontSet="material-symbols-outlined" *ngIf="!messagesExpanded">arrow_right</mat-icon>
-  <mat-icon fontSet="material-symbols-outlined" *ngIf="messagesExpanded">arrow_drop_down</mat-icon>
+  <mat-icon fontSet="material-symbols-outlined" *ngIf="!messagesExpanded"
+    >arrow_right</mat-icon
+  >
+  <mat-icon fontSet="material-symbols-outlined" *ngIf="messagesExpanded"
+    >arrow_drop_down</mat-icon
+  >
   <mat-icon fontSet="material-symbols-outlined" class="icon-text__icn"
     >account_circle</mat-icon
   >

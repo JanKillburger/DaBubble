@@ -33,13 +33,37 @@
   font-weight: 700;
 }
 
-.heading > mat-icon:first-child {
+.heading>mat-icon:first-child {
   margin-right: 1rem;
 }
 
 menu {
   list-style: none;
   padding-inline-start: calc(24px + 1rem);
+
+  button {
+    padding: 0.5em;
+
+    &:hover {
+      background-color: hsl(var(--accent-color) / 0.1);
+      border-radius: 1em;
+    }
+
+    &.btn--text:hover {
+      color: hsl(var(--accent-color));
+      background-color: unset;
+    }
+  }
+
+  .is-active {
+    color: hsl(var(--accent-color));
+    background-color: hsl(var(--accent-color) / 0.1);
+    border-radius: 1em;
+
+    span {
+      font-weight: 700;
+    }
+  }
 }
 
 img {

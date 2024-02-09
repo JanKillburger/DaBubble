@@ -98,6 +98,12 @@ a{
     }
 }
 
+.btn {
+  background-color: white;
+  border: none;
+  cursor: pointer;
+}
+
 .button-filled{
   border-radius: 25px;
   padding: 12px 25px 12px 25px;
@@ -171,4 +177,22 @@ a{
       }
     }
   }
+}
+
+//Utilities
+
+.flex {
+  display: flex;
+}
+
+.jc-sb {
+  justify-content: space-between;
+}
+
+.ai-c {
+  align-items: center;
+}
+
+.flow>:not(:first-child) {
+  margin-block-start: 0.5rem;
 }
