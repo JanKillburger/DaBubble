@@ -38,9 +38,11 @@
     <span>Office-Team</span>
   </button>
   <button class="btn icon-text btn--text">
-<mat-icon fontSet="material-symbols-outlined" class="icon-text__icn">add_circle</mat-icon>
-<span>Channel erstellen</span>  
-</button>
+    <mat-icon fontSet="material-symbols-outlined" class="icon-text__icn"
+      >add_circle</mat-icon
+    >
+    <span>Channel erstellen</span>
+  </button>
 </menu>
 <button class="icon-text heading" (click)="toggleMessages()">
   <mat-icon fontSet="material-symbols-outlined" *ngIf="!messagesExpanded"
@@ -55,6 +57,18 @@
   <span>Direktnachrichten</span>
 </button>
 <menu *ngIf="messagesExpanded">
-  <li>Frederik Beck (Du)</li>
-  <li>Sofia Müller</li>
+  <button class="btn flex ai-c btn-user">
+    <div class="img-wrapper">
+      <img class="avatar" src="assets/img/login/SingIn/avatar2.png" alt="User avatar" />
+      <div class="status-indicator"></div>
+    </div>
+    <span>Frederik Beck (Du)</span>
+  </button>
+  <button class="btn flex ai-c btn-user">
+    <div class="img-wrapper">
+      <img class="avatar" src="assets/img/login/SingIn/avatar1.png" alt="User avatar" />
+      <div class="status-indicator"></div>
+    </div>
+    <span>Sofia Müller</span>
+  </button>
 </menu>

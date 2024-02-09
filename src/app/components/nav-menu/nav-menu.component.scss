@@ -78,3 +78,31 @@ img {
 .icon-text__icn {
   margin-right: 0.5rem;
 }
+
+.btn.btn-user {
+
+  &:hover {
+    border-radius: 2em;
+  }
+}
+
+.avatar {
+  height: 3em;
+  width: auto;
+}
+
+.img-wrapper {
+  position: relative;
+}
+
+.status-indicator {
+  position: absolute;
+  right: 15%;
+  bottom: 15%;
+  height: 12px;
+  width: 12px;
+  border-radius: 6px;
+  background-color: green;
+  border: 2px solid white;
+  margin: 0;
+}
