@@ -44,6 +44,15 @@
   }
 
 :root {
+  font-size: 1.125em;//entspricht 18px, Textgröße für Chatnachrichten etc als Basis
+  --fs-200: 0.667rem;
+  --fs-300: 0.833rem;
+  --fs-400: 1rem;
+  --fs-500: 1.222rem;
+  --fs-600: 1.444rem;
+  --fs-700: 1.778rem;
+  --fs-800: 2.111rem;
+  --fs-900: 2.556rem;
   --font-heading: Arial;
   --backgroundColor: #eceefe; 
   --accent-color: 237 87% 61%;

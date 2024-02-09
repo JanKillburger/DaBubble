@@ -13,15 +13,12 @@
   display: flex;
   align-items: center;
   font-weight: 700;
-  font-size: x-large;
-}
-
-.heading span {
-  font-weight: 700;
+  font-size: var(--fs-600);
 }
 
 .heading {
   cursor: pointer;
+  font-size: var(--fs-500);
   padding: 0;
   background-color: white;
   border: none;
@@ -30,6 +27,19 @@
 
 .heading:hover {
   color: hsl(var(--accent-color));
+}
+
+.heading span {
+  font-weight: 700;
+}
+
+.heading > mat-icon:first-child {
+  margin-right: 1rem;
+}
+
+menu {
+  list-style: none;
+  padding-inline-start: calc(24px + 1rem);
 }
 
 img {
@@ -43,9 +53,4 @@ img {
 
 .icon-text__icn {
   margin-right: 0.5rem;
-}
-
-menu {
-  list-style: none;
-  padding-inline-start: 24px;
 }
