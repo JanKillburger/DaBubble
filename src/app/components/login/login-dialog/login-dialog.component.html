@@ -12,6 +12,7 @@
         <img src="./assets/img/login/mail.png" alt="" />
         <input
           type="email"
+          [(ngModel)]="user.email"
           placeholder="beispielname@email.com"
           formControlName="email"
         />
@@ -23,6 +24,7 @@
         <img src="./assets/img/login/lock.png" alt="" />
         <input
           type="password"
+          [(ngModel)]="user.password"
           placeholder="Passwort"
           formControlName="password"
         />
