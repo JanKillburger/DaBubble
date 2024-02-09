@@ -107,6 +107,20 @@ a{
   cursor: not-allowed;
 }
 
+[mat-icon-button] {
+  &:hover {
+    background-color: hsl(var(--accent-color) / 0.05);
+
+    mat-icon {
+      color: hsl(var(--accent-color));
+    }
+  }
+
+  mat-icon {
+    transition: all 0.25s;
+  }
+}
+
 .errorMassageForm{
   color: red;
   font-size: 12px;

@@ -32,18 +32,6 @@
   color: hsl(var(--accent-color));
 }
 
-button:hover {
-  background-color: hsl(var(--accent-color) / 0.05);
-}
-
-button mat-icon {
-  transition: all 0.25s;
-}
-
-button:hover mat-icon {
-  color: hsl(var(--accent-color));
-}
-
 img {
   margin-right: 0.5rem;
 }
@@ -61,8 +49,3 @@ menu {
   list-style: none;
   padding-inline-start: 24px;
 }
-
-// li {
-//   display: flex;
-//   align-items: center;
-// }
