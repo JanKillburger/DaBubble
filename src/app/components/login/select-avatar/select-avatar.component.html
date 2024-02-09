@@ -40,7 +40,7 @@
     <h3>Max Mustermann</h3>
     <span>Aus der Liste wählen</span>
     <div class="avatar-img-content">
-      <img *ngFor="let avatarImg of avatarImgs" src="{{ avatarImg }}" />
+      <img *ngFor="let avatarImg of avatarImgs; let i = index" src="{{ avatarImg }}" (click)="activateAvatar(i)"/>
     </div>
   </div>
   <div class="create-content">

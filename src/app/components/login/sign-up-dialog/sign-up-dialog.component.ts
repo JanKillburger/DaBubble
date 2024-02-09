@@ -7,6 +7,9 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { FirebaseAuthService } from '../../../services/firebase-auth.service';
+import { User } from '../../../models/user.class';
+import { SingInDataService } from '../../../services/singIn.service';
 
 @Component({
   selector: 'app-sign-up-dialog',
@@ -15,7 +18,12 @@ import {
   templateUrl: './sign-up-dialog.component.html',
   styleUrl: './sign-up-dialog.component.scss',
 })
+
 export class SignUpDialogComponent {
+  user = new User();
+  userId: string = "";
+
+  constructor(public authService: FirebaseAuthService, private dataService: SingInDataService) {}
 
   singInForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -27,13 +35,29 @@ export class SignUpDialogComponent {
     privacy: new FormControl(false, Validators.required),
   });
 
-  get name() {return this.singInForm.get("name")}
-  get email() {return this.singInForm.get("email")}
-  get password() {return this.singInForm.get("password")}
-  get privacy() {return this.singInForm.get("privacy")}
+  get name() {
+    return this.singInForm.get('name');
+  }
+  get email() {
+    return this.singInForm.get('email');
+  }
+  get password() {
+    return this.singInForm.get('password');
+  }
+  get privacy() {
+    return this.singInForm.get('privacy');
+  }
 
-  onSubmit() {
-    this.goOnToSelectAvatar();
+  async onSubmit() {
+    this.userId = await this.authService.registerWithEmailAndPassword(
+      this.user.email,
+      this.user.password
+    );
+    if (this.userId != 'error'){
+      this.goOnToSelectAvatar();
+    } else{
+      console.log("user already exists")
+    }
   }
 
   backToLogIn() {
@@ -51,5 +75,12 @@ export class SignUpDialogComponent {
     let SingIn = document.getElementById('create-contact-dialog');
     SingIn?.classList.add('display_none');
     avatarDialog?.classList.remove('display_none');
+    this.sendDataToSelectAvatar()
+  }
+
+  sendDataToSelectAvatar() {
+    this.user.userId = this.userId
+    const signUpData = this.user;
+    this.dataService.setData(signUpData);
   }
 }

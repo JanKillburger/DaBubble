@@ -18,8 +18,6 @@ import { FirebaseAuthService } from '../../../services/firebase-auth.service';
   styleUrl: './login-dialog.component.scss',
 })
 export class LoginDialogComponent {
-  // rightUser: boolean;
-  // rightPassword: boolean;
   loading: boolean = false;
   user = new User();
 
@@ -61,12 +59,5 @@ export class LoginDialogComponent {
     loginDialog?.classList.add('display_none');
   }
 
-  // async updateOnlineStatus() {
-  //   this.authService.user.onlineStatus = true;
-
-  //   await this.authService.newUser(
-  //     this.authService.user.toJson(),
-  //     this.authService.user.userId
-  //   );
-  // }
+  
 }
