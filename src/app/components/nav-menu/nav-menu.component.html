@@ -7,15 +7,29 @@
     <mat-icon fontSet="material-symbols-outlined">edit_square</mat-icon>
   </button>
 </div>
-<div class="icon-text heading">
+<button class="icon-text heading" (click)="toggleChannels()">
+  <mat-icon fontSet="material-symbols-outlined" *ngIf="!channelsExpanded">arrow_right</mat-icon>
+  <mat-icon fontSet="material-symbols-outlined" *ngIf="channelsExpanded">arrow_drop_down</mat-icon>
   <mat-icon fontSet="material-symbols-outlined" class="icon-text__icn"
     >spoke</mat-icon
   >
   <span>Channels</span>
-</div>
-<div class="icon-text heading">
+</button>
+<menu *ngIf="channelsExpanded">
+  <li class="icon-text"><mat-icon class="icon-text__icn" fontSet="material-symbols-outlined">tag</mat-icon>
+    Entwicklerteam</li>
+    <li class="icon-text"><mat-icon class="icon-text__icn" fontSet="material-symbols-outlined">tag</mat-icon>
+      Office-Team</li>
+</menu>
+<button class="icon-text heading" (click)="toggleMessages()">
+  <mat-icon fontSet="material-symbols-outlined" *ngIf="!messagesExpanded">arrow_right</mat-icon>
+  <mat-icon fontSet="material-symbols-outlined" *ngIf="messagesExpanded">arrow_drop_down</mat-icon>
   <mat-icon fontSet="material-symbols-outlined" class="icon-text__icn"
     >account_circle</mat-icon
   >
   <span>Direktnachrichten</span>
-</div>
+</button>
+<menu *ngIf="messagesExpanded">
+  <li>Frederik Beck (Du)</li>
+  <li>Sofia Müller</li>
+</menu>

@@ -46,9 +46,7 @@
 :root {
   --font-heading: Arial;
   --backgroundColor: #eceefe; 
-  --buttonColor: 237, 87%, 61%;
-  --buttonColor: #454ef2;
-  --accent-color: hsl(var(--buttonColor) / 0.2);
+  --accent-color: 237 87% 61%;
   --margin-left: 75px;
   --margin-right: 75px;
 }
@@ -61,7 +59,7 @@
     }
   
     ::-webkit-scrollbar-thumb {
-      background: var(--buttonColor);
+      background: hsl(var(--accent-color));
       border-radius: 50px;
       z-index: 1;
     }

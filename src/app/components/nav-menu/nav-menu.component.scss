@@ -9,19 +9,31 @@
   align-items: center;
 }
 
+.title {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: x-large;
+}
+
 .heading span {
   font-weight: 700;
 }
 
-.heading:hover {
-  color: var(--buttonColor);
+.heading {
+  cursor: pointer;
+  padding: 0;
+  background-color: white;
+  border: none;
+  margin-block: 1rem;
 }
 
-.title {
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  font-size: x-large;
+.heading:hover {
+  color: hsl(var(--accent-color));
+}
+
+button:hover {
+  background-color: hsl(var(--accent-color) / 0.05);
 }
 
 button mat-icon {
@@ -29,8 +41,7 @@ button mat-icon {
 }
 
 button:hover mat-icon {
-  color: var(--buttonColor);
-  font-weight: 600;
+  color: hsl(var(--accent-color));
 }
 
 img {
@@ -45,3 +56,13 @@ img {
 .icon-text__icn {
   margin-right: 0.5rem;
 }
+
+menu {
+  list-style: none;
+  padding-inline-start: 24px;
+}
+
+// li {
+//   display: flex;
+//   align-items: center;
+// }
