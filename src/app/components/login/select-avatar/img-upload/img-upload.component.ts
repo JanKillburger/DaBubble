@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-img-upload',
@@ -7,32 +7,53 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './img-upload.component.html',
   styleUrl: './img-upload.component.scss',
 })
-export class ImgUploadComponent implements OnInit {
-  fileobj: any
-
-  ngOnInit(): void{
-    // let dropArea = document.getElementById('drag-area');
-    // if (dropArea) {
-    //   dropArea.addEventListener('dragover', (event) => {
-    //     event.preventDefault();
-    //     dropArea?.classList.add('drag-area-active');
-    //   });
-  
-    //   dropArea.addEventListener('dragleave', () => {
-    //     dropArea?.classList.remove('drag-area-active');
-    //   }); 
-    // }
-  }
+export class ImgUploadComponent {
+  fileobj: any;
 
   closeUploadDialog() {
-    let updloadDialog = document.getElementById('updloadDialog')
-    updloadDialog?.classList.add('display_none')
+    let updloadDialog = document.getElementById('updloadDialog');
+    updloadDialog?.classList.add('display_none');
   }
 
-  upload_file(e:any) {
-    e.preventDefault();
-    this.fileobj = e.dataTransfer.files[0];
-    console.log(this.fileobj)
-    // js_file_upload(fileobj);
-}
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+  
+    const file = input.files[0];
+    this.handleFile(file);
+  }
+
+  onDragOver(event: DragEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+    // Optional: Visual Feedback, z.B. Hervorhebung der Drop-Zone
+  }
+  
+  onDragLeave(event: DragEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+    // Optional: Entfernen des Visual Feedbacks
+  }
+  
+  onDrop(event: DragEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+  
+    if (event.dataTransfer && event.dataTransfer.files) {
+      const file = event.dataTransfer.files[0];
+      if (file) {
+        this.handleFile(file);
+      }
+    }
+  }
+
+  handleFile(file: File) {
+    // Verarbeiten Sie hier das Bild
+    // Zum Beispiel: Lesen Sie die Datei als Data URL
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      // Hier können Sie event.target.result verwenden, um das Bild anzuzeigen
+    };
+    reader.readAsDataURL(file);
+  }
 }

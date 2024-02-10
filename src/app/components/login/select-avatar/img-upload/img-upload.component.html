@@ -14,20 +14,24 @@
       <div
         id="drag-area"
         class="drag-area"
-        ondrop="upload_file(event)"
-        ondragover="return false"
+        (drop)="onDrop($event)"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
       >
         <header>Drag &amp; Drop to Upload File</header>
         <span>OR</span>
-        <button class="button-filled">Browse File</button>
-        <input type="file" name="file" id="file" hidden="" />
+        <button class="button-filled" (click)="fileInput.click()">
+          Browse File
+        </button>
+        <input
+          type="file"
+          name="file"
+          id="file"
+          (change)="onFileSelected($event)"
+          hidden
+          #fileInput
+        />
       </div>
     </div>
-
-    <!-- <form class="updloadField">
-      <label for="myfile">Wähle die Datei aus:</label>
-      <input type="file" id="myfile" name="myfile" multiple /><br /><br />
-      <input type="submit" />
-    </form> -->
   </div>
 </section>

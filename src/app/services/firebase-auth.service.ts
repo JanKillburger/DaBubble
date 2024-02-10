@@ -23,7 +23,6 @@ export class FirebaseAuthService {
         email,
         password
       )
-      console.log(userCredential.user.uid)
       return userCredential.user.uid;
     } catch (err) {
       console.error(err);

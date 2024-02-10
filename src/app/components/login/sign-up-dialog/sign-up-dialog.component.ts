@@ -10,6 +10,8 @@ import {
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { User } from '../../../models/user.class';
 import { SingInDataService } from '../../../services/singIn.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-sign-up-dialog',
@@ -18,12 +20,15 @@ import { SingInDataService } from '../../../services/singIn.service';
   templateUrl: './sign-up-dialog.component.html',
   styleUrl: './sign-up-dialog.component.scss',
 })
-
 export class SignUpDialogComponent {
   user = new User();
-  userId: string = "";
+  userId: string = '';
 
-  constructor(public authService: FirebaseAuthService, private dataService: SingInDataService) {}
+  constructor(
+    public authService: FirebaseAuthService,
+    private dataService: SingInDataService,
+    private router: Router
+  ) {}
 
   singInForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -53,10 +58,10 @@ export class SignUpDialogComponent {
       this.user.email,
       this.user.password
     );
-    if (this.userId != 'error'){
+    if (this.userId != 'error') {
       this.goOnToSelectAvatar();
-    } else{
-      console.log("user already exists")
+    } else {
+      console.log('user already exists');
     }
   }
 
@@ -71,15 +76,12 @@ export class SignUpDialogComponent {
   }
 
   goOnToSelectAvatar() {
-    let avatarDialog = document.getElementById('select-avatar-dialog');
-    let SingIn = document.getElementById('create-contact-dialog');
-    SingIn?.classList.add('display_none');
-    avatarDialog?.classList.remove('display_none');
-    this.sendDataToSelectAvatar()
+    this.router.navigate(['/avatarPicker']);
+    this.sendDataToSelectAvatar();
   }
 
   sendDataToSelectAvatar() {
-    this.user.userId = this.userId
+    this.user.userId = this.userId;
     const signUpData = this.user;
     this.dataService.setData(signUpData);
   }
