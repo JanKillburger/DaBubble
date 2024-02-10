@@ -88,7 +88,9 @@ img {
 
 .avatar {
   height: 3em;
-  width: auto;
+  width: 3em;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .img-wrapper {
@@ -97,8 +99,8 @@ img {
 
 .status-indicator {
   position: absolute;
-  right: 15%;
-  bottom: 15%;
+  right: 13%;
+  bottom: 13%;
   height: 12px;
   width: 12px;
   border-radius: 6px;
