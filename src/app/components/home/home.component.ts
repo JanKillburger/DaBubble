@@ -8,6 +8,7 @@ import { NavMenuComponent } from '../nav-menu/nav-menu.component';
 import { ChannelComponent } from '../channel/channel.component';
 import { ThreadComponent } from '../thread/thread.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MAX_INLINE_WIDTH, MEDIUM_LARGE_WIDTH, SMALL_MEDIUM_WIDTH } from '../../../global-constants';
 
 @Component({
   selector: 'app-home',
@@ -29,11 +30,11 @@ export class HomeComponent {
   @ViewChild('triggerUserDialog') triggerUserDialog!: ElementRef;
 
   constructor(public changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public dialog: MatDialog, public viewport: ViewportService) {
-    this.mqlSmallWidth = media.matchMedia('(min-width: 600px)');
+    this.mqlSmallWidth = media.matchMedia(`(min-width: ${SMALL_MEDIUM_WIDTH})`);
     this.mqlSmallWidth.onchange = (event) => this.handleSmallWidthChange(event);
-    this.mqlMediumWidth = media.matchMedia('(min-width: 992px)');
+    this.mqlMediumWidth = media.matchMedia(`(min-width: ${MEDIUM_LARGE_WIDTH})`);
     this.mqlMediumWidth.onchange = (event) => this.handleMediumWidthChange(event);
-    this.mqlMaxWidth = media.matchMedia('(min-width: 1440px)');
+    this.mqlMaxWidth = media.matchMedia(`(min-width: ${MAX_INLINE_WIDTH})`);
     this.mqlMaxWidth.onchange = (event) => {
       if (event.matches) {
         this.navVisible = true;
@@ -94,6 +95,7 @@ export class HomeComponent {
       this.threadVisibleMq = false;
     }
     this.navVisible = !this.navVisible;
+    this.changeDetectorRef.detectChanges();
   }
 
   closeThread() {

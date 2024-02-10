@@ -37,7 +37,7 @@ header>input {
   position: relative;
 
 
-  @media (min-width: 600px) {
+  @media (min-width: $small-medium-width) {
     margin-right: 1rem;
     flex: 0 366px;
     transition: all 0.5s;
@@ -61,7 +61,7 @@ header>input {
 }
 
 .thread-container {
-  flex: 2 200px;
+  flex: 2 400px;
   transition: all 0.5s;
   margin-left: 1rem;
 
@@ -107,7 +107,7 @@ header>input {
     transform: rotate(90deg);
   }
 
-  @media (min-width: 1440px) {
+  @media (min-width: $max-inline-size) {
     display: none;
   }
 }
