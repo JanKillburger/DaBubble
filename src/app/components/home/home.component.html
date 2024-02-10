@@ -27,6 +27,10 @@
     <app-thread (closeThreadEv)="closeThread()"></app-thread>
   </aside>
 </main>
-<button (click)="toggleNav()" class="toggle-primary-nav">
-  @if (navVisible) { Workspace-Menü schließen } @else { Workspace-Menü öffnen }
+<button (click)="toggleNav()" class="toggle-primary-nav" *ngIf="mqlSmallWidth.matches">
+  @if (navVisible) { Workspace-Menü schließen  
+<mat-icon fontSet="material-symbols-outlined">switch_right</mat-icon>
+}
+@else { Workspace-Menü öffnen
+  <mat-icon fontSet="material-symbols-outlined">switch_left</mat-icon> }
 </button>

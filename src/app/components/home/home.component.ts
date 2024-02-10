@@ -7,11 +7,12 @@ import { ViewportService } from '../../services/viewport.service';
 import { NavMenuComponent } from '../nav-menu/nav-menu.component';
 import { ChannelComponent } from '../channel/channel.component';
 import { ThreadComponent } from '../thread/thread.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NavMenuComponent, ChannelComponent, ThreadComponent, MatDialogModule, NgIf, NgClass],
+  imports: [MatIconModule, NavMenuComponent, ChannelComponent, ThreadComponent, MatDialogModule, NgIf, NgClass],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

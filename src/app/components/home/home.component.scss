@@ -82,11 +82,29 @@ header>input {
 }
 
 .toggle-primary-nav {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
   position: fixed;
+  padding: 1em 0.5em;
   left: 0;
   bottom: 64px;
-  writing-mode: vertical-lr;
-  transform: rotate(180deg);
+  transform: rotate(-90deg);
+  transform-origin: top left;
+  background-color: white;
+  box-shadow: -4px 4px 7px 0 rgba(0 0 0 / 0.2);
+  border: none;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+
+  &:hover {
+    color: hsl(var(--accent-color));
+  }
+
+  mat-icon {
+    margin-left: 0.5rem;
+    transform: rotate(90deg);
+  }
 
   @media (min-width: 1440px) {
     display: none;

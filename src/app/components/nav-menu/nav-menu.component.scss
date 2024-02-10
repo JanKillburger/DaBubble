@@ -102,7 +102,15 @@ img {
   height: 12px;
   width: 12px;
   border-radius: 6px;
-  background-color: green;
+  background-color: darkgray;
   border: 2px solid white;
   margin: 0;
+}
+
+.status-indicator--online {
+  background-color: lightgreen;
+}
+
+.status-indicator--busy {
+  background-color: darkred;
 }
