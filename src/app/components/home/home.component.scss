@@ -1,9 +1,11 @@
+@import '../../../variables.scss';
+
 :host {
   display: flex;
   flex-direction: column;
   height: 100vh;
   padding: 1rem;
-  max-inline-size: 1440px;
+  max-inline-size: $max-inline-size;
   margin-inline: auto;
 }
 
