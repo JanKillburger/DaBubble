@@ -1,0 +1,30 @@
+.message-wrapper {
+  display: flex;
+  column-gap: 1rem;
+}
+
+.message-meta-data {
+  column-gap: 1rem;
+}
+
+.aligned-right {
+  flex-direction: row-reverse;
+}
+
+p {
+  margin: 0;
+}
+
+.avatar {
+  width: 3em;
+  height: 3em;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+
+
+.user-name {
+  font-weight: 700;
+}
+
