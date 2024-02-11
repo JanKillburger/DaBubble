@@ -16,6 +16,7 @@ import {
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { User } from '../models/user.class';
+import { sendPasswordResetEmail } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -97,6 +98,19 @@ export class FirebaseAuthService {
       console.log("Keine solchen Dokument!");
       return null;
     }
+  }
+
+  forgotEmail(email:string){
+    sendPasswordResetEmail(this.auth, email)
+  .then(() => {
+    // Password reset email sent!
+    // ..
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
   }
 }
 
