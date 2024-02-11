@@ -8,3 +8,18 @@
     border-radius: 1em;
   }
 }
+
+.toggle-members-menu {
+  padding: 0.5em 0.5em 0.5em 1em;
+  border-radius: 1.25em;
+
+  &:hover {
+    background-color: var(--backgroundColor);
+    color: hsl(var(--accent-color));
+  }
+}
+
+.members-count {
+  margin-left: 0.5em;
+  font-weight: 600;
+}
