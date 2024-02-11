@@ -1,19 +1,32 @@
-<div class="message-wrapper" [class.aligned-right]="isMyMessage">
-  <img
-    class="avatar"
-    src="assets/img/login/SingIn/avatar1.png"
-    alt="Profilbild"
-  />
-  <div class="message">
-    <p class="message-meta-data flex ai-c" [class.aligned-right]="isMyMessage">
-      <span class="user-name">Noah Braun</span>
-      <span class="message-time">14:25 Uhr</span>
-    </p>
-    <p class="message-content" [class.message-content--aligned-right]="isMyMessage">Welche Version ist aktuell von Angular?</p>
-    <div class="reactions">
-      <button mat-icon-button><mat-icon fontSet="material-symbols-outlined">add_reaction</mat-icon></button>
+<div class="inner-container">
+  <div class="message-wrapper" [class.aligned-right]="isMyMessage">
+    <img
+      class="avatar"
+      src="assets/img/login/SingIn/avatar1.png"
+      alt="Profilbild"
+    />
+    <div class="message">
+      <p
+        class="message-meta-data flex ai-c"
+        [class.aligned-right]="isMyMessage"
+      >
+        <span class="user-name">Noah Braun</span>
+        <span class="message-time">14:25 Uhr</span>
+      </p>
+      <p
+        class="message-content"
+        [class.message-content--aligned-right]="isMyMessage"
+      >
+        Welche Version ist aktuell von Angular?
+      </p>
+      <div class="reactions">
+        <button mat-icon-button>
+          <mat-icon fontSet="material-symbols-outlined">add_reaction</mat-icon>
+        </button>
+      </div>
+      <p class="replies" *ngIf="showReplies">
+        1 Antwort <span class="last-reply">Letzte Antwort 14:25</span>
+      </p>
     </div>
-    <p class="replies" *ngIf="showReplies">1 Antwort <span class="last-reply">Letzte Antwort 14:25</span></p>
   </div>
-  
 </div>

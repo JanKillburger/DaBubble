@@ -1,9 +1,5 @@
-.message-wrapper {
-  display: flex;
-  column-gap: 1rem;
-  margin-block: 1rem;
-  padding-block: 1rem;
-
+:host {
+  display: block;
   &:hover {
     background-color: var(--backgroundColor);
 
@@ -11,6 +7,13 @@
       background-color: white;
     }
   }
+}
+
+.message-wrapper {
+  display: flex;
+  column-gap: 1rem;
+  margin-block: 1rem;
+  padding-block: 1rem;
 }
 
 .message-meta-data {
