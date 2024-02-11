@@ -1,5 +1,5 @@
 import { NgClass, NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -13,4 +13,9 @@ import { MatButtonModule } from '@angular/material/button';
 export class MessageComponent {
   @Input() isMyMessage!: boolean;
   @Input() showReplies = false;
+  @Output() openThreadEv = new EventEmitter<string>;
+
+  openThread(ev: Event) {
+    this.openThreadEv.emit('');
+  }
 }

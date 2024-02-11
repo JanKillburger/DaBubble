@@ -24,9 +24,9 @@
           <mat-icon fontSet="material-symbols-outlined">add_reaction</mat-icon>
         </button>
       </div>
-      <p class="replies" *ngIf="showReplies">
+      <button (click)="openThread($event)" class="btn replies" *ngIf="showReplies">
         1 Antwort <span class="last-reply">Letzte Antwort 14:25</span>
-      </p>
+      </button>
     </div>
   </div>
 </div>

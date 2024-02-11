@@ -1,37 +1,18 @@
 <header class="channel-header">
-  <div class="inner-container">
+  <div class="inner-container flex jc-sb ai-c">
     <button class="btn title-text toggle-channel-menu flex ai-c">
       <mat-icon fontSet="material-symbols-outlined">tag</mat-icon>
-        Entwicklerteam
-        <mat-icon fontSet="material-symbols-outlined">keyboard_arrow_down</mat-icon>
+      Entwicklerteam
+      <mat-icon fontSet="material-symbols-outlined"
+        >keyboard_arrow_down</mat-icon
+      >
     </button>
+    <div class="channel-users">
+      <button mat-icon-button>
+        <mat-icon fontSet="material-symbols-outlined">person_add</mat-icon>
+      </button>
+    </div>
   </div>
 </header>
-<div class="inner-container">
-  Channels <button (click)="openThread()">Open Thread</button>
-  <p>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam
-    debitis saepe dolor ratione incidunt architecto quis adipisci illo facere.
-    Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam
-    debitis saepe dolor ratione incidunt architecto quis adipisci illo facere.
-    Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam
-    debitis saepe dolor ratione incidunt architecto quis adipisci illo facere.
-    Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam
-    debitis saepe dolor ratione incidunt architecto quis adipisci illo facere.
-    Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Error laboriosam
-    debitis saepe dolor ratione incidunt architecto quis adipisci illo facere.
-    Saepe repudiandae ad mollitia, sed soluta quos reprehenderit est velit?
-  </p>
-</div>
+<app-message [isMyMessage]="false" [showReplies]="true" (openThreadEv)="openThread($event)"></app-message>
+<app-message [isMyMessage]="true"></app-message>

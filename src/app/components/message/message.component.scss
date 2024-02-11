@@ -58,3 +58,13 @@ p {
   background-color: hsl(var(--accent-color-2));
   color: white;
 }
+
+.replies {
+  color: hsl(var(--accent-color));
+    background-color: unset;
+}
+
+.last-reply {
+  color: hsl(var(--secondary-color));
+  font-size: var(--fs-300);
+}
