@@ -202,6 +202,19 @@ a {
   }
 }
 
+.avatar {
+  width: 3em;
+  height: 3em;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatar--small {
+  width: 1.5em;
+  height: 1.5em;
+  border: 2px solid white;
+}
+
 //Utilities
 
 .flex {

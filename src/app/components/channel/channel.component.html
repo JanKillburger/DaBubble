@@ -7,13 +7,20 @@
         >keyboard_arrow_down</mat-icon
       >
     </button>
-    <div class="channel-users">
+    <div class="channel-users flex ai-c">
+      <img
+        class="avatar avatar--small"
+        *ngFor="let member of teamMembers; let i = index"
+        [src]="member"
+        [ngStyle]="{ 'margin-left.px': -8 }"
+      />
+
       <button mat-icon-button>
         <mat-icon fontSet="material-symbols-outlined">person_add</mat-icon>
       </button>
     </div>
   </div>
 </header>
-<app-message [isMyMessage]="false" [showReplies]="true" (openThreadEv)="openThread($event)"></app-message>
-<app-message [isMyMessage]="true"></app-message>
-<app-messages-container (openThreadEv)="openThread($event)"></app-messages-container>
+<app-messages-container
+  (openThreadEv)="openThread($event)"
+></app-messages-container>
