@@ -1,6 +1,16 @@
 .message-wrapper {
   display: flex;
   column-gap: 1rem;
+  margin-block: 1rem;
+  padding-block: 1rem;
+
+  &:hover {
+    background-color: var(--backgroundColor);
+
+    .message-content:not(.message-content--aligned-right) {
+      background-color: white;
+    }
+  }
 }
 
 .message-meta-data {
@@ -26,3 +36,22 @@ p {
   font-weight: 700;
 }
 
+.message-time {
+  color: hsl(var(--secondary-color));
+  font-size: var(--fs-300);
+}
+
+.message-content {
+  margin-block-start: 0.5rem;
+  background-color: var(--backgroundColor);
+  padding: 1em;
+  border-radius: 1em;
+  border-top-left-radius: 0;
+}
+
+.message-content--aligned-right {
+  border-top-right-radius: 0;
+  border-top-left-radius: 1em;
+  background-color: hsl(var(--accent-color-2));
+  color: white;
+}

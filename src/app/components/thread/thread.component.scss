@@ -20,3 +20,14 @@ header {
   color: hsl(var(--accent-color));
 }
 
+.replies-header {
+  color: hsl(var(--accent-color-3));
+}
+
+.separator {
+  height: 1px;
+  background-color: hsl(var(--accent-color-3));
+  flex: auto;
+  margin-left: 0.5rem;
+}
+

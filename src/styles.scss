@@ -7,44 +7,45 @@
 
 //Resets
 *,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: unset;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+img,
+picture,
+svg,
+canvas {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
   *::before,
   *::after {
-    box-sizing: border-box;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-
-  body {
-    margin: unset;
-  }
-
-  button,
-  input,
-  textarea,
-  select {
-    font: inherit;
-  }
-
-  img,
-  picture,
-  svg,
-  canvas {
-    display: block;
-    max-inline-size: 100%;
-    block-size: auto;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
-  }
+}
 
 :root {
-  font-size: 1.125em;//entspricht 18px, Textgröße für Chatnachrichten etc als Basis
+  font-size: 1.125em; //entspricht 18px, Textgröße für Chatnachrichten etc als Basis
   --fs-200: 0.667rem;
   --fs-300: 0.833rem;
   --fs-400: 1rem;
@@ -54,27 +55,30 @@
   --fs-800: 2.111rem;
   --fs-900: 2.556rem;
   --font-heading: Arial;
-  --backgroundColor: #eceefe; 
+  --backgroundColor: #eceefe;
   --accent-color: 237 87% 61%;
+  --secondary-color: 0, 0%, 41%;
+  --accent-color-2: 238, 84%, 71%;
+  --accent-color-3: 236, 37%, 76%;
   --margin-left: 75px;
   --margin-right: 75px;
 }
 
 * {
-    ::-webkit-scrollbar {
-      width: 10px;
-      background: transparent;
-      z-index: 1;
-    }
-  
-    ::-webkit-scrollbar-thumb {
-      background: hsl(var(--accent-color));
-      border-radius: 50px;
-      z-index: 1;
-    }
-  
-    scroll-behavior: smooth;
+  ::-webkit-scrollbar {
+    width: 10px;
+    background: transparent;
+    z-index: 1;
   }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--accent-color));
+    border-radius: 50px;
+    z-index: 1;
+  }
+
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
@@ -83,19 +87,19 @@ body {
   height: 100vh;
 }
 
-a{
-    padding: 10px 15px;
-    color: #797ef3;
-    font-size: 18px;
-    text-decoration: none;
-    cursor: pointer;
-    border: 1px solid transparent;
-    border-radius: 22px;
+a {
+  padding: 10px 15px;
+  color: #797ef3;
+  font-size: 18px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 22px;
 
-    &:hover{
-        border: 1px solid black;
-        font-weight: 500;
-    }
+  &:hover {
+    border: 1px solid black;
+    font-weight: 500;
+  }
 }
 
 .btn {
@@ -104,7 +108,7 @@ a{
   cursor: pointer;
 }
 
-.button-filled{
+.button-filled {
   border-radius: 25px;
   padding: 12px 25px 12px 25px;
   background-color: #444DF2;
@@ -112,13 +116,13 @@ a{
   border: none;
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     background-color: #797EF3;
   }
 }
 
-.button-filled-not-valid{
-  background-color: #797EF3!important;
+.button-filled-not-valid {
+  background-color: #797EF3 !important;
   cursor: not-allowed;
 }
 
@@ -136,43 +140,43 @@ a{
   }
 }
 
-.errorMassageForm{
+.errorMassageForm {
   color: red;
   font-size: 12px;
   margin-top: -15px;
   margin-bottom: -15px;
 }
 
-.button-noneFilled{
+.button-noneFilled {
   border-radius: 25px;
   padding: 12px 25px 12px 25px;
   background-color: white;
-  color:  #444DF2;
+  color: #444DF2;
   border: 1px solid #797EF3;
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     color: white;
     background-color: #444DF2;
   }
 }
 
-.display_none{
-  display: none!important;
+.display_none {
+  display: none !important;
 }
 
-.arrow-back-svg{
+.arrow-back-svg {
   margin-right: 16px;
   padding: 8px;
   height: 40px;
   width: 40px;
   border-radius: 100%;
 
-  &:hover{
+  &:hover {
     background-color: #ECEEFE;
-    
-    >g{
-      >path{
+
+    >g {
+      >path {
         fill: #535AF1;
       }
     }
