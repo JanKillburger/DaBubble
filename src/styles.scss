@@ -183,6 +183,25 @@ a {
   }
 }
 
+.inner-container {
+  --margin-inline: 2rem;
+  max-inline-size: calc(100% - 2 * var(--margin-inline));
+  margin-inline: auto;
+}
+
+.channel-header,
+.thread-header {
+  box-shadow: 0 3px rgba(0 0 0 / 0.05);
+  padding-block: 1rem;
+  margin-block-end: 3px;
+
+  .title-text {
+    font-size: var(--fs-600);
+    font-weight: 700;
+    margin-right: 0.5rem;
+  }
+}
+
 //Utilities
 
 .flex {
