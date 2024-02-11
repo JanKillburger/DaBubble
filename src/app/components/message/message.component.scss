@@ -68,3 +68,7 @@ p {
   color: hsl(var(--secondary-color));
   font-size: var(--fs-300);
 }
+
+.btn--text:hover {
+  color: hsl(var(--accent-color));
+}
