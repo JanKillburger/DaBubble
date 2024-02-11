@@ -10,7 +10,7 @@ export class User{
         this.email = obj ? obj.email: '';
         this.password = obj ? obj.password: '';
         this.userId = obj ? obj.userId: '';
-        this.avatar = obj ? obj.avatar: '';
+        this.avatar = obj ? obj.avatar: './assets/img/login/SingIn/emptyProfile.png';
     }
 
     toJson() {

@@ -9,9 +9,7 @@ import {
 } from '@angular/forms';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { User } from '../../../models/user.class';
-import { SingInDataService } from '../../../services/singIn.service';
 import { Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-sign-up-dialog',
@@ -25,8 +23,7 @@ export class SignUpDialogComponent {
   userId: string = '';
 
   constructor(
-    public authService: FirebaseAuthService,
-    private dataService: SingInDataService,
+    public userFirebaseService: FirebaseAuthService,
     private router: Router
   ) {}
 
@@ -54,7 +51,7 @@ export class SignUpDialogComponent {
   }
 
   async onSubmit() {
-    this.userId = await this.authService.registerWithEmailAndPassword(
+    this.userId = await this.userFirebaseService.registerWithEmailAndPassword(
       this.user.email,
       this.user.password
     );
@@ -75,14 +72,18 @@ export class SignUpDialogComponent {
     loginDialog?.classList.remove('display_none');
   }
 
-  goOnToSelectAvatar() {
-    this.router.navigate(['/avatarPicker']);
-    this.sendDataToSelectAvatar();
-  }
-
-  sendDataToSelectAvatar() {
+  async goOnToSelectAvatar() {
     this.user.userId = this.userId;
-    const signUpData = this.user;
-    this.dataService.setData(signUpData);
+    let docIdPromise = this.userFirebaseService.saveUserService(this.user);
+    // this.sendDataToSelectAvatar();
+    docIdPromise
+      .then((docId) => {
+        this.router.navigate([`avatarPicker/${docId}`]);
+      })
+      .catch((error) => {
+        // Fehlerbehandlung
+        console.error('Fehler beim Erhalten der Dokumenten-ID:', error);
+      });
+
   }
 }

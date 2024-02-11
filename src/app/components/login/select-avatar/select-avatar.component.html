@@ -58,7 +58,14 @@
         </button>
       </div>
       <div class="next-button">
-        <button class="button-filled" [routerLink]="['home']" [disabled]="!avatarSelected" [ngClass]="{'button-filled-not-valid': !avatarSelected}">Weiter</button>
+        <button
+          class="button-filled"
+          (click)="saveUser()"
+          [disabled]="!avatarSelected && userFirebaseService.loading"
+          [ngClass]="{ 'button-filled-not-valid': !avatarSelected }"
+        >
+          Weiter
+        </button>
       </div>
     </section>
     <div class="loginFooter">

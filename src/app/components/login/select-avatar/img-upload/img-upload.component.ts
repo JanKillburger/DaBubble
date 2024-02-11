@@ -26,13 +26,11 @@ export class ImgUploadComponent {
   onDragOver(event: DragEvent) {
     event.stopPropagation();
     event.preventDefault();
-    // Optional: Visual Feedback, z.B. Hervorhebung der Drop-Zone
   }
   
   onDragLeave(event: DragEvent) {
     event.stopPropagation();
     event.preventDefault();
-    // Optional: Entfernen des Visual Feedbacks
   }
   
   onDrop(event: DragEvent) {

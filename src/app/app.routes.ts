@@ -8,7 +8,7 @@ import { SelectAvatarComponent } from './components/login/select-avatar/select-a
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
-  { path: 'avatarPicker', component: SelectAvatarComponent },
+  { path: "avatarPicker/:id", component: SelectAvatarComponent },
   { path: "reset-passwort/:id", component: ResetPasswordComponent },
   { path: "home", component: HomeComponent },
   { path: "imprint", component:  LegalNoticeComponent},

@@ -1,8 +1,8 @@
 import { CommonModule, NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { ImgUploadComponent } from './img-upload/img-upload.component';
-import { SingInDataService } from '../../../services/singIn.service';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 
 @Component({
   selector: 'app-select-avatar',
@@ -13,9 +13,10 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class SelectAvatarComponent {
   signUpData: any;
+  userId: any;
   avatarSelectedImg: string = './assets/img/login/SingIn/emptyProfile.png';
   avatarSelected: boolean = false;
-  Username: string = 'Max Mustermann';
+  Username: string = '';
   dataIsAlreadyLoaded: boolean = false;
   avatarImgs = [
     './assets/img/login/SingIn/avatar1.png',
@@ -26,11 +27,18 @@ export class SelectAvatarComponent {
     './assets/img/login/SingIn/avatar6.png',
   ];
 
-  constructor(public dataService: SingInDataService, private router: Router) {
-    if (!this.dataIsAlreadyLoaded) {
-      this.signUpData = this.dataService.getData();
-      this.Username = this.signUpData.name;
-    }
+  constructor(
+    public userFirebaseService: FirebaseAuthService,
+    private router: Router,
+    private activeRoute: ActivatedRoute
+  ) {
+    this.userId = this.activeRoute.snapshot.paramMap.get('id');
+    this.getDataFromSingUp();
+  }
+
+  async getDataFromSingUp() {
+    this.signUpData = await this.userFirebaseService.getUserData(this.userId);
+    this.Username = this.signUpData.name
   }
 
   addImgDialog() {
@@ -46,5 +54,13 @@ export class SelectAvatarComponent {
     this.avatarSelectedImg = this.avatarImgs[index];
     this.signUpData.avatar = this.avatarSelectedImg;
     this.avatarSelected = true;
+  }
+
+  saveUser() {
+    this.userFirebaseService.updateUserService(
+      this.signUpData,
+      this.userId
+    );
+    this.router.navigate(['/home']);
   }
 }
