@@ -1,0 +1,11 @@
+.hl {
+  height: 1px;
+  background-color: hsl(var(--accent-color-3));
+  flex: auto;
+}
+
+.date {
+  border: 1px solid hsl(var(--accent-color-3));
+  border-radius: 1rem;
+  padding: 0.3rem 0.5rem;
+}

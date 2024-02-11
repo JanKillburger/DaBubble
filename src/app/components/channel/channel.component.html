@@ -16,3 +16,4 @@
 </header>
 <app-message [isMyMessage]="false" [showReplies]="true" (openThreadEv)="openThread($event)"></app-message>
 <app-message [isMyMessage]="true"></app-message>
+<app-messages-container (openThreadEv)="openThread($event)"></app-messages-container>
