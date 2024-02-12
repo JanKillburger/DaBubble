@@ -41,8 +41,8 @@ export class ForgotPasswordComponent {
 
   sendResetPasswortMail() {
     if (this.forgotPasswordForm.valid && this.email) {
-      const emailValue = this.email.value; // Zugriff auf den Wert des E-Mail-Feldes
-      this.authService.forgotEmail(emailValue);
+      const emailValue = this.email.value;
+      this.authService.forgotPasswordEmail(emailValue);
     } else {
       console.log("Error")
     }

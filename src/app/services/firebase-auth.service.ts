@@ -16,7 +16,7 @@ import {
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { User } from '../models/user.class';
-import { sendPasswordResetEmail } from '@angular/fire/auth';
+import { sendPasswordResetEmail, updatePassword } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -58,10 +58,12 @@ export class FirebaseAuthService {
 
   async saveUserService(userData: User): Promise<string> {
     this.loading = true;
-    return addDoc(collection(this.firestore, 'users'), userData.toJson()).then((docRef) => {
-      this.loading = false;
-      return docRef.id;
-    });
+    return addDoc(collection(this.firestore, 'users'), userData.toJson()).then(
+      (docRef) => {
+        this.loading = false;
+        return docRef.id;
+      }
+    );
   }
 
   async getData() {
@@ -91,26 +93,35 @@ export class FirebaseAuthService {
   async getUserData(UserId: string) {
     const docRef = this.getSingleRef(UserId);
     const docSnap = await getDoc(docRef);
-  
+
     if (docSnap.exists()) {
       return docSnap.data();
     } else {
-      console.log("Keine solchen Dokument!");
+      console.log('Keine solchen Dokument!');
       return null;
     }
   }
 
-  forgotEmail(email:string){
+  forgotPasswordEmail(email: string) {
     sendPasswordResetEmail(this.auth, email)
-  .then(() => {
-    // Password reset email sent!
-    // ..
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // ..
-  });
+      .then(() => {
+        console.log('Hat geklappt. Wir sende dir eine Mail');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+  }
+
+  updateNewPasswordWithEmail(user: any, newPassword: string) {
+    updatePassword(user, newPassword)
+      .then(() => {
+        console.log("Passwort wurde geändert!")
+      })
+      .catch((error) => {
+        console.log("Passwort wurde geändert!", error)
+      });
   }
 }
 
