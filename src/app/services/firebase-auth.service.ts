@@ -11,12 +11,16 @@ import {
   doc,
   getDoc,
   getDocs,
-  onSnapshot,
   updateDoc,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { User } from '../models/user.class';
-import { sendPasswordResetEmail, updatePassword } from '@angular/fire/auth';
+import {
+  sendPasswordResetEmail,
+  updatePassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +32,7 @@ export class FirebaseAuthService {
   allUsers: UserData[] = [];
   querySnapshot: any;
   user: User = new User();
+  provider = new GoogleAuthProvider();
 
   constructor(private router: Router) {}
 
@@ -97,7 +102,7 @@ export class FirebaseAuthService {
     if (docSnap.exists()) {
       return docSnap.data();
     } else {
-      console.log('Keine solchen Dokument!');
+      console.log('Kein solches Dokument!');
       return null;
     }
   }
@@ -117,11 +122,41 @@ export class FirebaseAuthService {
   updateNewPasswordWithEmail(user: any, newPassword: string) {
     updatePassword(user, newPassword)
       .then(() => {
-        console.log("Passwort wurde geändert!")
+        console.log('Passwort wurde geändert!');
       })
       .catch((error) => {
-        console.log("Passwort wurde geändert!", error)
+        console.log('Passwort wurde geändert!', error);
       });
+  }
+
+  async googleAuth() {
+    return signInWithPopup(this.auth, this.provider).then((result) => {
+      let createdAt = result.user.metadata.creationTime ?? '';
+      this.user.name = result.user.displayName ?? '';
+      this.user.email = result.user.email ?? '';
+      this.user.userId = result.user.uid ?? '';
+      if (this.googleUserCheck(createdAt)) {
+        let docIdPromise = this.saveUserService(this.user);
+        docIdPromise.then((docId) => {
+          this.router.navigate([`avatarPicker/${docId}`]);
+        });
+      } else {
+        this.router.navigate(['home']);
+      }
+    });
+  }
+
+  googleUserCheck(createdAt: string) {
+    let newUser = false
+    let dateToCheck = new Date(createdAt);
+    let now = new Date();
+    let differenceInMilliseconds = now.getTime() - dateToCheck.getTime();
+    let differenceInMinutes = differenceInMilliseconds / 1000 / 60;
+    if (differenceInMinutes < 1) {
+      return newUser = true
+    } else {
+      return newUser = false
+    }
   }
 }
 

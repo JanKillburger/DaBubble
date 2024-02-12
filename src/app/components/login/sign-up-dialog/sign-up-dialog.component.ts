@@ -37,20 +37,13 @@ export class SignUpDialogComponent {
     privacy: new FormControl(false, Validators.required),
   });
 
-  get name() {
-    return this.singInForm.get('name');
-  }
-  get email() {
-    return this.singInForm.get('email');
-  }
-  get password() {
-    return this.singInForm.get('password');
-  }
-  get privacy() {
-    return this.singInForm.get('privacy');
-  }
+  get name() {return this.singInForm.get('name');}
+  get email() {return this.singInForm.get('email');}
+  get password() {return this.singInForm.get('password');}
+  get privacy() {return this.singInForm.get('privacy');}
 
   async onSubmit() {
+    this.createUser()
     this.userId = await this.userFirebaseService.registerWithEmailAndPassword(
       this.user.email,
       this.user.password
@@ -59,6 +52,14 @@ export class SignUpDialogComponent {
       this.goOnToSelectAvatar();
     } else {
       console.log('user already exists');
+    }
+  }
+
+  createUser(){
+    if (this.name && this.email && this.password) {
+      this.user.name = this.name.value;
+      this.user.email = this.email.value;
+      this.user.password = this.password.value; 
     }
   }
 

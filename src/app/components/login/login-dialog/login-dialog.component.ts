@@ -7,7 +7,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { User } from '../../../models/user.class';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 
 @Component({
@@ -19,7 +18,6 @@ import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 })
 export class LoginDialogComponent {
   loading: boolean = false;
-  user = new User();
 
   constructor(public authService: FirebaseAuthService) {}
 
@@ -39,13 +37,22 @@ export class LoginDialogComponent {
   }
 
   loginFunction() {
-    this.authService.loginWithEmailAndPassword(
-      this.user.email,
-      this.user.password
-    );
+    if (this.email && this.password){
+      this.authService.loginWithEmailAndPassword(
+        this.email.value,
+        this.password.value
+      );
+    }
   }
 
-  guestLogin() {}
+  guestLogin() {
+    let guestUser = 'guest@mail.com'
+    let guestPassword = 'guestPasswort123!'
+    this.authService.loginWithEmailAndPassword(
+      guestUser,
+      guestPassword
+    );
+  }
 
   forgotPasswort() {
     let contactButton = document.getElementById('create-contact-button');
@@ -58,6 +65,5 @@ export class LoginDialogComponent {
     contactButton?.classList.add('display_none');
     loginDialog?.classList.add('display_none');
   }
-
   
 }

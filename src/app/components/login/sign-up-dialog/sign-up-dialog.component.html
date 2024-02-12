@@ -39,21 +39,21 @@
     <div class="inputField-container">
       <div class="inputFields">
         <img src="./assets/img/login/person.png" alt="" />
-        <input type="text" placeholder="Name und Nachname" [(ngModel)]="user.name" formControlName="name"/>
+        <input type="text" placeholder="Name und Nachname" formControlName="name"/>
       </div>
       <span class="errorMassageForm" *ngIf="name?.touched && name?.invalid"
         >Bitte gib deinen Namen an.</span
       >
       <div class="inputFields">
         <img src="./assets/img/login/mail.png" alt="" />
-        <input type="email" placeholder="beispielname@email.com" [(ngModel)]="user.email" formControlName="email"/>
+        <input type="email" placeholder="beispielname@email.com" formControlName="email"/>
       </div>
       <span class="errorMassageForm" *ngIf="email?.touched && email?.invalid"
         >Bitte gib deine Email an.</span
       >
       <div class="inputFields">
         <img src="./assets/img/login/lock.png" alt="" />
-        <input type="password" placeholder="Password" [(ngModel)]="user.password" formControlName="password"/>
+        <input type="password" placeholder="Password" formControlName="password"/>
       </div>
       <span class="errorMassageForm" *ngIf="password?.touched && password?.invalid"
         >Bitte gib ein valides Password an. (min. 6 Werte)</span
