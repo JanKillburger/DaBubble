@@ -18,7 +18,6 @@ import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 })
 export class LoginDialogComponent {
   loading: boolean = false;
-
   constructor(public authService: FirebaseAuthService) {}
 
   logInForm: FormGroup = new FormGroup({

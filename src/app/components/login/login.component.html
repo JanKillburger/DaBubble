@@ -1,7 +1,20 @@
 <section>
+  <div
+    [@landingPageAnimationDesktop]
+    [ngClass]="{ 'display_none': animationFinished }"
+    class="landing-overlay desktop-overlay"
+  >
+    <div class="background"></div>
+    <div class="logo-mask"></div>
+    <div class="logo-wrapper">
+      <img src="./assets/img/login/logo-big.png" alt="DABubble-logo" />
+
+      <span>DABubble</span>
+    </div>
+  </div>
   <div class="login-Container">
     <div class="loginHeader">
-      <img src="./assets/img/login/logo_header.png" alt="" />
+      <img [ngClass]="{ 'opasetyZero': !animationFinished }" src="./assets/img/login/logo_header.png" alt="" />
       <div id="create-contact-button">
         <span>Neu bei DABubble</span>
         <a (click)="createContact()">Konto erstellen</a>
@@ -13,9 +26,6 @@
     <div id="create-contact-dialog" class="display_none">
       <app-sign-up-dialog ></app-sign-up-dialog>
     </div>
-    <!-- <div id="select-avatar-dialog" class="display_none">
-      <app-select-avatar ></app-select-avatar>
-    </div> -->
     <div id="forgot-passwort-dialog" class="display_none">
       <app-forgot-password></app-forgot-password>
     </div>

@@ -4,6 +4,8 @@ import { SignUpDialogComponent } from './sign-up-dialog/sign-up-dialog.component
 import { SelectAvatarComponent } from './select-avatar/select-avatar.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { RouterLink } from '@angular/router';
+import { startAnimations } from '../../models/animations.class';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -13,12 +15,21 @@ import { RouterLink } from '@angular/router';
     SignUpDialogComponent,
     SelectAvatarComponent,
     ForgotPasswordComponent,
-    RouterLink
+    RouterLink,
+    NgClass],
+  animations: [
+    startAnimations.landingPageAnimationDesktop
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
+  animationFinished: boolean = false;
+  constructor() {
+    setTimeout(() => {
+      this.animationFinished = true;
+    }, 3000);
+  }
 
   createContact(){
     let contactButton = document.getElementById('create-contact-button')

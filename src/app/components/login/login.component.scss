@@ -4,6 +4,85 @@ section {
   justify-content: space-between;
   align-items: center;
   height: 100%;
+
+  .landing-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+
+    .background {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(1deg, #313ae5 1.22%, #797ef3 98.76%);
+    }
+
+    .logo-mask {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: calc(50% - 90px);
+      right: 0;
+      width: calc(180px + 16px);
+      z-index: 1;
+
+      @media screen and (max-width: 600px) {
+        width: calc(70px + 16px);
+        left: calc(50% - 35px);
+      }
+
+      background: linear-gradient(
+        1deg,
+        rgba(49, 58, 229, 1) 1.22%,
+        rgba(121, 126, 243, 1) 98.76%
+      );
+    }
+
+    .logo-wrapper {
+      position: absolute;
+      left: calc(50% - 90px); 
+      top: calc(50% - 90px); 
+      display: flex;
+      gap: 16px;
+      justify-content: flex-start;
+
+      overflow-x: hidden;
+      width: calc(180px + 16px + 235px); 
+
+      @media screen and (max-width: 600px) {
+        left: calc(50% - 35px);
+        width: 212px;
+      }
+
+      img {
+        position: relative;
+        z-index: 1;
+
+        width: 180px;
+        height: 180px;
+
+        @media screen and (max-width: 600px) {
+          height: 70px;
+          width: 70px;
+        }
+      }
+
+      span {
+        font-size: 48px;
+        font-weight: 700;
+        position: absolute;
+        color: white;
+        left: -60px;
+
+        @media screen and (max-width: 600px) {
+          font-size: 26px;
+        }
+      }
+    }
+  }
 }
 
 .login-Container{
@@ -11,7 +90,7 @@ section {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  max-width: 1440px;
+  // max-width: 1440px;
   width: 100%;
   height: 100%;
 }
@@ -40,4 +119,8 @@ section {
     margin-top: 20px;
     margin-bottom: 20px;
     gap: 16px;
+}
+
+.opasetyZero{
+  opacity: 0;
 }
