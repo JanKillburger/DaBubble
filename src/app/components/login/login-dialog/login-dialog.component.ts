@@ -14,7 +14,7 @@ import { FirebaseAuthService } from '../../../services/firebase-auth.service';
   standalone: true,
   imports: [NgIf, NgClass, CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './login-dialog.component.html',
-  styleUrl: './login-dialog.component.scss',
+  styleUrls: ['./login-dialog.component.scss', './mobileLogin-dialog.component.scss'],
 })
 export class LoginDialogComponent {
   loading: boolean = false;

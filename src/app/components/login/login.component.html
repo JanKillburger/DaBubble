@@ -1,14 +1,13 @@
 <section>
   <div
-    [@landingPageAnimationDesktop]
-    [ngClass]="{ 'display_none': animationFinished }"
+  [@landingPageAnimationMobile]="isMobileScreen ? 'enter' : ''"
+  [@landingPageAnimationDesktop]="!isMobileScreen ? 'enter' : ''"
     class="landing-overlay desktop-overlay"
-  >
+    [ngClass]="{ 'display_none': animationFinished }">
     <div class="background"></div>
     <div class="logo-mask"></div>
     <div class="logo-wrapper">
       <img src="./assets/img/login/logo-big.png" alt="DABubble-logo" />
-
       <span>DABubble</span>
     </div>
   </div>
@@ -24,7 +23,7 @@
       <app-login-dialog></app-login-dialog>
     </div>
     <div id="create-contact-dialog" class="display_none">
-      <app-sign-up-dialog ></app-sign-up-dialog>
+      <app-sign-up-dialog></app-sign-up-dialog>
     </div>
     <div id="forgot-passwort-dialog" class="display_none">
       <app-forgot-password></app-forgot-password>
@@ -32,6 +31,10 @@
     <div class="loginFooter">
       <a [routerLink]="['imprint']">Impressum</a>
       <a [routerLink]="['privacy-policy']">Datenschutz</a>
+    </div>
+    <div class="create-contact-footer">
+      <span>Neu bei DABubble</span>
+      <a (click)="createContact()">Konto erstellen</a>
     </div>
   </div>
 </section>

@@ -28,12 +28,6 @@ section {
       right: 0;
       width: calc(180px + 16px);
       z-index: 1;
-
-      @media screen and (max-width: 600px) {
-        width: calc(70px + 16px);
-        left: calc(50% - 35px);
-      }
-
       background: linear-gradient(
         1deg,
         rgba(49, 58, 229, 1) 1.22%,
@@ -48,26 +42,14 @@ section {
       display: flex;
       gap: 16px;
       justify-content: flex-start;
-
       overflow-x: hidden;
       width: calc(180px + 16px + 235px); 
-
-      @media screen and (max-width: 600px) {
-        left: calc(50% - 35px);
-        width: 212px;
-      }
 
       img {
         position: relative;
         z-index: 1;
-
         width: 180px;
         height: 180px;
-
-        @media screen and (max-width: 600px) {
-          height: 70px;
-          width: 70px;
-        }
       }
 
       span {
@@ -76,10 +58,6 @@ section {
         position: absolute;
         color: white;
         left: -60px;
-
-        @media screen and (max-width: 600px) {
-          font-size: 26px;
-        }
       }
     }
   }
@@ -123,4 +101,8 @@ section {
 
 .opasetyZero{
   opacity: 0;
+}
+
+.create-contact-footer{
+  display: none;
 }

@@ -1,0 +1,54 @@
+@media screen and (max-width: 750px) {
+  section {
+    .landing-overlay {
+      .logo-mask {
+        width: calc(70px + 16px);
+        left: calc(50% - 35px);
+      }
+
+      .logo-wrapper {
+        left: calc(50% - 35px);
+        width: 212px;
+      }
+
+      img {
+        height: 70px;
+        width: 70px;
+      }
+    }
+
+    span {
+      font-size: 26px;
+    }
+  }
+
+  .login-Container {
+    .loginHeader {
+      justify-content: center;
+      padding-bottom: 30px;
+
+      >img{
+        margin-left: 0;
+      }
+    }
+    #create-contact-button {
+      display: none;
+    }
+  }
+
+  .loginFooter{
+    display: none;
+  }
+
+  .create-contact-footer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 16px;
+    padding-bottom: 24px;
+
+    >span{
+        font-size: 18px;
+      }
+  }
+}

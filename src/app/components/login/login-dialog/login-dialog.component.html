@@ -1,63 +1,70 @@
 <section>
-  <div class="form-info">
-    <h2>Anmeldung</h2>
-    <span>
-      Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit
-      verwendest.
-    </span>
-  </div>
-  <form [formGroup]="logInForm" (ngSubmit)="loginFunction()">
-    <div class="inputField-container">
-      <div class="inputFields">
-        <img src="./assets/img/login/mail.png" alt="" />
-        <input
-          type="email"
-          placeholder="beispielname@email.com"
-          formControlName="email"
-        />
-      </div>
-      <span class="errorMassageForm" *ngIf="email?.touched && email?.invalid"
-        >Bitte gib deine Email an.</span
-      >
-      <div class="inputFields">
-        <img src="./assets/img/login/lock.png" alt="" />
-        <input
-          type="password"
-          placeholder="Passwort"
-          formControlName="password"
-        />
-      </div>
-      <span
-        class="errorMassageForm"
-        *ngIf="password?.touched && password?.invalid"
-        >Bitte gib ein valides Password an. (min. 6 Werte)</span
-      >
+  <div class="login-content">
+    <div class="form-info">
+      <h2>Anmeldung</h2>
+      <span>
+        Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit
+        verwendest.
+      </span>
     </div>
-    <a (click)="forgotPasswort()" class="forgot-passwort"
-      >Passwort vergessen?</a
-    >
-    <div class="seperator">
-      <hr />
-      <span>ODER</span>
-      <hr />
-    </div>
-    <button class="google-Login-Button" type="button" (click)="authService.googleAuth()">
-      <div>
-        <img src="./assets/img/login/GoogleLogo.png" alt="Google Logo" />
-        <span>Anmelden mit Google</span>
+    <form [formGroup]="logInForm" (ngSubmit)="loginFunction()">
+      <div class="inputField-container">
+        <div class="inputFields">
+          <img src="./assets/img/login/mail.png" alt="" />
+          <input
+            type="email"
+            placeholder="beispielname@email.com"
+            formControlName="email"
+          />
+        </div>
+        <span class="errorMassageForm" *ngIf="email?.touched && email?.invalid"
+          >Bitte gib deine Email an.</span
+        >
+        <div class="inputFields">
+          <img src="./assets/img/login/lock.png" alt="" />
+          <input
+            type="password"
+            placeholder="Passwort"
+            formControlName="password"
+          />
+        </div>
+        <span
+          class="errorMassageForm"
+          *ngIf="password?.touched && password?.invalid"
+          >Bitte gib ein valides Password an. (min. 6 Werte)</span
+        >
       </div>
-    </button>
-    <div class="login-buttons">
+      <a (click)="forgotPasswort()" class="forgot-passwort"
+        >Passwort vergessen?</a
+      >
+      <div class="seperator">
+        <hr />
+        <span>ODER</span>
+        <hr />
+      </div>
       <button
-        class="button-filled"
-        type="submit"
-        [disabled]="!logInForm.valid"
-        [ngClass]="{ 'button-filled-not-valid': !logInForm.valid }">
-        Anmelden
+        class="google-Login-Button"
+        type="button"
+        (click)="authService.googleAuth()"
+      >
+        <div>
+          <img src="./assets/img/login/GoogleLogo.png" alt="Google Logo" />
+          <span>Anmelden mit Google</span>
+        </div>
       </button>
-      <button class="button-noneFilled" type="button" (click)="guestLogin()">
-        Gäste-Login
-      </button>
-    </div>
-  </form>
+      <div class="login-buttons">
+        <button
+          class="button-filled"
+          type="submit"
+          [disabled]="!logInForm.valid"
+          [ngClass]="{ 'button-filled-not-valid': !logInForm.valid }"
+        >
+          Anmelden
+        </button>
+        <button class="button-noneFilled" type="button" (click)="guestLogin()">
+          Gäste-Login
+        </button>
+      </div>
+    </form>
+  </div>
 </section>
