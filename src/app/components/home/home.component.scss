@@ -12,6 +12,7 @@
 header {
   display: flex;
   justify-content: space-between;
+  gap: 2rem;
   align-items: center;
   padding: 0.5em;
 }
@@ -110,4 +111,10 @@ header>input {
   @media (min-width: $max-inline-size) {
     display: none;
   }
+}
+
+.searchbar {
+  padding: 1em 2em;
+  border-radius: 1.5em;
+  border: none;
 }
