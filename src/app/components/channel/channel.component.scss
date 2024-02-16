@@ -23,3 +23,18 @@
   margin-left: 0.5em;
   font-weight: 600;
 }
+
+.channel-users {
+  flex: 0 0 auto;
+}
+
+.channel-header>.inner-container {
+  container: layout / inline-size;
+}
+
+.channel-name {
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: clamp(200px, calc(100cqw - 300px), 800px);
+}
