@@ -1,3 +1,5 @@
+@import '../../../variables.scss';
+
 :host {
   display: block;
   padding: 1rem;
@@ -87,3 +89,27 @@ menu {
   margin-left: 0.5em;
 }
 
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-block: 1em;
+
+  @media (min-width: $small-medium-width) {
+    display: none;
+  }
+
+  mat-icon {
+    position: absolute;
+    right: 1em;
+    color: gray;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.5em 3em 0.5em 1em;
+    outline: none;
+    border: 1px solid hsl(var(--accent-color-3));
+    border-radius: 1.2em;
+  }
+}

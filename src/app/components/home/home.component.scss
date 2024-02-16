@@ -8,7 +8,7 @@
   margin-inline: auto;
 
   @media (min-width: $small-medium-width) {
-    padding: 1rem;
+    padding: 2.2em;
   }
 }
 
@@ -17,10 +17,17 @@ header {
   justify-content: space-between;
   gap: 2rem;
   align-items: center;
-  padding: 0.5em;
+  padding-inline: 1em;
+  padding-block-start: 1em;
+  margin-block-end: 1em;
+
+  @media (min-width: $small-medium-width) {
+    padding: 0;
+    padding-block-start: 0;
+  }
 }
 
-header>input {
+header .search-wrapper {
   flex: auto;
 }
 
@@ -42,7 +49,8 @@ header>input {
   flex: auto;
 
   @media (min-width: $small-medium-width) {
-    border-radius: 1em;}
+    border-radius: 1em;
+  }
 }
 
 .primary-nav {
@@ -124,17 +132,6 @@ header>input {
   }
 }
 
-.searchbar {
-  padding: 1em 2em;
-  border-radius: 1.5em;
-  border: none;
-  display: none;
-
-  @media (min-width: $small-medium-width) {
-    display: unset;
-  }
-}
-
 .toggle-user-menu {
   gap: 1em;
 
@@ -150,8 +147,42 @@ header>input {
 .current-user {
   font-size: var(--fs-600);
   font-weight: 700;
-  max-width: clamp(200px, 30vw, 500px);
+  max-width: clamp(200px, 25vw, 500px);
   text-wrap: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.current-user,
+.current-user ~ mat-icon {
+  display: none;
+
+  @media (min-width: 1200px) {
+    display: unset;
+  }
+}
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  display: none;
+
+  @media (min-width: $small-medium-width) {
+    display: flex;
+  }
+
+  mat-icon {
+    position: absolute;
+    right: 1.5em;
+    color: gray;
+  }
+
+  input {
+    width: 100%;
+    padding: 1em 3em 1em 2em;
+    outline: none;
+    border: none;
+    border-radius: 1.6em;
+  }
 }

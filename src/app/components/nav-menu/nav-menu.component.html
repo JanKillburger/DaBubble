@@ -7,6 +7,10 @@
     <mat-icon fontSet="material-symbols-outlined">edit_square</mat-icon>
   </button>
 </div>
+<div class="search-wrapper">
+  <mat-icon fontSet="material-symbols-outlined">search</mat-icon>
+  <input type="text" class="searchbar" placeholder="Gehe zu..." />
+</div>
 <div class="flex jc-sb ai-c">
   <button class="icon-text heading" (click)="toggleChannels()">
     <mat-icon fontSet="material-symbols-outlined" *ngIf="!channelsExpanded"
@@ -59,14 +63,22 @@
 <menu *ngIf="messagesExpanded">
   <button class="btn flex ai-c btn-user">
     <div class="img-wrapper">
-      <img class="avatar" src="assets/img/login/SingIn/avatar2.png" alt="User avatar" />
+      <img
+        class="avatar"
+        src="assets/img/login/SingIn/avatar2.png"
+        alt="User avatar"
+      />
       <div class="status-indicator status-indicator--online"></div>
     </div>
     <span class="user-name">Frederik Beck (Du)</span>
   </button>
   <button class="btn flex ai-c btn-user">
     <div class="img-wrapper">
-      <img class="avatar" src="assets/img/login/SingIn/avatar1.png" alt="User avatar" />
+      <img
+        class="avatar"
+        src="assets/img/login/SingIn/avatar1.png"
+        alt="User avatar"
+      />
       <div class="status-indicator"></div>
     </div>
     <span class="user-name">Sofia Müller</span>
