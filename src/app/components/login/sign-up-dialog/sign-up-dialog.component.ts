@@ -10,13 +10,17 @@ import {
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { User } from '../../../models/user.class';
 import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up-dialog',
   standalone: true,
-  imports: [NgIf, NgClass, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [NgIf, NgClass, CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './sign-up-dialog.component.html',
-  styleUrl: './sign-up-dialog.component.scss',
+  styleUrls: [
+    './sign-up-dialog.component.scss',
+    './mobileSign-up-dialog.component.scss',
+  ],
 })
 export class SignUpDialogComponent {
   user = new User();
@@ -37,13 +41,21 @@ export class SignUpDialogComponent {
     privacy: new FormControl(false, Validators.required),
   });
 
-  get name() {return this.singInForm.get('name');}
-  get email() {return this.singInForm.get('email');}
-  get password() {return this.singInForm.get('password');}
-  get privacy() {return this.singInForm.get('privacy');}
+  get name() {
+    return this.singInForm.get('name');
+  }
+  get email() {
+    return this.singInForm.get('email');
+  }
+  get password() {
+    return this.singInForm.get('password');
+  }
+  get privacy() {
+    return this.singInForm.get('privacy');
+  }
 
   async onSubmit() {
-    this.createUser()
+    this.createUser();
     this.userId = await this.userFirebaseService.registerWithEmailAndPassword(
       this.user.email,
       this.user.password
@@ -55,11 +67,11 @@ export class SignUpDialogComponent {
     }
   }
 
-  createUser(){
+  createUser() {
     if (this.name && this.email && this.password) {
       this.user.name = this.name.value;
       this.user.email = this.email.value;
-      this.user.password = this.password.value; 
+      this.user.password = this.password.value;
     }
   }
 
@@ -85,6 +97,5 @@ export class SignUpDialogComponent {
         // Fehlerbehandlung
         console.error('Fehler beim Erhalten der Dokumenten-ID:', error);
       });
-
   }
 }

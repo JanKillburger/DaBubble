@@ -11,7 +11,7 @@ import { SelectAvatarComponent } from './select-avatar/select-avatar.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { RouterLink } from '@angular/router';
 import { startAnimations } from '../../models/animations.class';
-import { NgClass, ViewportScroller, isPlatformBrowser } from '@angular/common';
+import { CommonModule, NgClass, ViewportScroller, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +23,7 @@ import { NgClass, ViewportScroller, isPlatformBrowser } from '@angular/common';
     ForgotPasswordComponent,
     RouterLink,
     NgClass,
+    CommonModule
   ],
   animations: [
     startAnimations.landingPageAnimationDesktop,
@@ -38,6 +39,8 @@ export class LoginComponent implements AfterViewInit {
   landingPageAnimationDesktop: string = '';
   animationFinished: boolean = false;
   isMobileScreen: boolean = false;
+  showLoginFooter: boolean = false;
+
   constructor(
     private viewportScroller: ViewportScroller,
     @Inject(PLATFORM_ID) private platformId: Object
@@ -64,11 +67,18 @@ export class LoginComponent implements AfterViewInit {
 
   createContact() {
     let contactButton = document.getElementById('create-contact-button');
-    let SingIn = document.getElementById('create-contact-dialog');
+    let SingUp = document.getElementById('create-contact-dialog');
     let loginDialog = document.getElementById('login-dialog');
+    let SingUpFooter = document.getElementById('create-contact-footer')
 
-    SingIn?.classList.remove('display_none');
+    SingUp?.classList.remove('display_none');
     contactButton?.classList.add('display_none');
     loginDialog?.classList.add('display_none');
+    SingUpFooter?.classList.add('display_none');
+    this.toggleLoginFooter()
+  }
+
+  toggleLoginFooter() {
+    this.showLoginFooter = !this.showLoginFooter;
   }
 }
