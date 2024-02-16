@@ -1,0 +1,54 @@
+@media screen and (max-width: 1135px) {
+  .upload-info {
+    > h2 {
+      font-size: 40px !important;
+    }
+  }
+}
+
+@media screen and (max-width: 1025px) {
+  .upload-info {
+    > h2 {
+      font-size: 32px !important;
+      text-align: center;
+    }
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .Upload-Dialog {
+    height: 65vh !important;
+    padding: 25px !important;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .drag-and-drop-field {
+    .drag-area {
+      .desktopText {
+        display: none;
+      }
+      .mobileText {
+        display: block !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .drag-and-drop-field {
+    padding-top: 25px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .Upload-Dialog {
+    width: 95vw !important;
+  }
+}
+
+@media screen and (max-width: 410px) {
+  .drag-and-drop-field {
+    padding-top: 0!important;
+  }
+}

@@ -62,7 +62,13 @@ section {
         gap: 20px;
         background-color: #eceefe;
 
-        > header {
+        .desktopText {
+          font-size: 30px;
+          font-weight: 500;
+        }
+
+        .mobileText {
+          display: none;
           font-size: 30px;
           font-weight: 500;
         }

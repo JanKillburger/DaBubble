@@ -1,0 +1,78 @@
+@media screen and (max-width: 660px) {
+  .AvatarHeader {
+    display: flex;
+    justify-content: center!important;
+
+    >img{
+        margin-left: 0!important;
+        margin-bottom: 0!important;
+    }
+  }
+
+  .avata-info {
+    .info-header {
+      padding-bottom: 0 !important;
+      > h2 {
+        font-size: 40px !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .Avatar-Content {
+    padding: 16px !important;
+  }
+
+  .create-content {
+    .desktopText {
+      display: none;
+    }
+    .mobileText {
+      display: block !important;
+      flex: 1;
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .avata-info {
+    .info-header {
+      > h2 {
+        font-size: 32px !important;
+        text-align: center;
+      }
+    }
+  }
+
+  .selected-img {
+    height: 120px !important;
+    width: 120px !important;
+  }
+  .avatar-img-content {
+    > img {
+      height: 48px !important;
+      width: 48px !important;
+    }
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .create-content {
+    gap: 8px !important;
+    padding-top: 20px !important;
+  }
+
+  .button-noneFilled {
+    padding: 12px 16px 12px 16px !important;
+  }
+}
+
+@media screen and (max-width: 350px) {
+    .avatar-img-content {
+        > img {
+          height: 40px !important;
+          width: 40px !important;
+        }
+      }
+  }

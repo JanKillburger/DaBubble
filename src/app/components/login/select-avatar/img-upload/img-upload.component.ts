@@ -8,7 +8,10 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [],
   templateUrl: './img-upload.component.html',
-  styleUrl: './img-upload.component.scss',
+  styleUrls: [
+    './img-upload.component.scss',
+    './mobileImg-upload.component.scss',
+  ],
 })
 export class ImgUploadComponent {
   fileobj: any;

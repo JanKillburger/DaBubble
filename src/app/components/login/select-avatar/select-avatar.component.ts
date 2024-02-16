@@ -10,7 +10,10 @@ import { FirebaseStorageService } from '../../../services/firebase-storage.servi
   standalone: true,
   imports: [NgFor, ImgUploadComponent, CommonModule, RouterLink],
   templateUrl: './select-avatar.component.html',
-  styleUrl: './select-avatar.component.scss',
+  styleUrls: [
+    './select-avatar.component.scss',
+    './mobileSelect-avatar.component.scss',
+  ],
 })
 export class SelectAvatarComponent {
   signUpData: any;

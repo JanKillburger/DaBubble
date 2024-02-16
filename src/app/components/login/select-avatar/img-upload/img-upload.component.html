@@ -18,7 +18,8 @@
         (dragover)="onDragOver($event)"
         (dragleave)="onDragLeave($event)"
       >
-        <header>Drag &amp; Drop to Upload File</header>
+        <header class="desktopText">Drag &amp; Drop to Upload File</header>
+        <header class="mobileText">Drag &amp; Drop</header>
         <span>OR</span>
         <button class="button-filled" (click)="fileInput.click()">
           Browse File
