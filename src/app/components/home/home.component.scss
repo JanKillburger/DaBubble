@@ -4,9 +4,12 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding: 1rem;
   max-inline-size: $max-inline-size;
   margin-inline: auto;
+
+  @media (min-width: $small-medium-width) {
+    padding: 1rem;
+  }
 }
 
 header {
@@ -36,8 +39,10 @@ header>input {
 
 .main-item {
   background-color: white;
-  border-radius: 1em;
   flex: auto;
+
+  @media (min-width: $small-medium-width) {
+    border-radius: 1em;}
 }
 
 .primary-nav {
