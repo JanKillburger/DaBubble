@@ -9,13 +9,35 @@
   }
 }
 
+.channel-header>.inner-container {
+  container: layout / inline-size;
+}
+
+.channel-name {
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100cqw - 150px);
+}
+
 .toggle-members-menu {
   padding: 0.5em 0.5em 0.5em 1em;
   border-radius: 1.5em;
+  display: none;
 
   &:hover {
     background-color: var(--backgroundColor);
     color: hsl(var(--accent-color));
+  }
+}
+
+@container (width > 580px) {
+  .toggle-members-menu {
+    display: flex;
+  }
+
+  .channel-name {
+    max-width: calc(100cqw - 300px);
   }
 }
 
@@ -26,15 +48,4 @@
 
 .channel-users {
   flex: 0 0 auto;
-}
-
-.channel-header>.inner-container {
-  container: layout / inline-size;
-}
-
-.channel-name {
-  text-wrap: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: calc(100cqw - 300px);
 }
