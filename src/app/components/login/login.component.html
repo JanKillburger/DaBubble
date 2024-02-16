@@ -28,11 +28,15 @@
     <div id="forgot-passwort-dialog" class="display_none">
       <app-forgot-password></app-forgot-password>
     </div>
-    <div class="loginFooter">
+    <div id="loginFooter" class="loginFooter">
       <a [routerLink]="['imprint']">Impressum</a>
       <a [routerLink]="['privacy-policy']">Datenschutz</a>
     </div>
-    <div class="create-contact-footer">
+    <div class="loginFooter" [class.showOnMobile]="showLoginFooter" *ngIf="showLoginFooter">
+      <a [routerLink]="['imprint']">Impressum</a>
+      <a [routerLink]="['privacy-policy']">Datenschutz</a>
+    </div>
+    <div id="create-contact-footer" class="create-contact-footer">
       <span>Neu bei DABubble</span>
       <a (click)="createContact()">Konto erstellen</a>
     </div>

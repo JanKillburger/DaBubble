@@ -40,6 +40,10 @@
     display: none;
   }
 
+  .loginFooter.showOnMobile {
+    display: flex!important;
+  }
+
   .create-contact-footer{
     display: flex;
     flex-direction: column;
@@ -50,5 +54,12 @@
     >span{
         font-size: 18px;
       }
+  }
+}
+
+
+@media screen and (min-width: 750px) {
+  .loginFooter.showOnMobile {
+    display: none!important;
   }
 }

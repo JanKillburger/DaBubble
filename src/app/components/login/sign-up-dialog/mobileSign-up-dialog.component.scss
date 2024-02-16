@@ -1,0 +1,82 @@
+@media screen and (max-width: 750px) {
+  section {
+    .singUp-Container {
+      .form-info {
+        .info-header {
+            padding-bottom: 8px;
+        }
+      }
+
+      > form {
+        .inputField-container {
+          padding-top: 8px;
+        }
+      }
+
+      .forgot-passwort {
+        padding-top: 8px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 510px) {
+  section {
+    .singUp-Container {
+      padding: 24px;
+    }
+  }
+}
+
+@media screen and (max-width: 420px) {
+  section {
+    .checkboxFields {
+      flex-direction: column;
+      align-items: flex-start !important;
+
+      .checkmark {
+        top: 20px;
+      }
+    }
+    form {
+        .singIn-buttons{
+            margin-top: 0;
+        }
+      }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  section {
+    .singUp-Container {
+      .form-info {
+        .info-header {
+          > h2 {
+            font-size: 40px;
+          }
+        }
+        > span {
+            font-size: 16px;
+          }
+      }
+
+      form {
+        font-size: 16px;
+        .login-buttons {
+          gap: 8px;
+        }
+        .button-filled {
+          padding: 12px 16px 12px 16px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 355px) {
+  form {
+    > button {
+      padding: 12px 16px 12px 16px;
+    }
+  }
+}
