@@ -5,8 +5,15 @@
     *ngIf="mqlSmallWidth.matches"
   />
   <input type="text" class="searchbar" placeholder="Code learning durchsuchen" />
-  <button #triggerUserDialog class="toggle-menu" (click)="openUserDialog()">
-    Toggle menu
+  <button #triggerUserDialog class="btn flex ai-c toggle-user-menu" (click)="openUserDialog()">
+    <span class="current-user">Frederik Beck</span>
+    <div class="img-wrapper">
+      <img class="avatar" src="assets/img/login/SingIn/avatar2.png" alt="User avatar" />
+      <div class="status-indicator status-indicator--online"></div>
+    </div>
+    <mat-icon fontSet="material-symbols-outlined"
+        >keyboard_arrow_down</mat-icon
+      >
   </button>
 </header>
 <main class="main">

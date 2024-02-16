@@ -215,6 +215,30 @@ a {
   border: 2px solid white;
 }
 
+.img-wrapper {
+  position: relative;
+}
+
+.status-indicator {
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
+  height: 12px;
+  width: 12px;
+  border-radius: 6px;
+  background-color: darkgray;
+  border: 2px solid white;
+  margin: 0;
+}
+
+.status-indicator--online {
+  background-color: lightgreen;
+}
+
+.status-indicator--busy {
+  background-color: darkred;
+}
+
 //Utilities
 
 .flex {
