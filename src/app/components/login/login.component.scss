@@ -37,13 +37,13 @@ section {
 
     .logo-wrapper {
       position: absolute;
-      left: calc(50% - 90px); 
-      top: calc(50% - 90px); 
+      left: calc(50% - 90px);
+      top: calc(50% - 90px);
       display: flex;
       gap: 16px;
       justify-content: flex-start;
       overflow-x: hidden;
-      width: calc(180px + 16px + 235px); 
+      width: calc(180px + 16px + 235px);
 
       img {
         position: relative;
@@ -63,7 +63,7 @@ section {
   }
 }
 
-.login-Container{
+.login-Container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -92,17 +92,75 @@ section {
   }
 }
 
-.loginFooter{
-    display: flex;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    gap: 16px;
+.loginFooter {
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  gap: 16px;
 }
 
-.opasetyZero{
+.opasetyZero {
   opacity: 0;
 }
 
-.create-contact-footer{
+.create-contact-footer {
   display: none;
+}
+
+.mobile-overlay {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+
+  .mobile-background {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(1deg, #313ae5 1.22%, #797ef3 98.76%);
+  }
+
+  .mobile-logo-mask {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(40% - 76px);
+    right: 0;
+    width: 110px;
+    z-index: 1;
+    background: linear-gradient(
+      1deg,
+      rgba(49, 58, 229, 1) 1.22%,
+      rgba(121, 126, 243, 1) 98.76%
+    );
+  }
+
+  .mobile-logo-wrapper {
+    position: absolute;
+    left: calc(50% - 90px);
+    top: calc(50% - 90px);
+    display: flex;
+    gap: 16px;
+    justify-content: flex-start;
+    overflow-x: hidden;
+    width: 210px;
+
+    img {
+      position: relative;
+      z-index: 1;
+      width: 70px;
+      height: 70px;
+    }
+
+    span {
+      font-size: 26px;
+      font-weight: 700;
+      position: absolute;
+      color: white;
+      left: -55px;
+    }
+  }
 }

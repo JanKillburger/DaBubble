@@ -1,25 +1,10 @@
 @media screen and (max-width: 750px) {
-  section {
-    .landing-overlay {
-      .logo-mask {
-        width: calc(70px + 16px);
-        left: calc(50% - 35px);
-      }
+  .desktop-overlay {
+    display: none;
+  }
 
-      .logo-wrapper {
-        left: calc(50% - 35px);
-        width: 212px;
-      }
-
-      img {
-        height: 70px;
-        width: 70px;
-      }
-    }
-
-    span {
-      font-size: 26px;
-    }
+  .mobile-overlay {
+    display: block;
   }
 
   .login-Container {
@@ -27,7 +12,7 @@
       justify-content: center;
       padding-bottom: 30px;
 
-      >img{
+      > img {
         margin-left: 0;
       }
     }
@@ -36,30 +21,29 @@
     }
   }
 
-  .loginFooter{
+  .loginFooter {
     display: none;
   }
 
   .loginFooter.showOnMobile {
-    display: flex!important;
+    display: flex !important;
   }
 
-  .create-contact-footer{
+  .create-contact-footer {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 16px;
     padding-bottom: 24px;
 
-    >span{
-        font-size: 18px;
-      }
+    > span {
+      font-size: 18px;
+    }
   }
 }
 
-
 @media screen and (min-width: 750px) {
   .loginFooter.showOnMobile {
-    display: none!important;
+    display: none !important;
   }
 }
