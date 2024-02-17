@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule, NgClass, NgIf } from '@angular/common';
-import { getAuth, updatePassword } from '@angular/fire/auth';
+import { getAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,7 +15,10 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [ReactiveFormsModule, NgIf, NgClass, CommonModule],
   templateUrl: './reset-password.component.html',
-  styleUrl: './reset-password.component.scss',
+  styleUrls: [
+    './reset-password.component.scss',
+    'mobileReset-password.component.scss',
+  ],
 })
 export class ResetPasswordComponent {
   resetPasswordForm: FormGroup;
@@ -61,10 +64,10 @@ export class ResetPasswordComponent {
     let userControl = auth.currentUser;
     if (userControl && this.password) {
       let passwordValue = this.password.value;
-      this.authService.updateNewPasswordWithEmail(userControl, passwordValue)
+      this.authService.updateNewPasswordWithEmail(userControl, passwordValue);
       this.router.navigate(['/']);
     } else {
-      console.log("Error")
+      console.log('Error');
     }
   }
 }

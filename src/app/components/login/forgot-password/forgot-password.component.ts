@@ -14,7 +14,10 @@ import { FirebaseAuthService } from '../../../services/firebase-auth.service';
   standalone: true,
   imports: [NgIf, NgClass, CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './forgot-password.component.html',
-  styleUrl: './forgot-password.component.scss',
+  styleUrls: [
+    './forgot-password.component.scss',
+    './mobileForgot-password.component.scss',
+  ],
 })
 export class ForgotPasswordComponent {
   constructor(public authService: FirebaseAuthService) {}
@@ -44,7 +47,7 @@ export class ForgotPasswordComponent {
       const emailValue = this.email.value;
       this.authService.forgotPasswordEmail(emailValue);
     } else {
-      console.log("Error")
+      console.log('Error');
     }
   }
 }
