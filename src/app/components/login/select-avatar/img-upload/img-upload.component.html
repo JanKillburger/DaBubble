@@ -34,5 +34,19 @@
         />
       </div>
     </div>
+    <div
+      *ngIf="errorOnUlpoad"
+      [@slideInOutAnimation]="'in'"
+      class="error-notification"
+    >
+      Etwas ist schiefgelaufen. Probiere es erneut!
+    </div>
+    <div
+      *ngIf="wrongFileType"
+      [@slideInOutAnimation]="'in'"
+      class="error-notification"
+    >
+      Falscher Datentyp! (Nur .jpg & .png)
+    </div>
   </div>
 </section>

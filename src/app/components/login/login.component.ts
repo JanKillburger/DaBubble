@@ -4,7 +4,7 @@ import { SignUpDialogComponent } from './sign-up-dialog/sign-up-dialog.component
 import { SelectAvatarComponent } from './select-avatar/select-avatar.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { RouterLink } from '@angular/router';
-import { startAnimations } from '../../models/animations.class';
+import { startAnimations } from '../../models/startAnimations.class';
 import { CommonModule, NgClass } from '@angular/common';
 
 @Component({

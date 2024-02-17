@@ -9,6 +9,7 @@ import {
 import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { getAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { informationAnimation } from '../../../models/userInformation.class';
 
 @Component({
   selector: 'app-reset-password',
@@ -19,9 +20,11 @@ import { Router } from '@angular/router';
     './reset-password.component.scss',
     'mobileReset-password.component.scss',
   ],
+  animations: [informationAnimation.userInformation]
 })
 export class ResetPasswordComponent {
   resetPasswordForm: FormGroup;
+  resetNotification: boolean = false;
 
   constructor(public authService: FirebaseAuthService, private router: Router) {
     this.resetPasswordForm = new FormGroup({
@@ -64,8 +67,14 @@ export class ResetPasswordComponent {
     let userControl = auth.currentUser;
     if (userControl && this.password) {
       let passwordValue = this.password.value;
-      this.authService.updateNewPasswordWithEmail(userControl, passwordValue);
-      this.router.navigate(['/']);
+      this.resetNotification = this.authService.updateNewPasswordWithEmail(
+        userControl,
+        passwordValue
+      );
+      setTimeout(() => {
+        this.resetNotification = false;
+        this.router.navigate(['/']);
+      }, 5000);
     } else {
       console.log('Error');
     }

@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
+import { informationAnimation } from '../../../models/userInformation.class';
 
 @Component({
   selector: 'app-forgot-password',
@@ -18,10 +19,11 @@ import { FirebaseAuthService } from '../../../services/firebase-auth.service';
     './forgot-password.component.scss',
     './mobileForgot-password.component.scss',
   ],
+  animations: [informationAnimation.userInformation]
 })
 export class ForgotPasswordComponent {
   constructor(public authService: FirebaseAuthService) {}
-
+  sendMail: boolean = false
   forgotPasswordForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
   });
@@ -42,10 +44,13 @@ export class ForgotPasswordComponent {
     loginDialog?.classList.remove('display_none');
   }
 
-  sendResetPasswortMail() {
+  async sendResetPasswortMail() {
     if (this.forgotPasswordForm.valid && this.email) {
       const emailValue = this.email.value;
-      this.authService.forgotPasswordEmail(emailValue);
+      this.sendMail = await this.authService.forgotPasswordEmail(emailValue);
+      setTimeout(() => {
+        this.backToLogIn()
+      }, 2000);
     } else {
       console.log('Error');
     }

@@ -22,9 +22,12 @@ export class FirebaseStorageService {
     const firebaseApp = getApp();
     const storage = getStorage(firebaseApp, 'gs://dabubble-ea6d8.appspot.com');
     const storageRef = ref(storage, userId);
-    uploadBytes(storageRef, file).then(() => {
-      console.log('Uploaded a blob or file!');
-    });
+    try{
+      uploadBytes(storageRef, file)
+      return true
+    } catch{
+      return false
+    }
   }
 
   async getImageFromStorage(userId: string) {

@@ -75,5 +75,12 @@
       <a [routerLink]="['imprint']">Impressum</a>
       <a [routerLink]="['privacy-policy']">Datenschutz</a>
     </div>
+    <div
+      *ngIf="loginSuccessful"
+      [@slideInOutAnimation]="'in'"
+      class="success-notification"
+    >
+      Konto erfolgreich erstellt!
+    </div>
   </div>
 </section>

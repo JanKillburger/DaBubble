@@ -51,13 +51,15 @@ export class FirebaseAuthService {
   }
 
   async loginWithEmailAndPassword(email: string, password: string) {
+    let wrongLogIn;
     try {
       await signInWithEmailAndPassword(this.auth, email, password);
       console.log('User is valid!');
       this.router.navigate(['/home']);
+      return (wrongLogIn = false);
     } catch (err) {
       console.log('that user does not exist');
-      // throw err;
+      return (wrongLogIn = true);
     }
   }
 
@@ -81,14 +83,20 @@ export class FirebaseAuthService {
     });
   }
 
-  async updateUserService(editUser: any, editUserId: string) {
+  async updateUserService(editUser: any, editUserId: string): Promise<boolean> {
     this.loading = true;
-    await updateDoc(
-      this.getSingleRef(editUserId),
-      JSON.parse(JSON.stringify(editUser))
-    ).then(() => {
+    try {
+      await updateDoc(
+        this.getSingleRef(editUserId),
+        JSON.parse(JSON.stringify(editUser))
+      );
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    } finally {
       this.loading = false;
-    });
+    }
   }
 
   getSingleRef(UserId: string) {
@@ -108,25 +116,21 @@ export class FirebaseAuthService {
   }
 
   forgotPasswordEmail(email: string) {
-    sendPasswordResetEmail(this.auth, email)
-      .then(() => {
-        console.log('Hat geklappt. Wir sende dir eine Mail');
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
+    try {
+      sendPasswordResetEmail(this.auth, email);
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   updateNewPasswordWithEmail(user: any, newPassword: string) {
-    updatePassword(user, newPassword)
-      .then(() => {
-        console.log('Passwort wurde geändert!');
-      })
-      .catch((error) => {
-        console.log('Passwort wurde geändert!', error);
-      });
+    try {
+      updatePassword(user, newPassword);
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   async googleAuth() {
@@ -147,15 +151,15 @@ export class FirebaseAuthService {
   }
 
   googleUserCheck(createdAt: string) {
-    let newUser = false
+    let newUser = false;
     let dateToCheck = new Date(createdAt);
     let now = new Date();
     let differenceInMilliseconds = now.getTime() - dateToCheck.getTime();
     let differenceInMinutes = differenceInMilliseconds / 1000 / 60;
     if (differenceInMinutes < 1) {
-      return newUser = true
+      return (newUser = true);
     } else {
-      return newUser = false
+      return (newUser = false);
     }
   }
 }

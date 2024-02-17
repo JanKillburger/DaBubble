@@ -67,4 +67,11 @@
       </div>
     </form>
   </div>
+  <div
+    *ngIf="wrongUser"
+    [@slideInOutAnimation]="'in'"
+    class="error-notification"
+  >
+    Falsche Mail-Adresse oder Passwort 
+  </div>
 </section>

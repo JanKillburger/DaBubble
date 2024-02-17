@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FirebaseStorageService } from '../../../../services/firebase-storage.service';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-img-upload',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './img-upload.component.html',
   styleUrls: [
     './img-upload.component.scss',
@@ -16,6 +17,8 @@ import { Router } from '@angular/router';
 export class ImgUploadComponent {
   fileobj: any;
   userId: string;
+  errorOnUlpoad: boolean = false;
+  wrongFileType: boolean = false;
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -63,11 +66,21 @@ export class ImgUploadComponent {
   handleFile(file: File) {
     let fileType = this.checkFileType(file.name);
     if (fileType === 'jpg' || fileType === 'png') {
-      this.storage.uploadImageInStorage(this.userId, file);
-      this.storage.getImageFromStorage(this.userId);
-      this.reloadAvatarSelection();
+      this.errorOnUlpoad = this.storage.uploadImageInStorage(this.userId, file);
+      if (this.errorOnUlpoad) {
+        console.log('Passiert hier etwas?')
+        this.storage.getImageFromStorage(this.userId);
+        this.reloadAvatarSelection();
+        setTimeout(() => {
+          this.errorOnUlpoad = false;
+        }, 3000);
+      }
     } else {
-      console.log('Falscher Datentype');
+
+      this.wrongFileType = true
+      setTimeout(() => {
+        this.wrongFileType = false;
+      }, 3000);
     }
   }
 

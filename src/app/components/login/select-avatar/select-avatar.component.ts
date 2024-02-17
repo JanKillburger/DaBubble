@@ -4,6 +4,7 @@ import { ImgUploadComponent } from './img-upload/img-upload.component';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { FirebaseStorageService } from '../../../services/firebase-storage.service';
+import { informationAnimation } from '../../../models/userInformation.class';
 
 @Component({
   selector: 'app-select-avatar',
@@ -14,6 +15,7 @@ import { FirebaseStorageService } from '../../../services/firebase-storage.servi
     './select-avatar.component.scss',
     './mobileSelect-avatar.component.scss',
   ],
+  animations: [informationAnimation.userInformation]
 })
 export class SelectAvatarComponent {
   signUpData: any;
@@ -22,6 +24,7 @@ export class SelectAvatarComponent {
   avatarSelected: boolean = false;
   Username: string = '';
   dataIsAlreadyLoaded: boolean = false;
+  loginSuccessful: boolean = false;
   avatarImgs = [
     './assets/img/login/SingIn/avatar1.png',
     './assets/img/login/SingIn/avatar2.png',
@@ -74,8 +77,15 @@ export class SelectAvatarComponent {
     this.avatarSelected = true;
   }
 
-  saveUser() {
-    this.userFirebaseService.updateUserService(this.signUpData, this.userId);
-    this.router.navigate(['/home']);
+  async saveUser() {
+    if (this.avatarSelected) {
+      this.loginSuccessful = await this.userFirebaseService.updateUserService(
+        this.signUpData,
+        this.userId
+      );
+      setTimeout(() => {
+        this.router.navigate(['/home']);
+      }, 3000);
+    }
   }
 }
