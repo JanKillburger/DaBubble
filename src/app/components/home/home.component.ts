@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/co
 import { NgClass, NgIf } from '@angular/common';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ExampleDialogComponent } from '../example-dialog/example-dialog.component';
+import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 import { ViewportService } from '../../services/viewport.service';
 import { NavMenuComponent } from '../nav-menu/nav-menu.component';
 import { ChannelComponent } from '../channel/channel.component';
@@ -127,11 +127,11 @@ export class HomeComponent {
 
   openDialog() {
     const positionDetails = this.viewport.getPositionRelativeTo(this.dialogTrigger, "top", "left");
-    this.dialog.open(ExampleDialogComponent, { position: positionDetails });
+    this.dialog.open(UserDialogComponent, { position: positionDetails });
   }
 
   openUserDialog() {
     const positionDetails = this.viewport.getPositionRelativeTo(this.triggerUserDialog, "bottom", "right");
-    this.dialog.open(ExampleDialogComponent, { position: positionDetails });
+    this.dialog.open(UserDialogComponent, { position: positionDetails });
   }
 }
