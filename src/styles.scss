@@ -239,6 +239,11 @@ a {
   background-color: darkred;
 }
 
+.custom-container .mat-mdc-dialog-surface {
+  border-radius: 2em !important;
+  border-top-right-radius: 0 !important;
+}
+
 //Utilities
 
 .flex {
