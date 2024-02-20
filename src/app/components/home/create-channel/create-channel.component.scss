@@ -1,0 +1,79 @@
+.createChannel-Section {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba($color: #000000, $alpha: 0.2);
+  z-index: 1;
+
+  .createChannel-Dialog {
+    height: 100%;
+    width: 100%;
+    max-height: 539px;
+    max-width: 872px;
+    background-color: white;
+    padding: 40px;
+    margin-left: 16px;
+    margin-right: 16px;
+    border-radius: 30px;
+
+    .createChannel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+        border: none;
+        padding: 0.5em;
+
+        &:hover {
+          background-color: hsl(var(--accent-color) / 0.1);
+          border-radius: 1em;
+        }
+
+        &.btn--text:hover {
+          color: hsl(var(--accent-color));
+          background-color: unset;
+        }
+      }
+    }
+
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+
+      input {
+        border-radius: 40px;
+        border: 1px solid var(--ligth-purple-lines, #adb0d9);
+        display: flex;
+        padding: 10px 20px;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+      }
+
+      .descriptionText {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .createChannel-button {
+        padding-top: 16px;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+  }
+}

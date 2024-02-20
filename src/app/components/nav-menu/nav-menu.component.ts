@@ -8,7 +8,7 @@ import { NgIf } from '@angular/common';
   standalone: true,
   imports: [MatIconModule, MatButtonModule, NgIf],
   templateUrl: './nav-menu.component.html',
-  styleUrl: './nav-menu.component.scss'
+  styleUrl: './nav-menu.component.scss',
 })
 export class NavMenuComponent {
   messagesExpanded = true;
@@ -20,5 +20,9 @@ export class NavMenuComponent {
 
   toggleChannels() {
     this.channelsExpanded = !this.channelsExpanded;
+  }
+
+  openCreateChannelDialog() {
+    console.log('Open the create-channel-dialog!');
   }
 }
