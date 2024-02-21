@@ -9,12 +9,12 @@ import { ChannelComponent } from '../channel/channel.component';
 import { ThreadComponent } from '../thread/thread.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MAX_INLINE_WIDTH, MEDIUM_LARGE_WIDTH, SMALL_MEDIUM_WIDTH } from '../../../global-constants';
-import { CreateChannelComponent } from '../dialog-components/create-channel/create-channel.component';
+import { UsersToChannelComponent } from '../dialog-components/users-to-channel/users-to-channel.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatIconModule, NavMenuComponent, ChannelComponent, ThreadComponent, MatDialogModule, NgIf, NgClass, CreateChannelComponent],
+  imports: [MatIconModule, NavMenuComponent, ChannelComponent, ThreadComponent, MatDialogModule, NgIf, NgClass, UsersToChannelComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

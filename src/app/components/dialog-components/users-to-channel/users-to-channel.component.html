@@ -1,1 +1,35 @@
-<p>users-to-channel works!</p>
+<section class="background">
+  <div class="dialogContent">
+    <div class="header-info">
+      <h2>Leute hinzufügen</h2>
+      <button class="closeCreateChannelButton" [mat-dialog-close]="true">
+        <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
+      </button>
+    </div>
+    <section>
+      <mat-radio-group class="radio-inputs" color="primary" name="userSelection" [(ngModel)]="status">
+        <mat-radio-button value="all" (click)="migrateAllUser()">
+            Alle Mitglieder von
+            <span class="officeText">OfficeTeam</span>
+            hinzufügen
+        </mat-radio-button>
+        <mat-radio-button value="pick" (click)="userInputField()">
+            Bestimmte Leute hinzufügen
+        </mat-radio-button>
+      </mat-radio-group>
+      <div class="inputContainer" *ngIf="userToPick">
+        <input class="choosePeopleInput" name="selectedUsers"/>
+        <div class="selectedUsersDiv">
+          <div class="selectedUsers">
+            <div>
+              <img class="profileImg" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="button-section">
+      <button [mat-dialog-close]="true" class="button-filled">Erstellen</button>
+    </div>
+  </div>
+</section>

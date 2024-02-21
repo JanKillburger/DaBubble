@@ -49,7 +49,7 @@ export class CreateChannelComponent {
 
   createChannel() {
     this.checkChannelName();
-    this.createChannel();
+    this.addToChannel();
   }
 
   checkChannelName() {
@@ -69,7 +69,6 @@ export class CreateChannelComponent {
   addToChannel(){
     this.channel.channelName = this.channelName?.value
     this.channel.channelDescription = this.channelDescription?.value
-    console.log(this.channel)
-    // this.channelService.addChannel(this.channel)
+    this.channelService.addChannel(this.channel)
   }
 }

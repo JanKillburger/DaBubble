@@ -48,7 +48,7 @@ export class FirebaseChannelService {
   }
 
   addChannel(channel:any) {
-    addDoc(collection(this.firestore, 'channels'), channel.toJSON()).then(() => {
+    addDoc(collection(this.firestore, 'channels'), channel.toJson()).then(() => {
     });
   }
 }
