@@ -10,7 +10,7 @@
       >Channels dienen deinem Team zur Kommunikation. Am besten sollten sie
       themenbezogen sein #marketing zum Beispiel.
     </span>
-    <form (ngSubmit)="createChannel()">
+    <form [formGroup]="channelsForm" (ngSubmit)="createChannel()">
       <h3>Channel-Name</h3>
       <div class="nameInput">
         <input formControlName="channelsName" placeholder="Name" />
@@ -25,10 +25,10 @@
       <input formControlName="channelsDescription" placeholder="Beschreibung" />
       <div class="createChannel-button">
         <button
+          class="button-filled"
           type="submit"
           [disabled]="!channelsForm.valid"
           [ngClass]="{ 'button-filled-not-valid': !channelsForm.valid }"
-          class="button-filled"
         >
           Erstellen
         </button>
