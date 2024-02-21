@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import {
   Firestore,
+  addDoc,
   collection,
   onSnapshot,
   query,
@@ -36,14 +37,19 @@ export class FirebaseChannelService {
   setChannelObject(obj: any, id: string): ChannelData {
     return {
       id: id,
-      channelName: obj.channelName || 'unknown',
-      channelDescription: obj.channelDescription || '',
+      channelName: obj.channelsName || 'unknown',
+      channelDescription: obj.channelsDescription || '',
       users: obj.users || [],
     };
   }
 
   getChannelsRef() {
     return collection(this.firestore, 'channels');
+  }
+
+  addChannel(channel:any) {
+    addDoc(collection(this.firestore, 'channels'), channel.toJSON()).then(() => {
+    });
   }
 }
 

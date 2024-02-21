@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './users-to-channel.component.scss'
 })
 export class UsersToChannelComponent {
-
+  
 }

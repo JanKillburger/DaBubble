@@ -13,20 +13,21 @@
     <form [formGroup]="channelsForm" (ngSubmit)="createChannel()">
       <h3>Channel-Name</h3>
       <div class="nameInput">
-        <input formControlName="channelsName" placeholder="Name" />
-        <span class="warning" *ngIf="nameExists"
-          >Channel with this name exists</span
+        <input formControlName="channelName" placeholder="Name" />
+        <span class="errorMassageForm" *ngIf="nameExists"
+          >Ein Channel mit diesem Namen existiert bereits</span
         >
       </div>
       <span class="descriptionText"
         ><h3>Beschreibung</h3>
         (optional)</span
       >
-      <input formControlName="channelsDescription" placeholder="Beschreibung" />
+      <input formControlName="channelDescription" placeholder="Beschreibung" />
       <div class="createChannel-button">
         <button
           class="button-filled"
           type="submit"
+          [mat-dialog-close]="true"
           [disabled]="!channelsForm.valid"
           [ngClass]="{ 'button-filled-not-valid': !channelsForm.valid }"
         >

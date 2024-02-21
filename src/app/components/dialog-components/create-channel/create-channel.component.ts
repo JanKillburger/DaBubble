@@ -10,33 +10,66 @@ import {
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { FirebaseChannelService } from '../../../services/firebase-channel.service';
+import { UsersToChannelComponent } from '../users-to-channel/users-to-channel.component';
+import { Channel } from '../../../models/channel.class';
 
 @Component({
   selector: 'app-create-channel',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatDialogModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatDialogModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './create-channel.component.html',
   styleUrl: './create-channel.component.scss',
 })
 export class CreateChannelComponent {
-  constructor(public dialog: MatDialog, private channelService: FirebaseChannelService,) {}
-  channel = '';
+  constructor(
+    public dialog: MatDialog,
+    private channelService: FirebaseChannelService
+  ) {}
+  channel = new Channel();
   nameExists = false;
   showCreateChannelDialog = false;
 
   channelsForm: FormGroup = new FormGroup({
-    channelsName: new FormControl('', Validators.required),
-    channelsDescription: new FormControl(''),
+    channelName: new FormControl('', Validators.required),
+    channelDescription: new FormControl(''),
   });
 
-  get channelsName() {
-    return this.channelsForm.get('channelsName');
+  get channelName() {
+    return this.channelsForm.get('channelName');
   }
-  get channelsDescription() {
-    return this.channelsForm.get('channelsDescription');
+  get channelDescription() {
+    return this.channelsForm.get('channelDescription');
   }
 
   createChannel() {
-    console.log('created Channel!');
+    this.checkChannelName();
+    this.createChannel();
+  }
+
+  checkChannelName() {
+    let channelToModifyIndex = this.channelService.channels.findIndex(
+      (channel) => channel.channelName === this.channelName?.value
+    );
+    if (channelToModifyIndex === -1) {
+      this.nameExists = false;
+      this.dialog.open(UsersToChannelComponent, {
+        panelClass: 'default-container',
+      });
+    } else {
+      this.nameExists = true;
+    }
+  }
+
+  addToChannel(){
+    this.channel.channelName = this.channelName?.value
+    this.channel.channelDescription = this.channelDescription?.value
+    console.log(this.channel)
+    // this.channelService.addChannel(this.channel)
   }
 }

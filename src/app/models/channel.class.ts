@@ -1,5 +1,4 @@
 export class Channel {
-  id?: string;
   channelName: string;
   channelDescription: string;
   users: string[];
@@ -12,7 +11,6 @@ export class Channel {
 
   toJson() {
     return {
-      id: this.id,
       channelName: this.channelName,
       channelDescription: this.channelDescription,
       users: this.users,
