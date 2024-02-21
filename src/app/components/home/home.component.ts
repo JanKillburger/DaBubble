@@ -2,14 +2,14 @@ import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/co
 import { NgClass, NgIf } from '@angular/common';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { UserDialogComponent } from '../user-dialog/user-dialog.component';
+import { UserDialogComponent } from '../dialog-components/user-dialog/user-dialog.component';
 import { ViewportService } from '../../services/viewport.service';
 import { NavMenuComponent } from '../nav-menu/nav-menu.component';
 import { ChannelComponent } from '../channel/channel.component';
 import { ThreadComponent } from '../thread/thread.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MAX_INLINE_WIDTH, MEDIUM_LARGE_WIDTH, SMALL_MEDIUM_WIDTH } from '../../../global-constants';
-import { CreateChannelComponent } from './create-channel/create-channel.component';
+import { CreateChannelComponent } from '../dialog-components/create-channel/create-channel.component';
 
 @Component({
   selector: 'app-home',

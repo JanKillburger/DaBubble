@@ -1,8 +1,10 @@
-<section class="createChannel-Section" [ngClass]="{ 'display_none': !showCreateChannelDialog }">
+<section>
   <div class="createChannel-Dialog">
     <div class="createChannel-header">
       <h2>Channel erstellen</h2>
-      <button (click)="closeCreateChannelDialog()" class="closeCreateChannelButton"><mat-icon fontSet="material-symbols-outlined">close</mat-icon></button>
+      <button class="closeCreateChannelButton" [mat-dialog-close]="true">
+        <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
+      </button>
     </div>
     <span
       >Channels dienen deinem Team zur Kommunikation. Am besten sollten sie
@@ -26,7 +28,7 @@
           type="submit"
           [disabled]="!channelsForm.valid"
           [ngClass]="{ 'button-filled-not-valid': !channelsForm.valid }"
-          class="button-filled "
+          class="button-filled"
         >
           Erstellen
         </button>

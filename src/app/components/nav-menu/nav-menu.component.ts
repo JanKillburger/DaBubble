@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateChannelComponent } from '../dialog-components/create-channel/create-channel.component';
 
 @Component({
   selector: 'app-nav-menu',
@@ -14,6 +16,8 @@ export class NavMenuComponent {
   messagesExpanded = true;
   channelsExpanded = true;
 
+  constructor(public dialog: MatDialog){}
+
   toggleMessages() {
     this.messagesExpanded = !this.messagesExpanded;
   }
@@ -23,6 +27,6 @@ export class NavMenuComponent {
   }
 
   openCreateChannelDialog() {
-    console.log('Open the create-channel-dialog!');
+    this.dialog.open(CreateChannelComponent, { panelClass: 'default-container'});
   }
 }
