@@ -155,7 +155,7 @@ export class FirebaseAuthService {
     let dateToCheck = new Date(createdAt);
     let now = new Date();
     let differenceInMilliseconds = now.getTime() - dateToCheck.getTime();
-    let differenceInMinutes = differenceInMilliseconds / 1000 / 60;
+    let differenceInMinutes = differenceInMilliseconds / 1000 / 15;
     if (differenceInMinutes < 1) {
       return (newUser = true);
     } else {

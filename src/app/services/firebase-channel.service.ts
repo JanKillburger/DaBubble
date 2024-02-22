@@ -3,8 +3,10 @@ import {
   Firestore,
   addDoc,
   collection,
+  doc,
   onSnapshot,
   query,
+  updateDoc,
 } from '@angular/fire/firestore';
 import { Channel } from '../models/channel.class';
 
@@ -15,6 +17,7 @@ export class FirebaseChannelService {
   channels: ChannelData[] = [];
   unsubChannels;
   firestore: Firestore = inject(Firestore);
+  channelId: string = ''
 
   constructor() {
     this.unsubChannels = this.subChannelsList();
@@ -47,9 +50,27 @@ export class FirebaseChannelService {
     return collection(this.firestore, 'channels');
   }
 
-  addChannel(channel:any) {
-    addDoc(collection(this.firestore, 'channels'), channel.toJson()).then(() => {
-    });
+  getSingleChannelRef(UserId: string) {
+    return doc(collection(this.firestore, 'users'), UserId);
+  }
+
+  async addChannel(channel: any): Promise<string> {
+    const docRef = await addDoc(collection(this.firestore, 'channels'), channel.toJson());
+    this.channelId = docRef.id;
+    return this.channelId;
+  }
+
+  async updateChannel(editChannel: any, editChannelId: string): Promise<boolean> {
+    try {
+      await updateDoc(
+        this.getSingleChannelRef(editChannelId),
+        JSON.parse(JSON.stringify(editChannel))
+      );
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   }
 }
 

@@ -34,6 +34,7 @@ export class CreateChannelComponent {
   channel = new Channel();
   nameExists = false;
   showCreateChannelDialog = false;
+  channelId: string = '';
 
   channelsForm: FormGroup = new FormGroup({
     channelName: new FormControl('', Validators.required),
@@ -47,28 +48,29 @@ export class CreateChannelComponent {
     return this.channelsForm.get('channelDescription');
   }
 
-  createChannel() {
-    this.checkChannelName();
-    this.addToChannel();
-  }
-
-  checkChannelName() {
+  async createChannel() {
     let channelToModifyIndex = this.channelService.channels.findIndex(
       (channel) => channel.channelName === this.channelName?.value
     );
     if (channelToModifyIndex === -1) {
       this.nameExists = false;
-      this.dialog.open(UsersToChannelComponent, {
-        panelClass: 'default-container',
-      });
+      await this.addToChannel();
+      this.openUseToChannelDialog();
     } else {
       this.nameExists = true;
     }
   }
 
-  addToChannel(){
-    this.channel.channelName = this.channelName?.value
-    this.channel.channelDescription = this.channelDescription?.value
-    this.channelService.addChannel(this.channel)
+  async addToChannel() {
+    this.channel.channelName = this.channelName?.value;
+    this.channel.channelDescription = this.channelDescription?.value;
+    this.channelId = await this.channelService.addChannel(this.channel);
+  }
+
+  openUseToChannelDialog() {
+    this.dialog.open(UsersToChannelComponent, {
+      panelClass: 'default-container',
+      data: this.channelId
+    });
   }
 }
