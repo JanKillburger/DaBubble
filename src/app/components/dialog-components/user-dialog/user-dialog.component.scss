@@ -1,8 +1,25 @@
 :host {
   display: block;
-  padding: 1em 3em;
+  padding: 1em;
+  min-width: 250px;
 }
 
 :host>*{
   display: block;
+  width: 100%;
+}
+
+button, a {
+color: black;
+font-size: var(--fs-500);
+border: none;
+padding: 0.3em;
+font-weight: 500;
+border-radius: 1em;
+text-align: center;
+
+&:hover {
+  background-color: var(--backgroundColor);
+  color: hsl(var(--accent-color));
+}
 }
