@@ -1,13 +1,29 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { RouterModule } from '@angular/router';
+import { PositionDetails } from '../../../models/position-details.model';
+import { UserProfileDialogComponent } from '../user-profile-dialog/user-profile-dialog.component';
+
 
 @Component({
   selector: 'app-user-dialog',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './user-dialog.component.html',
   styleUrl: './user-dialog.component.scss'
 })
 export class UserDialogComponent {
-constructor(public dialogRef: MatDialogRef<UserDialogComponent>) {}
+  constructor(
+    public dialogRef: MatDialogRef<UserDialogComponent>,
+    public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public positionDetails:  PositionDetails ) { }
+
+  showUserProfile() {
+    this.dialog.open(UserProfileDialogComponent, { panelClass: 'custom-container', position: this.positionDetails });
+    this.dialogRef.close();
+  }
+
+  onLogOut() {
+    this.dialogRef.close();
+  }
 }

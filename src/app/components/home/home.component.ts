@@ -133,6 +133,6 @@ export class HomeComponent {
 
   openUserDialog() {
     const positionDetails = this.viewport.getPositionRelativeTo(this.triggerUserDialog, "bottom", "right");
-    this.dialog.open(UserDialogComponent, { panelClass: 'custom-container', position: positionDetails });
+    this.dialog.open(UserDialogComponent, { panelClass: 'custom-container', position: positionDetails, data: positionDetails });
   }
 }
