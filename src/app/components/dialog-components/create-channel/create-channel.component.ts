@@ -70,7 +70,9 @@ export class CreateChannelComponent {
   openUseToChannelDialog() {
     this.dialog.open(UsersToChannelComponent, {
       panelClass: 'default-container',
-      data: this.channelId
+      data: this.channelId,
+      maxWidth: '514px',
+      width: '100%'
     });
   }
 }

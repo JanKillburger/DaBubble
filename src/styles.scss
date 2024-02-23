@@ -301,3 +301,12 @@ a {
     font-size: 16px !important;
   }
 }
+
+
+.mat-mdc-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-mdc-text-field-wrapper {
+  cursor: pointer;
+  border-radius: 30px;
+  margin-top: 16px;
+  background-color: transparent;
+  border: 1px solid var(--ligth-purple-lines, #adb0d9);
+}

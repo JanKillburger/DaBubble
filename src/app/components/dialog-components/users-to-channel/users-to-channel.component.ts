@@ -36,10 +36,10 @@ export class UsersToChannelComponent {
   async migrateAllUser() {
     this.userToPick = false;
     console.log(this.channelId);
-    console.log(this.userService.allUsers)
   }
 
   userInputField() {
     this.userToPick = true;
+    console.log(this.userPicker.value)
   }
 }
