@@ -18,7 +18,7 @@ export class UserProfileDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<UserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public user: UserData) { }
-  myProfile = true; //replace with expression loggedInUser === this.user
+  myProfile = this.user.name === 'Frederik Beck'; //replace with expression loggedInUser === this.user
   formMode: 'view' | 'edit' = 'view';
   userProfileForm = new FormGroup({
     name: new FormControl(this.user.name),
