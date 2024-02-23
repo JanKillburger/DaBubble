@@ -1,18 +1,60 @@
 <div class="flex ai-c jc-sb">
-  <span class="title">Profil</span>
+  <span class="title">
+    @if (formMode==='view') { Profil } @else { Dein Profil bearbeiten }
+  </span>
   <button (click)="closeDialog()" mat-icon-button>
     <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
   </button>
 </div>
-<img class="avatar" src="assets/img/login/SingIn/avatar2.png" alt="Your avatar">
-<div class="flex ai-c jc-sb">
-  <span class="user-name">Frederik Beck</span>
-  <button mat-icon-button>
-    <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
-  </button>
-</div>
-<p class="email-title flex ai-c icon-text">
-  <mat-icon fontSet="material-symbols-outlined">mail</mat-icon>
-  E-Mail-Adresse
-</p>
-<p class="email">fred.beck&#64;email.de</p>
+<form [formGroup]="userProfileForm">
+  <img
+    class="avatar"
+    src="assets/img/login/SingIn/avatar2.png"
+    alt="Your avatar"
+  />
+  <label
+    for="name"
+    class="form-label flex ai-c"
+    [class.hidden]="formMode === 'view'"
+  >
+    <mat-icon fontSet="material-symbols-outlined">account_circle</mat-icon>
+    Vollständiger Name</label
+  >
+  <div class="flex ai-c jc-sb">
+    <input
+      id="name"
+      [class.edit]="formMode === 'edit'"
+      class="form-input user-name"
+      formControlName="name"
+      [readOnly]="formMode === 'view'"
+    />
+    <button
+      mat-icon-button
+      (click)="editUserProfile()"
+      type="button"
+      *ngIf="formMode === 'view'"
+    >
+      <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
+    </button>
+  </div>
+  <label for="email" class="form-label flex ai-c icon-text">
+    <mat-icon fontSet="material-symbols-outlined">mail</mat-icon>
+    E-Mail-Adresse
+  </label>
+  <input
+    class="email"
+    [class.edit]="formMode === 'edit'"
+    class="form-input"
+    formControlName="email"
+    id="email"
+    [readOnly]="formMode === 'view'"
+  />
+  <div class="actions flex" *ngIf="formMode === 'edit'">
+    <button class="btn btn--secondary" (click)="closeDialog()">Abbrechen</button>
+    <button class="btn">Speichern</button>
+  </div>
+</form>
+<button class="btn flex ai-c" *ngIf="!myProfile">
+  <mat-icon fontSet="material-symbols-outlined">mode_comment</mat-icon>
+  Nachricht
+</button>

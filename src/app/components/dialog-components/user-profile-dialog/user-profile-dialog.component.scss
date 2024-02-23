@@ -4,8 +4,79 @@
   padding: 1em;
 }
 
+.title {
+  font-size: var(--fs-600);
+  font-weight: 700;
+}
+
 .avatar {
   height: 10em;
   width: auto;
   margin-inline: auto;
+  margin-block: 1em;
+}
+
+.user-name {
+  font-size: var(--fs-700);
+  font-weight: 700;
+}
+
+.form-label {
+  font-weight: 700;
+
+  mat-icon {
+    font-weight: 400;
+    margin-right: 0.5em;
+  }
+}
+
+.btn {
+  margin-inline: auto;
+  padding: 0.5em 1em;
+  background-color: hsl(var(--accent-color));
+  color: white;
+  border-radius: 1.5em;
+
+  mat-icon {
+    margin-right: 0.5em;
+  }
+
+  &:hover {
+    background-color: hsl(var(--accent-color) / 0.8);
+  }
+}
+
+.btn--secondary {
+  background-color: white;
+  color: hsl(var(--accent-color));
+  border: 1px solid hsl(var(--accent-color));
+
+  &:hover {
+    background-color: hsl(var(--accent-color));
+    color: white;
+  }
+}
+
+.form-input {
+  border-radius: 1.2em;
+  outline: none;
+  border: none;
+  margin-block: 0.5em;
+  width: 300px;
+  max-width: min(100%, 400px);
+}
+
+.edit {
+  padding: 0.5em 1em;
+  border: 1px solid hsl(var(--accent-color-3));
+  font-size: var(--fs-400);
+  font-weight: 400;
+
+  &:focus {
+    border-color: hsl(var(--accent-color));
+  }
+}
+
+.hidden {
+  visibility: hidden;
 }
