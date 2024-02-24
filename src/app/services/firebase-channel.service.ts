@@ -4,6 +4,7 @@ import {
   addDoc,
   collection,
   doc,
+  getDocs,
   onSnapshot,
   query,
   updateDoc,
@@ -17,10 +18,13 @@ export class FirebaseChannelService {
   channels: ChannelData[] = [];
   unsubChannels;
   firestore: Firestore = inject(Firestore);
-  channelId: string = ''
+  channelId: string = '';
+  allChannels: Channel[];
+  currentChannel?: Channel;
 
   constructor() {
     this.unsubChannels = this.subChannelsList();
+    this.allChannels = [];
   }
 
   ngonDestroy() {
@@ -50,17 +54,29 @@ export class FirebaseChannelService {
     return collection(this.firestore, 'channels');
   }
 
-  getSingleChannelRef(UserId: string) {
-    return doc(collection(this.firestore, 'users'), UserId);
+  getSingleChannelRef(ChannelId: string) {
+    return doc(collection(this.firestore, 'channels'), ChannelId);
+  }
+
+  getCurrentChannel(ChannelId: string) {
+    onSnapshot(this.getSingleChannelRef(ChannelId), (element) => {
+      this.currentChannel = new Channel(element.data());
+    });
   }
 
   async addChannel(channel: any): Promise<string> {
-    const docRef = await addDoc(collection(this.firestore, 'channels'), channel.toJson());
+    const docRef = await addDoc(
+      collection(this.firestore, 'channels'),
+      channel.toJson()
+    );
     this.channelId = docRef.id;
     return this.channelId;
   }
 
-  async updateChannel(editChannel: any, editChannelId: string): Promise<boolean> {
+  async updateChannel(
+    editChannel: any,
+    editChannelId: string
+  ): Promise<boolean> {
     try {
       await updateDoc(
         this.getSingleChannelRef(editChannelId),
@@ -71,6 +87,15 @@ export class FirebaseChannelService {
       console.error(error);
       return false;
     }
+  }
+
+  async getChannelData() {
+    this.allChannels = [];
+    let querySnapshot = await getDocs(collection(this.firestore, 'channels'));
+    querySnapshot.forEach((channel: any) => {
+      let channelData: Channel = channel.data();
+      this.allChannels.push(channelData);
+    });
   }
 }
 
