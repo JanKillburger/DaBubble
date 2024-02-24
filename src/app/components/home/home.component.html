@@ -37,7 +37,7 @@
     <app-thread (closeThreadEv)="closeThread()"></app-thread>
   </aside>
 </main>
-<button (click)="toggleNav()" class="toggle-primary-nav" *ngIf="screenMode!=='large'">
+<button (click)="toggleNav()" class="toggle-primary-nav" *ngIf="screenMode==='medium'">
   @if (navVisible) { Workspace-Menü schließen  
 <mat-icon fontSet="material-symbols-outlined">switch_right</mat-icon>
 }
