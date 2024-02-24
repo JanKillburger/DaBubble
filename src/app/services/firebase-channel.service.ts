@@ -5,6 +5,7 @@ import {
   collection,
   doc,
   onSnapshot,
+  orderBy,
   query,
   updateDoc,
   where,
@@ -22,26 +23,47 @@ export class FirebaseChannelService {
 
   //Jan
   userChannels: any[] = [];
-  unsubUserChannels;
+  userChannelsMessages: Map<string, any[]> = new Map();
+  unsubUserChannels: any[] = [];
+  unsubUserChannelsMessages: any[] = [];
 
   constructor() {
     this.unsubChannels = this.subChannelsList();
-    this.unsubUserChannels = this.getUserChannels("yoYpfM7zqselK2fBnIdS");
+    this.unsubUserChannels.push(this.getUserChannels("yoYpfM7zqselK2fBnIdS"));
   }
 
   getUserChannels(userId: string) {//aktuell noch hard-coded gegen Testnutzer Noah Braun abgefragt
     const q = query(collection(this.firestore, "channels"), where("users", "array-contains", userId));
-    return onSnapshot(q, channel => {
+    return onSnapshot(q, channels => {
       this.userChannels = [];
-      channel.forEach(doc => {
-        this.userChannels.push(doc.data());
+      channels.forEach(channel => {
+        this.userChannels.push(channel.data());
+        if (!this.userChannelsMessages.has(channel.id)) {
+          console.log('subscribing channel', channel.data()['channelName']);
+          this.userChannelsMessages.set(channel.id, []);
+          this.unsubUserChannelsMessages.push(this.getChannelMessages(channel.id));
+        }
       })
     })
   }
 
+  getChannelMessages(channelId: string) {
+    const messagesRef = query(collection(this.firestore, "channels", channelId, "messages"), orderBy("timestamp"));
+    return onSnapshot(messagesRef, messages => {
+      const messagesArr: any[] = [];
+      messages.forEach(message => {
+        messagesArr.push(message.data());
+      });
+      this.userChannelsMessages.set(channelId, messagesArr);
+      console.log(this.userChannelsMessages);
+    }
+    )
+  }
+
   ngOnDestroy() {
     this.unsubChannels();
-    this.unsubUserChannels();
+    this.unsubUserChannels.forEach(unsub => unsub());
+    this.unsubUserChannelsMessages.forEach(unsub => unsub());
   }
 
   subChannelsList() {
@@ -96,4 +118,8 @@ interface ChannelData {
   channelName: string;
   channelDescription: string;
   users: string[];
+}
+
+interface Message {
+  message: string;
 }
