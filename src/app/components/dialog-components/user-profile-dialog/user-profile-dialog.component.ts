@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgIf } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -16,7 +15,7 @@ import { UserData } from '../../../services/firebase-user.service';
 })
 export class UserProfileDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<UserDialogComponent>,
+    public dialogRef: MatDialogRef<UserProfileDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public user: UserData) { }
   myProfile = this.user.name === 'Frederik Beck'; //replace with expression loggedInUser === this.user
   formMode: 'view' | 'edit' = 'view';
