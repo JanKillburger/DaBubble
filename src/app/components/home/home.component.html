@@ -22,7 +22,7 @@
 <main class="main">
   <nav
     class="primary-nav main-item"
-    [class.is-active]="navVisible || mqlMaxWidth.matches"
+    [class.is-active]="navVisible || screenMode==='large'"
   >
     <app-nav-menu></app-nav-menu>
   </nav>
@@ -37,7 +37,7 @@
     <app-thread (closeThreadEv)="closeThread()"></app-thread>
   </aside>
 </main>
-<button (click)="toggleNav()" class="toggle-primary-nav" *ngIf="mqlSmallWidth.matches">
+<button (click)="toggleNav()" class="toggle-primary-nav" *ngIf="screenMode!=='large'">
   @if (navVisible) { Workspace-Menü schließen  
 <mat-icon fontSet="material-symbols-outlined">switch_right</mat-icon>
 }

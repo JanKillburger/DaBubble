@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgClass, NgIf } from '@angular/common';
-import { MediaMatcher } from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UserDialogComponent } from '../dialog-components/user-dialog/user-dialog.component';
 import { ViewportService } from '../../services/viewport.service';
@@ -8,8 +8,9 @@ import { NavMenuComponent } from '../nav-menu/nav-menu.component';
 import { ChannelComponent } from '../channel/channel.component';
 import { ThreadComponent } from '../thread/thread.component';
 import { MatIconModule } from '@angular/material/icon';
-import { MAX_INLINE_WIDTH, MEDIUM_LARGE_WIDTH, SMALL_MEDIUM_WIDTH } from '../../../global-constants';
+import { MAX_INLINE_WIDTH, LARGE_WIDTH, MEDIUM_WIDTH, SMALL_WIDTH } from '../../../global-constants';
 import { UsersToChannelComponent } from '../dialog-components/users-to-channel/users-to-channel.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -24,70 +25,46 @@ export class HomeComponent {
   threadVisible = true;
   threadVisibleMq!: boolean;
   channelVisible!: boolean;
-  mqlMaxWidth: MediaQueryList;
-  mqlMediumWidth: MediaQueryList;
-  mqlSmallWidth: MediaQueryList;
   @ViewChild('dialogTrigger') dialogTrigger!: ElementRef;
   @ViewChild('triggerUserDialog') triggerUserDialog!: ElementRef;
+  private breakpointSubscription!: Subscription;
 
-  constructor(public changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public dialog: MatDialog, public viewport: ViewportService) {
-    this.mqlSmallWidth = media.matchMedia(`(min-width: ${SMALL_MEDIUM_WIDTH})`);
-    this.mqlSmallWidth.onchange = (event) => this.handleSmallWidthChange(event);
-    this.mqlMediumWidth = media.matchMedia(`(min-width: ${MEDIUM_LARGE_WIDTH})`);
-    this.mqlMediumWidth.onchange = (event) => this.handleMediumWidthChange(event);
-    this.mqlMaxWidth = media.matchMedia(`(min-width: ${MAX_INLINE_WIDTH})`);
-    this.mqlMaxWidth.onchange = (event) => {
-      if (event.matches) {
-        this.navVisible = true;
-      }
-      changeDetectorRef.detectChanges();
-    };
-    this.initContainers();
+  constructor(
+    public dialog: MatDialog,
+    public viewport: ViewportService,
+    private responsive: BreakpointObserver) {
   }
 
-  initContainers() {
-    if (!this.mqlSmallWidth.matches) {
-      this.screenMode = "small";
-      this.channelVisible = false;
-    }
-    else if (!this.mqlMediumWidth.matches) {
-      this.screenMode = "medium";
-      this.threadVisibleMq = false;
-      this.channelVisible = true;
-    } else {
-      this.screenMode = "large";
-      this.threadVisibleMq = true;
-      this.channelVisible = true;
-    }
+  ngOnInit() {
+    this.breakpointSubscription = this.responsive.observe([
+      SMALL_WIDTH,
+      MEDIUM_WIDTH,
+      LARGE_WIDTH
+    ])
+      .subscribe(() => {
+
+        if (this.responsive.isMatched(SMALL_WIDTH)) {
+          this.screenMode = "small";
+          if (this.navVisible) {
+            this.channelVisible = false;
+            this.threadVisibleMq = false;
+          }
+        } else if (this.responsive.isMatched(MEDIUM_WIDTH)) {
+          this.screenMode = "medium";
+          if (this.navVisible) {
+            this.channelVisible = true;
+            this.threadVisibleMq = false;
+          }
+        } else if (this.responsive.isMatched(LARGE_WIDTH)) {
+          this.screenMode = "large";
+          this.threadVisibleMq = true;
+          this.channelVisible = true;
+        }
+      })
   }
 
-  handleMediumWidthChange(event: MediaQueryListEvent) {
-    if (event.matches) {
-      this.screenMode = "large";
-      this.channelVisible = true;
-      this.threadVisibleMq = true;
-    } else {
-      this.screenMode = "medium";
-      this.channelVisible = true;
-      this.threadVisibleMq = false;
-    }
-    this.changeDetectorRef.detectChanges();
-  }
-
-  handleSmallWidthChange(event: MediaQueryListEvent) {
-    if (!event.matches) {
-      this.screenMode = "small";
-      if (this.navVisible) {
-        this.channelVisible = false;
-        this.threadVisibleMq = false;
-      }
-    } else {
-      this.screenMode = "medium";
-      if (this.navVisible) {
-        this.channelVisible = true;
-      }
-    }
-    this.changeDetectorRef.detectChanges();
+  ngOnDestroy() {
+    this.breakpointSubscription.unsubscribe();
   }
 
   toggleNav() {
@@ -96,7 +73,6 @@ export class HomeComponent {
       this.threadVisibleMq = false;
     }
     this.navVisible = !this.navVisible;
-    this.changeDetectorRef.detectChanges();
   }
 
   closeThread() {
@@ -105,7 +81,6 @@ export class HomeComponent {
     }
     this.threadVisible = false;
     this.channelVisible = true;
-    this.changeDetectorRef.detectChanges();
   }
 
   openThread() {
@@ -114,7 +89,6 @@ export class HomeComponent {
     if (this.screenMode != "large") {
       this.channelVisible = false;
     }
-    this.changeDetectorRef.detectChanges();
     document.body.style.overflow = "hidden";
     setTimeout(() => {
       document.body.removeAttribute("style");
