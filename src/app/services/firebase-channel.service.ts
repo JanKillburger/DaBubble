@@ -24,7 +24,7 @@ export class FirebaseChannelService {
 
   allChannels: Channel[];
   currentChannel?: Channel;
-  userChannels: any[] = [];
+  userChannels: ChannelData[] = [];
   userChannelsMessages: Map<string, any[]> = new Map();
   unsubUserChannels: any[] = [];
   unsubUserChannelsMessages: any[] = [];
@@ -40,7 +40,7 @@ export class FirebaseChannelService {
     return onSnapshot(q, channels => {
       this.userChannels = [];
       channels.forEach(channel => {
-        this.userChannels.push(channel.data());
+        this.userChannels.push(channel.data() as ChannelData);
         if (!this.userChannelsMessages.has(channel.id)) {
           console.log('subscribing channel', channel.data()['channelName']);
           this.userChannelsMessages.set(channel.id, []);

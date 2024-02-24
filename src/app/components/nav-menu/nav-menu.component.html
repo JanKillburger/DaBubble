@@ -29,18 +29,14 @@
   </button>
 </div>
 <menu *ngIf="channelsExpanded" class="flow">
-  <button class="icon-text btn">
-    <mat-icon class="icon-text__icn" fontSet="material-symbols-outlined"
-      >tag</mat-icon
-    >
-    Entwicklerteam
-  </button>
-  <button class="icon-text is-active btn">
-    <mat-icon class="icon-text__icn" fontSet="material-symbols-outlined"
-      >tag</mat-icon
-    >
-    <span>Office-Team</span>
-  </button>
+  <div *ngFor="let channel of channelService.userChannels; let i = index">
+    <button class="icon-text btn">
+      <mat-icon class="icon-text__icn" fontSet="material-symbols-outlined">
+        tag
+      </mat-icon>
+      {{ channel.channelName }}
+    </button>
+  </div>
   <button (click)="openCreateChannelDialog()" class="btn icon-text btn--text">
     <mat-icon fontSet="material-symbols-outlined" class="icon-text__icn"
       >add_circle</mat-icon
