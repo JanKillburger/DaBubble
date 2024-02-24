@@ -24,6 +24,7 @@ export class FirebaseChannelService {
 
   allChannels: Channel[];
   currentChannel?: Channel;
+  currentUser: string = 'yoYpfM7zqselK2fBnIdS'
   userChannels: ChannelData[] = [];
   userChannelsMessages: Map<string, any[]> = new Map();
   unsubUserChannels: any[] = [];
@@ -31,7 +32,7 @@ export class FirebaseChannelService {
 
   constructor() {
     this.unsubChannels = this.subChannelsList();
-    this.unsubUserChannels.push(this.getUserChannels("yoYpfM7zqselK2fBnIdS"));
+    this.unsubUserChannels.push(this.getUserChannels(this.currentUser));
     this.allChannels = [];
   }
 
