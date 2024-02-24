@@ -4,6 +4,7 @@ import {
   addDoc,
   collection,
   doc,
+  getDocs,
   onSnapshot,
   orderBy,
   query,
@@ -21,7 +22,8 @@ export class FirebaseChannelService {
   firestore: Firestore = inject(Firestore);
   channelId: string = '';
 
-  //Jan
+  allChannels: Channel[];
+  currentChannel?: Channel;
   userChannels: any[] = [];
   userChannelsMessages: Map<string, any[]> = new Map();
   unsubUserChannels: any[] = [];
@@ -30,6 +32,7 @@ export class FirebaseChannelService {
   constructor() {
     this.unsubChannels = this.subChannelsList();
     this.unsubUserChannels.push(this.getUserChannels("yoYpfM7zqselK2fBnIdS"));
+    this.allChannels = [];
   }
 
   getUserChannels(userId: string) {//aktuell noch hard-coded gegen Testnutzer Noah Braun abgefragt
@@ -89,17 +92,29 @@ export class FirebaseChannelService {
     return collection(this.firestore, 'channels');
   }
 
-  getSingleChannelRef(UserId: string) {
-    return doc(collection(this.firestore, 'users'), UserId);
+  getSingleChannelRef(ChannelId: string) {
+    return doc(collection(this.firestore, 'channels'), ChannelId);
+  }
+
+  getCurrentChannel(ChannelId: string) {
+    onSnapshot(this.getSingleChannelRef(ChannelId), (element) => {
+      this.currentChannel = new Channel(element.data());
+    });
   }
 
   async addChannel(channel: any): Promise<string> {
-    const docRef = await addDoc(collection(this.firestore, 'channels'), channel.toJson());
+    const docRef = await addDoc(
+      collection(this.firestore, 'channels'),
+      channel.toJson()
+    );
     this.channelId = docRef.id;
     return this.channelId;
   }
 
-  async updateChannel(editChannel: any, editChannelId: string): Promise<boolean> {
+  async updateChannel(
+    editChannel: any,
+    editChannelId: string
+  ): Promise<boolean> {
     try {
       await updateDoc(
         this.getSingleChannelRef(editChannelId),
@@ -110,6 +125,15 @@ export class FirebaseChannelService {
       console.error(error);
       return false;
     }
+  }
+
+  async getChannelData() {
+    this.allChannels = [];
+    let querySnapshot = await getDocs(collection(this.firestore, 'channels'));
+    querySnapshot.forEach((channel: any) => {
+      let channelData: Channel = channel.data();
+      this.allChannels.push(channelData);
+    });
   }
 }
 
