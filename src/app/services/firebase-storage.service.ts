@@ -5,7 +5,6 @@ import {
   getStorage,
   ref,
   uploadBytes,
-  deleteObject,
   getDownloadURL,
 } from 'firebase/storage';
 import { BehaviorSubject } from 'rxjs';
