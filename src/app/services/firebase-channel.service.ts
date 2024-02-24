@@ -54,8 +54,15 @@ export class FirebaseChannelService {
     const messagesRef = query(collection(this.firestore, "channels", channelId, "messages"), orderBy("timestamp"));
     return onSnapshot(messagesRef, messages => {
       const messagesArr: any[] = [];
+      let dayKey = '';
+      let currentIndex = 0;
       messages.forEach(message => {
-        messagesArr.push(message.data());
+        if (message.data()['date'] === dayKey) {
+          messagesArr[currentIndex].push(message.data());
+        } else {
+          dayKey = message.data()['date'];
+          currentIndex = messagesArr.push({ [dayKey]: [message.data()] }) - 1;
+        }
       });
       this.userChannelsMessages.set(channelId, messagesArr);
       console.log(this.userChannelsMessages);
