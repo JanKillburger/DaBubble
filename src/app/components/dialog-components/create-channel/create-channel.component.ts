@@ -72,7 +72,7 @@ export class CreateChannelComponent {
       panelClass: 'default-container',
       data: this.channelId,
       maxWidth: '514px',
-      width: '100%'
+      width: '100%',
     });
   }
 }
