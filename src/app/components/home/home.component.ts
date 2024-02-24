@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgClass, NgIf } from '@angular/common';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UserDialogComponent } from '../dialog-components/user-dialog/user-dialog.component';
 import { ViewportService } from '../../services/viewport.service';
@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MAX_INLINE_WIDTH, LARGE_WIDTH, MEDIUM_WIDTH, SMALL_WIDTH } from '../../../global-constants';
 import { UsersToChannelComponent } from '../dialog-components/users-to-channel/users-to-channel.component';
 import { Subscription } from 'rxjs';
+import { FirebaseChannelService } from '../../services/firebase-channel.service';
+import { channel } from 'diagnostics_channel';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +30,7 @@ export class HomeComponent {
   @ViewChild('dialogTrigger') dialogTrigger!: ElementRef;
   @ViewChild('triggerUserDialog') triggerUserDialog!: ElementRef;
   private breakpointSubscription!: Subscription;
+  channels: any[] = [];
 
   constructor(
     public dialog: MatDialog,

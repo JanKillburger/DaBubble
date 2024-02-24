@@ -7,6 +7,7 @@ import {
   onSnapshot,
   query,
   updateDoc,
+  where,
 } from '@angular/fire/firestore';
 import { Channel } from '../models/channel.class';
 
@@ -17,14 +18,30 @@ export class FirebaseChannelService {
   channels: ChannelData[] = [];
   unsubChannels;
   firestore: Firestore = inject(Firestore);
-  channelId: string = ''
+  channelId: string = '';
+
+  //Jan
+  userChannels: any[] = [];
+  unsubUserChannels;
 
   constructor() {
     this.unsubChannels = this.subChannelsList();
+    this.unsubUserChannels = this.getUserChannels("yoYpfM7zqselK2fBnIdS");
   }
 
-  ngonDestroy() {
+  getUserChannels(userId: string) {//aktuell noch hard-coded gegen Testnutzer Noah Braun abgefragt
+    const q = query(collection(this.firestore, "channels"), where("users", "array-contains", userId));
+    return onSnapshot(q, channel => {
+      this.userChannels = [];
+      channel.forEach(doc => {
+        this.userChannels.push(doc.data());
+      })
+    })
+  }
+
+  ngOnDestroy() {
     this.unsubChannels();
+    this.unsubUserChannels();
   }
 
   subChannelsList() {

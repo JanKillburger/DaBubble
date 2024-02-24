@@ -27,7 +27,7 @@
     <app-nav-menu></app-nav-menu>
   </nav>
   <section class="channel-container main-item" *ngIf="channelVisible">
-    <app-channel (openThreadEv)="openThread()"></app-channel>
+    <app-channel [channel]="channels[0]" (openThreadEv)="openThread()"></app-channel>
   </section>
   <aside
     class="thread-container main-item"
