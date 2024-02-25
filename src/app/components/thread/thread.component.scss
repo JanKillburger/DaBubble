@@ -6,6 +6,8 @@
 
 .messages-wrapper {
   flex: auto;
+  max-height: 60vh;
+  overflow: auto;
 }
 
 .channel {
