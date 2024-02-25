@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { JsonPipe, KeyValuePipe, NgClass, NgIf } from '@angular/common';
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,11 +9,12 @@ import { UserData } from '../../services/firebase-user.service';
 @Component({
   selector: 'app-message',
   standalone: true,
-  imports: [NgClass, NgIf, MatIconModule, MatButtonModule],
+  imports: [NgClass, NgIf, MatIconModule, MatButtonModule, KeyValuePipe, JsonPipe],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss'
 })
 export class MessageComponent {
+  @Input() message!: object;
   @Input() isMyMessage!: boolean;
   @Input() showReplies = false;
   @Output() openThreadEv = new EventEmitter<string>;

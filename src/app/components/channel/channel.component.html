@@ -24,5 +24,8 @@
   </div>
 </header>
 <app-messages-container
+  *ngFor="let messagesByDay of getChannelMessages() | keyvalue"
+  [messages]="messagesByDay.value"
+  [date]="messagesByDay.key"
   (openThreadEv)="openThread($event)"
 ></app-messages-container>

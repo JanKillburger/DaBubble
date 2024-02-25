@@ -25,7 +25,7 @@ export class FirebaseChannelService {
   allChannels: Channel[];
   currentChannel?: Channel;
   userChannels: ChannelData[] = [];
-  userChannelsMessages: Map<string, any[]> = new Map();
+  userChannelsMessages: Map<string, messages> = new Map();
   unsubUserChannels: any[] = [];
   unsubUserChannelsMessages: any[] = [];
 
@@ -43,7 +43,7 @@ export class FirebaseChannelService {
         this.userChannels.push(channel.data() as ChannelData);
         if (!this.userChannelsMessages.has(channel.id)) {
           console.log('subscribing channel', channel.data()['channelName']);
-          this.userChannelsMessages.set(channel.id, []);
+          this.userChannelsMessages.set(channel.id, {});
           this.unsubUserChannelsMessages.push(this.getChannelMessages(channel.id));
         }
       })
@@ -53,18 +53,17 @@ export class FirebaseChannelService {
   getChannelMessages(channelId: string) {
     const messagesRef = query(collection(this.firestore, "channels", channelId, "messages"), orderBy("timestamp"));
     return onSnapshot(messagesRef, messages => {
-      const messagesArr: any[] = [];
+      const messagesObj:messages = {};
       let dayKey = '';
-      let currentIndex = 0;
       messages.forEach(message => {
         if (message.data()['date'] === dayKey) {
-          messagesArr[currentIndex].push(message.data());
+          messagesObj[dayKey].push(message.data());
         } else {
           dayKey = message.data()['date'];
-          currentIndex = messagesArr.push({ [dayKey]: [message.data()] }) - 1;
+          messagesObj[dayKey] = [message.data()];
         }
       });
-      this.userChannelsMessages.set(channelId, messagesArr);
+      this.userChannelsMessages.set(channelId, messagesObj);
       console.log(this.userChannelsMessages);
     }
     )
@@ -151,6 +150,6 @@ interface ChannelData {
   users: string[];
 }
 
-interface Message {
-  message: string;
+interface messages {
+  [key: string]: object[];
 }

@@ -1,9 +1,11 @@
 <div class="date-separator flex ai-c inner-container">
   <div class="hl"></div>
-  <span class="date">Dienstag, 14 Januar</span>
+  <span class="date">{{date}}</span>
   <div class="hl"></div>
 </div>
 <app-message
+  *ngFor="let message of messages"
+  [message]="message"
   [isMyMessage]="false"
   [showReplies]="true"
   (openThreadEv)="openThread($event)"
