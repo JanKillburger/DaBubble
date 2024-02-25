@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { UserProfileDialogComponent } from '../dialog-components/user-profile-dialog/user-profile-dialog.component';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { UserData } from '../../services/firebase-user.service';
+import { Message } from '../../services/firebase-channel.service';
 
 @Component({
   selector: 'app-message',
@@ -14,7 +15,7 @@ import { UserData } from '../../services/firebase-user.service';
   styleUrl: './message.component.scss'
 })
 export class MessageComponent {
-  @Input() message!: object;
+  @Input() message!: Message;
   @Input() isMyMessage!: boolean;
   @Input() showReplies = false;
   @Output() openThreadEv = new EventEmitter<string>;

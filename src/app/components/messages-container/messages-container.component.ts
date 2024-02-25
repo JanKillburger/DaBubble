@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MessageComponent } from '../message/message.component';
-import { FirebaseChannelService } from '../../services/firebase-channel.service';
+import { FirebaseChannelService, Message } from '../../services/firebase-channel.service';
 import { KeyValuePipe, NgFor } from '@angular/common';
 
 @Component({
@@ -12,7 +12,7 @@ import { KeyValuePipe, NgFor } from '@angular/common';
 })
 export class MessagesContainerComponent {
   @Input() date = '';
-  @Input() messages!: any;
+  @Input() messages!: Message[];
   @Input() channelId!: string;
   @Output() openThreadEv = new EventEmitter<string>;
 

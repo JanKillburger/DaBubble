@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import {
   Firestore,
+  QueryDocumentSnapshot,
   addDoc,
   collection,
   doc,
@@ -17,6 +18,9 @@ import { Channel } from '../models/channel.class';
   providedIn: 'root',
 })
 export class FirebaseChannelService {
+//https://medium.com/swlh/using-firestore-with-typescript-65bd2a602945
+//https://www.typescriptlang.org/docs/handbook/2/generics.html
+
   channels: ChannelData[] = [];
   unsubChannels;
   firestore: Firestore = inject(Firestore);
@@ -29,6 +33,10 @@ export class FirebaseChannelService {
   userChannelsMessages: Map<string, messages> = new Map();
   unsubUserChannels: any[] = [];
   unsubUserChannelsMessages: any[] = [];
+  converterMessage = {
+    toFirestore: (data: Message) => data,
+    fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as Message
+  }
 
   constructor() {
     this.unsubChannels = this.subChannelsList();
@@ -52,7 +60,7 @@ export class FirebaseChannelService {
   }
 
   getChannelMessages(channelId: string) {
-    const messagesRef = query(collection(this.firestore, "channels", channelId, "messages"), orderBy("timestamp"));
+    const messagesRef = query(collection(this.firestore, "channels", channelId, "messages"), orderBy("timestamp")).withConverter(this.converterMessage);
     return onSnapshot(messagesRef, messages => {
       const messagesObj:messages = {};
       let dayKey = '';
@@ -60,7 +68,7 @@ export class FirebaseChannelService {
         if (message.data()['date'] === dayKey) {
           messagesObj[dayKey].push(message.data());
         } else {
-          dayKey = message.data()['date'];
+          dayKey = message.data()['date']!;
           messagesObj[dayKey] = [message.data()];
         }
       });
@@ -144,13 +152,21 @@ export class FirebaseChannelService {
   }
 }
 
-interface ChannelData {
+export interface ChannelData {
   id?: string;
   channelName: string;
   channelDescription: string;
   users: string[];
 }
 
-interface messages {
-  [key: string]: object[];
+export interface messages {
+  [key: string]: Message[];
+}
+
+export interface Message {
+  message: string;
+  from?: string;
+  created?: number;
+  date?: string;
+  reactions?: any[]
 }

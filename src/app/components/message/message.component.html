@@ -17,7 +17,7 @@
         class="message-content"
         [class.message-content--aligned-right]="isMyMessage"
       >
-        {{message | json}}
+        {{message?.message}}
       </p>
       <div class="reactions">
         <button mat-icon-button>
