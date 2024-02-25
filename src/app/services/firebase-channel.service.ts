@@ -18,8 +18,8 @@ import { Channel } from '../models/channel.class';
   providedIn: 'root',
 })
 export class FirebaseChannelService {
-//https://medium.com/swlh/using-firestore-with-typescript-65bd2a602945
-//https://www.typescriptlang.org/docs/handbook/2/generics.html
+  //https://medium.com/swlh/using-firestore-with-typescript-65bd2a602945
+  //https://www.typescriptlang.org/docs/handbook/2/generics.html
 
   channels: ChannelData[] = [];
   unsubChannels;
@@ -34,8 +34,15 @@ export class FirebaseChannelService {
   unsubUserChannels: any[] = [];
   unsubUserChannelsMessages: any[] = [];
   converterMessage = {
-    toFirestore: (data: Message) => data,
-    fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as Message
+    toFirestore: (data: Message) => {
+      delete data.created;
+      return data;
+    },
+    fromFirestore: (snap: QueryDocumentSnapshot) => {
+      const rawData = snap.data();
+      rawData['created'] = new Date(snap.data()['timestamp']);
+      return rawData as Message;
+    }
   }
 
   constructor() {
@@ -62,7 +69,7 @@ export class FirebaseChannelService {
   getChannelMessages(channelId: string) {
     const messagesRef = query(collection(this.firestore, "channels", channelId, "messages"), orderBy("timestamp")).withConverter(this.converterMessage);
     return onSnapshot(messagesRef, messages => {
-      const messagesObj:messages = {};
+      const messagesObj: messages = {};
       let dayKey = '';
       messages.forEach(message => {
         if (message.data()['date'] === dayKey) {
@@ -168,5 +175,6 @@ export interface Message {
   from?: string;
   timestamp?: number;
   date?: string;
-  reactions?: any[]
+  reactions?: any[];
+  created?: Date
 }

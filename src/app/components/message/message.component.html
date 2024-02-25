@@ -11,7 +11,7 @@
         [class.aligned-right]="isMyMessage"
       >
         <button class="btn btn--text user-name" (click)="showUserProfile()">{{message.from}}</button>
-        <span class="message-time">{{message.timestamp}}</span>
+        <span class="message-time">{{message.created | date:'shortDate'}}</span>
       </p>
       <p
         class="message-content"

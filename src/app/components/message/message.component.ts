@@ -1,4 +1,4 @@
-import { JsonPipe, KeyValuePipe, NgClass, NgIf } from '@angular/common';
+import { DatePipe, JsonPipe, KeyValuePipe, NgClass, NgIf } from '@angular/common';
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,7 +10,7 @@ import { Message } from '../../services/firebase-channel.service';
 @Component({
   selector: 'app-message',
   standalone: true,
-  imports: [NgClass, NgIf, MatIconModule, MatButtonModule, KeyValuePipe, JsonPipe],
+  imports: [NgClass, NgIf, MatIconModule, MatButtonModule, KeyValuePipe, JsonPipe, DatePipe],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss'
 })
