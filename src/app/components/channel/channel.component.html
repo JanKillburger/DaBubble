@@ -2,7 +2,9 @@
   <div class="inner-container flex jc-sb ai-c">
     <button class="btn title-text toggle-channel-menu flex ai-c">
       <mat-icon fontSet="material-symbols-outlined">tag</mat-icon>
-      <span class="channel-name">{{channelService.userChannels[0]?.channelName}}</span>
+      <span class="channel-name">{{
+        channelService.userChannels[0]?.channelName
+      }}</span>
       <mat-icon fontSet="material-symbols-outlined"
         >keyboard_arrow_down</mat-icon
       >
@@ -23,10 +25,12 @@
     </div>
   </div>
 </header>
-<app-messages-container
-  *ngFor="let messagesByDay of getChannelMessages() | keyvalue"
-  [messages]="messagesByDay.value"
-  [date]="messagesByDay.key"
-  (openThreadEv)="openThread($event)"
-></app-messages-container>
+<div class="messages-wrapper">
+  <app-messages-container
+    *ngFor="let messagesByDay of getChannelMessages() | keyvalue"
+    [messages]="messagesByDay.value"
+    [date]="messagesByDay.key"
+    (openThreadEv)="openThread($event)"
+  ></app-messages-container>
+</div>
 <app-messages-input></app-messages-input>

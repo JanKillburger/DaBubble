@@ -1,3 +1,13 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.messages-wrapper {
+  flex: auto;
+}
+
 .toggle-channel-menu {
   column-gap: 0.5em;
   padding: 0.3em;
