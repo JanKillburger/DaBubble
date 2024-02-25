@@ -9,9 +9,17 @@
         <input class="addFileInput" type="file" />
       </div>
       <hr />
-      <button mat-icon-button>
-        <mat-icon fontSet="material-symbols-outlined">Mood</mat-icon>
-      </button>
+      <div>
+        <button mat-icon-button (click)="toggleEmojiPicker()">
+          <mat-icon fontSet="material-symbols-outlined">Mood</mat-icon>
+        </button>
+        <emoji-mart
+          class="emoji-mart"
+          *ngIf="showEmojiPicker"
+          (emojiSelect)="addEmoji($event)"
+          title="Pick your emoji…"
+        ></emoji-mart>
+      </div>
       <button mat-icon-button>
         <mat-icon fontSet="material-symbols-outlined">alternate_email</mat-icon>
       </button>
