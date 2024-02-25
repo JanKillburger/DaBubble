@@ -166,7 +166,7 @@ export interface messages {
 export interface Message {
   message: string;
   from?: string;
-  created?: number;
+  timestamp?: number;
   date?: string;
   reactions?: any[]
 }

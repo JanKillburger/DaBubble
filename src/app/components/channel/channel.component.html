@@ -2,7 +2,7 @@
   <div class="inner-container flex jc-sb ai-c">
     <button class="btn title-text toggle-channel-menu flex ai-c">
       <mat-icon fontSet="material-symbols-outlined">tag</mat-icon>
-      <span class="channel-name">{{getChannel()?.channelName}}</span>
+      <span class="channel-name">{{channelService.userChannels[0]?.channelName}}</span>
       <mat-icon fontSet="material-symbols-outlined"
         >keyboard_arrow_down</mat-icon
       >

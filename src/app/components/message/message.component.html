@@ -10,14 +10,14 @@
         class="message-meta-data flex ai-c"
         [class.aligned-right]="isMyMessage"
       >
-        <button class="btn btn--text user-name" (click)="showUserProfile()">Noah Braun</button>
-        <span class="message-time">14:25 Uhr</span>
+        <button class="btn btn--text user-name" (click)="showUserProfile()">{{message.from}}</button>
+        <span class="message-time">{{message.timestamp}}</span>
       </p>
       <p
         class="message-content"
         [class.message-content--aligned-right]="isMyMessage"
       >
-        {{message?.message}}
+        {{message.message}}
       </p>
       <div class="reactions">
         <button mat-icon-button>

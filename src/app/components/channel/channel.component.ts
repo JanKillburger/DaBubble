@@ -34,7 +34,7 @@ export class ChannelComponent {
   @Input() channel = {};
   selectedChannel = 'yVkv2vilL4lVvya74f9Z';;
 
-  constructor(private channelService: FirebaseChannelService) {}
+  constructor(public channelService: FirebaseChannelService) {}
 
   openThread(ev: string) {
     this.openThreadEv.emit();
