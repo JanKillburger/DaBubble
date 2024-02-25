@@ -1,0 +1,25 @@
+<form>
+  <input [formGroup]="messageForm" placeholder="Type your message" />
+  <div class="messageIcons">
+    <div class="appendIcons">
+      <div class="addFile">
+        <button mat-icon-button>
+          <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+        </button>
+        <input class="addFileInput" type="file" />
+      </div>
+      <hr />
+      <button mat-icon-button>
+        <mat-icon fontSet="material-symbols-outlined">Mood</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon fontSet="material-symbols-outlined">alternate_email</mat-icon>
+      </button>
+    </div>
+    <button mat-icon-button type="submit">
+      <mat-icon class="sendButton" fontSet="material-symbols-outlined"
+        >send</mat-icon
+      >
+    </button>
+  </div>
+</form>

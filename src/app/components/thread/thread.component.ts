@@ -2,11 +2,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MessageComponent } from '../message/message.component';
+import { MessagesInputComponent } from '../messages-input/messages-input.component';
 
 @Component({
   selector: 'app-thread',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MessageComponent],
+  imports: [MatIconModule, MatButtonModule, MessageComponent, MessagesInputComponent],
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss'
 })
