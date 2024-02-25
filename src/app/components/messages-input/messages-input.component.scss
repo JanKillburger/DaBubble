@@ -1,0 +1,61 @@
+form {
+  margin-top: auto;
+  border: 1px solid blue;
+  border-radius: 15px;
+  padding: 20px;
+  background-color: white;
+  margin-right: 45px;
+  margin-left: 45px;
+  position: relative;
+
+  input {
+    width: 100%;
+    outline: none;
+    border: none;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  .messageIcons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .appendIcons {
+      display: flex;
+      justify-content: flex-start;
+
+      hr {
+        margin-inline-start: unset;
+        margin-inline-end: unset;
+      }
+
+      .addFile {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        position: relative;
+
+        .addFileInput {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 15px;
+          width: 15px;
+          opacity: 0;
+        }
+      }
+    }
+
+    .sendButton {
+      color: #444df2;
+      &:hover {
+        background-color: transparent;
+
+        mat-icon {
+          color: #797ef3;
+        }
+      }
+    }
+  }
+}

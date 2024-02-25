@@ -7,7 +7,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { UsersToChannelComponent } from '../users-to-channel/users-to-channel.component';
@@ -29,6 +33,7 @@ import { Channel } from '../../../models/channel.class';
 export class CreateChannelComponent {
   constructor(
     public dialog: MatDialog,
+    private dialogRef: MatDialogRef<CreateChannelComponent>,
     private channelService: FirebaseChannelService
   ) {}
   channel = new Channel();
@@ -49,13 +54,14 @@ export class CreateChannelComponent {
   }
 
   async createChannel() {
-    let channelToModifyIndex = this.channelService.channels.findIndex(
+    let channelToModifyIndex = this.channelService.userChannels.findIndex(
       (channel) => channel.channelName === this.channelName?.value
     );
     if (channelToModifyIndex === -1) {
       this.nameExists = false;
       await this.addToChannel();
       this.openUseToChannelDialog();
+      this.dialogRef.close(true);
     } else {
       this.nameExists = true;
     }
@@ -64,6 +70,7 @@ export class CreateChannelComponent {
   async addToChannel() {
     this.channel.channelName = this.channelName?.value;
     this.channel.channelDescription = this.channelDescription?.value;
+    this.channel.users.push(this.channelService.currentUser);
     this.channelId = await this.channelService.addChannel(this.channel);
   }
 

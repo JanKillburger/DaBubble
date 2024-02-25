@@ -6,13 +6,23 @@ import { MessagesContainerComponent } from '../messages-container/messages-conta
 import { JsonPipe, KeyValuePipe, NgFor, NgStyle } from '@angular/common';
 import { json } from 'stream/consumers';
 import { FirebaseChannelService } from '../../services/firebase-channel.service';
+import { MessagesInputComponent } from '../messages-input/messages-input.component';
 
 @Component({
   selector: 'app-channel',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MessageComponent, MessagesContainerComponent, NgFor, NgStyle, JsonPipe, KeyValuePipe],
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    MessageComponent,
+    MessagesContainerComponent,
+    NgFor,
+    NgStyle,
+    JsonPipe,
+    MessagesInputComponent
+  , KeyValuePipe],
   templateUrl: './channel.component.html',
-  styleUrl: './channel.component.scss'
+  styleUrl: './channel.component.scss',
 })
 export class ChannelComponent {
   @Output() openThreadEv = new EventEmitter<void>();
@@ -20,11 +30,11 @@ export class ChannelComponent {
     'assets/img/login/SingIn/avatar1.png',
     'assets/img/login/SingIn/avatar2.png',
     'assets/img/login/SingIn/avatar3.png',
-  ]
+  ];
   @Input() channel = {};
-  selectedChannel = 'yVkv2vilL4lVvya74f9Z';
+  selectedChannel = 'yVkv2vilL4lVvya74f9Z';;
 
-  constructor(private channelService: FirebaseChannelService) { }
+  constructor(private channelService: FirebaseChannelService) {}
 
   openThread(ev: string) {
     this.openThreadEv.emit();
