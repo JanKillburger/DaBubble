@@ -1,12 +1,12 @@
 <form>
-  <input [formGroup]="messageForm" placeholder="Type your message" />
+  <input placeholder="Type your message" [(ngModel)]="message" />
   <div class="messageIcons">
     <div class="appendIcons">
       <div class="addFile">
-        <button mat-icon-button>
+        <button mat-icon-button (click)="fileInput.click()">
           <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
         </button>
-        <input class="addFileInput" type="file" />
+        <input #fileInput class="addFileInput" type="file" />
       </div>
       <hr />
       <div>
@@ -17,17 +17,33 @@
           class="emoji-mart"
           *ngIf="showEmojiPicker"
           (emojiSelect)="addEmoji($event)"
-          title="Pick your emoji…"
         ></emoji-mart>
       </div>
-      <button mat-icon-button>
-        <mat-icon fontSet="material-symbols-outlined">alternate_email</mat-icon>
-      </button>
+      <div>
+        <button mat-icon-button (click)="showUser(toppingsSelect)">
+          <mat-icon fontSet="material-symbols-outlined"
+            >alternate_email
+          </mat-icon>
+        </button>
+        <mat-select
+          #toppingsSelect
+          [formControl]="pickUser"
+          multiple
+          style="display: ruby"
+        >
+          <mat-select-trigger>
+            {{''}}
+          </mat-select-trigger>
+          @for (users of userList; track users) {
+          <mat-option [value]="users">{{ users }}</mat-option>
+          }
+        </mat-select>
+      </div>
     </div>
     <button mat-icon-button type="submit">
-      <mat-icon class="sendButton" fontSet="material-symbols-outlined"
-        >send</mat-icon
-      >
+      <mat-icon class="sendButton" fontSet="material-symbols-outlined">
+        send
+      </mat-icon>
     </button>
   </div>
 </form>
