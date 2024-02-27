@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { FirebaseChannelService } from '../../../services/firebase-channel.service';
-import { FirebaseUserlService } from '../../../services/firebase-user.service';
+import { FirebaseUserService } from '../../../services/firebase-user.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { Channel } from '../../../models/channel.class';
@@ -35,7 +35,7 @@ export class UsersToChannelComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public channelId: any,
     private channelService: FirebaseChannelService,
-    public userService: FirebaseUserlService
+    public userService: FirebaseUserService
   ) {
     this.userService.getUserData();
     this.channelService.getCurrentChannel(this.channelId);

@@ -304,3 +304,16 @@ a {
   background-color: transparent;
   border: 1px solid var(--ligth-purple-lines, #adb0d9);
 }
+
+.cdk-overlay-pane {
+  width: auto!important;
+  max-width: 100%;
+}
+
+.mat-pseudo-checkbox-full.mat-pseudo-checkbox-checked {
+  background-color: #3f51b5!important;
+}
+
+.mat-mdc-select-arrow {
+  display: none;
+}

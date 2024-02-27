@@ -2,13 +2,14 @@ form {
   margin-top: auto;
   border: 1px solid blue;
   border-radius: 15px;
-  padding: 20px;
+  padding: 10px;
   background-color: white;
   margin-right: 45px;
   margin-left: 45px;
+  margin-bottom: 8px;
   position: relative;
 
-  input {
+  textarea {
     width: 100%;
     outline: none;
     border: none;
@@ -63,4 +64,5 @@ form {
 .emoji-mart{
   position: absolute;
   bottom: 0;
+  z-index: 1;
 }

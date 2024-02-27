@@ -63,12 +63,11 @@ export class ImgUploadComponent {
     }
   }
 
-  handleFile(file: File) {
+  async handleFile(file: File) {
     let fileType = this.checkFileType(file.name);
     if (fileType === 'jpg' || fileType === 'png') {
-      this.errorOnUlpoad = this.storage.uploadImageInStorage(this.userId, file);
+      this.errorOnUlpoad = await this.storage.uploadImageInStorage(this.userId, file);
       if (this.errorOnUlpoad) {
-        console.log('Passiert hier etwas?')
         this.storage.getImageFromStorage(this.userId);
         this.reloadAvatarSelection();
         setTimeout(() => {
@@ -76,7 +75,6 @@ export class ImgUploadComponent {
         }, 3000);
       }
     } else {
-
       this.wrongFileType = true
       setTimeout(() => {
         this.wrongFileType = false;

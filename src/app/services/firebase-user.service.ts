@@ -4,7 +4,7 @@ import { Firestore, collection, getDocs } from '@angular/fire/firestore';
 @Injectable({
   providedIn: 'root',
 })
-export class FirebaseUserlService {
+export class FirebaseUserService {
   firestore: Firestore = inject(Firestore);
   allUsers: UserData[] = [];
 
