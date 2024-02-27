@@ -15,7 +15,7 @@ import { FirebaseChannelService, Message } from '../../services/firebase-channel
   styleUrl: './message.component.scss'
 })
 export class MessageComponent {
-  @Input() message!: Message;
+  @Input() message?: Message;
   @Input() isMyMessage!: boolean;
   @Input() showReplies = false;
   @Output() openThreadEv = new EventEmitter<string>;

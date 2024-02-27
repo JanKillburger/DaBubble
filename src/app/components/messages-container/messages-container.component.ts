@@ -25,4 +25,8 @@ export class MessagesContainerComponent {
   getMessages() {
     return this.channelService.userChannelsMessages.get(this.channelId);
   }
+
+  getFormattedDay() {
+    return this.messages[0].date ? new Date(this.messages[0].date).toLocaleDateString('de-DE', {}) : undefined;
+  }
 }

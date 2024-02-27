@@ -11,13 +11,13 @@
         [class.aligned-right]="isMyMessage"
       >
         <button class="btn btn--text user-name" (click)="showUserProfile()">{{getUser()?.name}}</button>
-        <span class="message-time">{{message.created | date:'shortDate'}}</span>
+        <span class="message-time">{{message?.created | date:'shortDate'}}</span>
       </p>
       <p
         class="message-content"
         [class.message-content--aligned-right]="isMyMessage"
       >
-        {{message.message}}
+        {{message?.message}}
       </p>
       <div class="reactions">
         <button mat-icon-button>
