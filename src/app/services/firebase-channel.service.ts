@@ -31,7 +31,6 @@ export class FirebaseChannelService {
 
   allChannels: Channel[];
   currentChannel?: Channel;
-  currentUser: string = 'yoYpfM7zqselK2fBnIdS';
   users: Map<string, UserData> = new Map();
   userChannels: ChannelData[] = [];
   userChannelsMessages: Map<string, messages> = new Map();
