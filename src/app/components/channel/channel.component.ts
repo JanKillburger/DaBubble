@@ -45,7 +45,6 @@ export class ChannelComponent {
   }
 
   getChannelMessages() {
-    console.log('channel component', this.channelService.userChannelsMessages.get(this.selectedChannel));
     return this.channelService.userChannelsMessages.get(this.selectedChannel);
   }
 }

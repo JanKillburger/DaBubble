@@ -2,7 +2,7 @@
   <div class="message-wrapper" [class.aligned-right]="isMyMessage">
     <img
       class="avatar"
-      src="assets/img/login/SingIn/avatar1.png"
+      [src]="getUser()?.avatar"
       alt="Profilbild"
     />
     <div class="message">
@@ -10,7 +10,7 @@
         class="message-meta-data flex ai-c"
         [class.aligned-right]="isMyMessage"
       >
-        <button class="btn btn--text user-name" (click)="showUserProfile()">{{message.from}}</button>
+        <button class="btn btn--text user-name" (click)="showUserProfile()">{{getUser()?.name}}</button>
         <span class="message-time">{{message.created | date:'shortDate'}}</span>
       </p>
       <p

@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { UserProfileDialogComponent } from '../dialog-components/user-profile-dialog/user-profile-dialog.component';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { UserData } from '../../services/firebase-user.service';
-import { Message } from '../../services/firebase-channel.service';
+import { FirebaseChannelService, Message } from '../../services/firebase-channel.service';
 
 @Component({
   selector: 'app-message',
@@ -21,7 +21,8 @@ export class MessageComponent {
   @Output() openThreadEv = new EventEmitter<string>;
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public channelService: FirebaseChannelService
   ) { }
 
   openThread(ev: Event) {
@@ -30,5 +31,9 @@ export class MessageComponent {
 
   showUserProfile() {
     this.dialog.open(UserProfileDialogComponent, { data: { name: "Noah Braun", email: "nbraun@email.de" } });
+  }
+
+  getUser(): UserData | undefined {
+   return this.message?.from ? this.channelService.users.get(this.message.from) : undefined;
   }
 }

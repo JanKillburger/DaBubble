@@ -13,6 +13,8 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { Channel } from '../models/channel.class';
+import { User } from '@angular/fire/auth';
+import { UserData } from './firebase-user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,9 +30,11 @@ export class FirebaseChannelService {
 
   allChannels: Channel[];
   currentChannel?: Channel;
-  currentUser: string = 'yoYpfM7zqselK2fBnIdS'
+  currentUser: string = 'yoYpfM7zqselK2fBnIdS';
+  users: Map<string, UserData> = new Map();
   userChannels: ChannelData[] = [];
   userChannelsMessages: Map<string, messages> = new Map();
+  unsubUsers: any[] = [];
   unsubUserChannels: any[] = [];
   unsubUserChannelsMessages: any[] = [];
   converterMessage = {
@@ -43,6 +47,10 @@ export class FirebaseChannelService {
       rawData['created'] = new Date(snap.data()['timestamp']);
       return rawData as Message;
     }
+  };
+  converterUser = {
+    toFirestore: (data: UserData) => data,
+    fromFirestore: (snap: QueryDocumentSnapshot) => { return snap.data() as UserData }
   }
 
   constructor() {
@@ -57,13 +65,23 @@ export class FirebaseChannelService {
       this.userChannels = [];
       channels.forEach(channel => {
         this.userChannels.push(channel.data() as ChannelData);
+        this.getChannelUsers(channel.data() as ChannelData);
         if (!this.userChannelsMessages.has(channel.id)) {
-          console.log('subscribing channel', channel.data()['channelName']);
           this.userChannelsMessages.set(channel.id, {});
           this.unsubUserChannelsMessages.push(this.getChannelMessages(channel.id));
         }
       })
     })
+  }
+
+  getChannelUsers(channel: ChannelData) {
+    for (let user of channel.users) {
+      if (!this.users.has(user)) {
+        this.unsubUsers.push(onSnapshot(doc(this.firestore, "users", user).withConverter(this.converterUser), user => {
+          this.users.set(user.id, user.data() as UserData);
+        }))
+      }
+    }
   }
 
   getChannelMessages(channelId: string) {
@@ -80,7 +98,6 @@ export class FirebaseChannelService {
         }
       });
       this.userChannelsMessages.set(channelId, messagesObj);
-      console.log(this.userChannelsMessages);
     }
     )
   }
@@ -89,6 +106,7 @@ export class FirebaseChannelService {
     this.unsubChannels();
     this.unsubUserChannels.forEach(unsub => unsub());
     this.unsubUserChannelsMessages.forEach(unsub => unsub());
+    this.unsubUsers.forEach(unsub => unsub());
   }
 
   subChannelsList() {
