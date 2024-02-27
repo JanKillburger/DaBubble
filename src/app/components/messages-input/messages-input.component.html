@@ -1,12 +1,24 @@
 <form>
-  <input placeholder="Type your message" [(ngModel)]="message" />
+  <textarea
+    placeholder="Type your message"
+    [(ngModel)]="message"
+    name="textInput"
+    cols="30"
+    rows="1"
+  ></textarea>
   <div class="messageIcons">
     <div class="appendIcons">
       <div class="addFile">
         <button mat-icon-button (click)="fileInput.click()">
           <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
         </button>
-        <input #fileInput class="addFileInput" type="file" />
+        <input
+          #fileInput
+          class="addFileInput"
+          type="file"
+          (change)="onFileSelected($event)"
+          hidden
+        />
       </div>
       <hr />
       <div>
@@ -27,15 +39,15 @@
         </button>
         <mat-select
           #toppingsSelect
-          [formControl]="pickUser"
+          [formControl]="pickedUser"
           multiple
           style="display: ruby"
         >
           <mat-select-trigger>
-            {{''}}
+            {{ "" }}
           </mat-select-trigger>
           @for (users of userList; track users) {
-          <mat-option [value]="users">{{ users }}</mat-option>
+          <mat-option (click)="addUPickedUser()" [value]="users">{{ users }}</mat-option>
           }
         </mat-select>
       </div>

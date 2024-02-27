@@ -1,12 +1,20 @@
 import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { MatSelect } from '@angular/material/select';
+import { FirebaseStorageService } from '../../services/firebase-storage.service';
+import { FirebaseChannelService } from '../../services/firebase-channel.service';
+import { FirebaseUserService } from '../../services/firebase-user.service';
 
 @Component({
   selector: 'app-messages-input',
@@ -29,8 +37,16 @@ export class MessagesInputComponent {
   message = '';
   userToPick: boolean = false;
   messageForm: FormGroup = new FormGroup({});
-  pickUser = new FormControl('');
-  userList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+  pickedUser = new FormControl('');
+  userList: string[] = [];
+  currentUserList: string[] = [];
+  currentUserString: string = '';
+
+  constructor(
+    private storage: FirebaseStorageService,
+    private channels: FirebaseChannelService,
+    private users: FirebaseUserService
+  ) {}
 
   toggleEmojiPicker() {
     console.log(this.showEmojiPicker);
@@ -38,17 +54,93 @@ export class MessagesInputComponent {
   }
 
   addEmoji(event: any) {
-    console.log(this.message);
     const { message } = this;
-    console.log(message);
-    console.log(`${event.emoji.native}`);
     const text = `${message}${event.emoji.native}`;
-
     this.message = text;
-    // this.showEmojiPicker = false;
   }
 
-  showUser(select: MatSelect): void {
-    select.open(); // Öffnet die mat-select-Komponente
+  async showUser(select: MatSelect): Promise<void> {
+    await this.getUsersOfChannel();
+    setTimeout(() => {
+      select.open();
+    }, 1000);
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+    const file = input.files[0];
+    this.handleFile(file);
+  }
+
+  async handleFile(file: File) {
+    await this.storage.uploadImageInStorage(file.name, file);
+    await this.storage.getFileFromStorage(file.name);
+    const text = `${this.storage.fileUrl} ${this.message}`;
+    this.message = text;
+  }
+
+  async getUsersOfChannel() {
+    this.userList = [];
+    await this.users.getUserData();
+    await this.channels.getCurrentChannel('r9pAinLencc8VLsKWeXe');
+    this.channels.currentChannel?.users.forEach((usersInChannel) => {
+      this.filterUserName(usersInChannel);
+    });
+  }
+
+  filterUserName(channelUsers: string) {
+    let searchedUser = this.users.allUsers.find(
+      (user) => user.userId === channelUsers
+    );
+    if (searchedUser) {
+      this.userList.push(searchedUser.name);
+    } else {
+      console.log('Benutzer nicht gefunden');
+    }
+  }
+
+  addUPickedUser() {
+    let userList = this.pickedUser.value ? [this.pickedUser.value] : [];
+    this.message = this.removeMatchingSubstrings(
+      this.currentUserString,
+      this.message
+    );
+    this.synchronizeLists(userList, this.currentUserList);
+    this.currentUserString = this.createStringFromUserList(
+      this.currentUserList
+    );
+    const text = `${this.currentUserString} ${this.message}`;
+    this.message = text;
+  }
+
+  synchronizeLists(listA: string[], listB: string[]) {
+    listA.forEach((item) => {
+      if (!listB.includes(item)) {
+        listB.push(item);
+      }
+    });
+
+    listB.forEach((item, index) => {
+      if (!listA.includes(item)) {
+        listB.splice(index, 1);
+      }
+    });
+  }
+
+  removeMatchingSubstrings(stringA: string, stringB: string) {
+    let substrings = stringA.split(', ');
+    substrings.forEach((substring) => {
+      stringB = stringB.replace(substring, '');
+    });
+    return stringB;
+  }
+
+  createStringFromUserList(currentUserList: string[]) {
+    let text = '';
+    currentUserList.forEach((user) => {
+      text += `@${user} `;
+    });
+    return text;
   }
 }

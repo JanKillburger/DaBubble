@@ -25,10 +25,10 @@ export class FirebaseChannelService {
   unsubChannels;
   firestore: Firestore = inject(Firestore);
   channelId: string = '';
+  currentUser: string = 'yoYpfM7zqselK2fBnIdS'
 
   allChannels: Channel[];
   currentChannel?: Channel;
-  currentUser: string = 'yoYpfM7zqselK2fBnIdS'
   userChannels: ChannelData[] = [];
   userChannelsMessages: Map<string, messages> = new Map();
   unsubUserChannels: any[] = [];
@@ -118,8 +118,8 @@ export class FirebaseChannelService {
     return doc(collection(this.firestore, 'channels'), ChannelId);
   }
 
-  getCurrentChannel(ChannelId: string) {
-    onSnapshot(this.getSingleChannelRef(ChannelId), (element) => {
+  async getCurrentChannel(ChannelId: string) {
+    await onSnapshot(this.getSingleChannelRef(ChannelId), (element) => {
       this.currentChannel = new Channel(element.data());
     });
   }
