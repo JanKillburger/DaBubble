@@ -3,7 +3,7 @@
     <button class="btn title-text toggle-channel-menu flex ai-c">
       <mat-icon fontSet="material-symbols-outlined">tag</mat-icon>
       <span class="channel-name">{{
-        channelService.userChannels[0]?.channelName
+        getChannel()?.channelName
       }}</span>
       <mat-icon fontSet="material-symbols-outlined"
         >keyboard_arrow_down</mat-icon
@@ -17,7 +17,7 @@
           [src]="member"
           [ngStyle]="{ 'margin-left.px': -8 }"
         />
-        <span class="members-count">3</span>
+        <span class="members-count">{{getChannel()?.users?.length}}</span>
       </button>
       <button mat-icon-button>
         <mat-icon fontSet="material-symbols-outlined">person_add</mat-icon>

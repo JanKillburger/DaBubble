@@ -34,7 +34,9 @@ export class FirebaseChannelService {
   users: Map<string, UserData> = new Map();
   userChannels: ChannelData[] = [];
   userChannelsMessages: Map<string, messages> = new Map();
+  replies: Map<string, Message[]> = new Map();
   unsubUsers: any[] = [];
+  unsubReplies: any[] = [];
   unsubUserChannels: any[] = [];
   unsubUserChannelsMessages: any[] = [];
   converterMessage = {
@@ -65,6 +67,7 @@ export class FirebaseChannelService {
       this.userChannels = [];
       channels.forEach(channel => {
         this.userChannels.push(channel.data() as ChannelData);
+        this.userChannels.at(-1)!.id = channel.id;
         this.getChannelUsers(channel.data() as ChannelData);
         if (!this.userChannelsMessages.has(channel.id)) {
           this.userChannelsMessages.set(channel.id, {});
@@ -90,16 +93,30 @@ export class FirebaseChannelService {
       const messagesObj: messages = {};
       let dayKey = '';
       messages.forEach(message => {
+        const rawData = message.data();
+        rawData["id"] = message.id;
         if (message.data()['date'] === dayKey) {
-          messagesObj[dayKey].push(message.data());
+          messagesObj[dayKey].push(rawData);
         } else {
           dayKey = message.data()['date']!;
-          messagesObj[dayKey] = [message.data()];
+          messagesObj[dayKey] = [rawData];
         }
+        this.getMessageReplies(channelId, message.id);
       });
       this.userChannelsMessages.set(channelId, messagesObj);
     }
     )
+  }
+
+  getMessageReplies(channelId: string, messageId: string) {
+    const repliesRef = collection(this.firestore, "channels", channelId, "messages", messageId, "replies").withConverter(this.converterMessage);
+    if (!this.replies.has(messageId)) {
+      this.unsubReplies.push(onSnapshot(repliesRef, replies => {
+        const value: Message[] = [];
+        replies.forEach(reply => value.push(reply.data()));
+        this.replies.set(messageId, value);
+      }))
+    }
   }
 
   ngOnDestroy() {
@@ -189,6 +206,7 @@ export interface messages {
 }
 
 export interface Message {
+  id: string;
   message: string;
   from?: string;
   timestamp?: number;

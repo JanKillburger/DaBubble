@@ -12,7 +12,7 @@ import { KeyValuePipe, NgFor } from '@angular/common';
 })
 export class MessagesContainerComponent {
   @Input() date = '';
-  @Input() messages!: Message[];
+  @Input() messages!: Message[] | undefined;
   @Input() channelId!: string;
   @Output() openThreadEv = new EventEmitter<string>;
 
@@ -27,6 +27,6 @@ export class MessagesContainerComponent {
   }
 
   getFormattedDay() {
-    return this.messages[0].date ? new Date(this.messages[0].date).toLocaleDateString('de-DE', {}) : undefined;
+    return this.messages && this.messages[0].date ? new Date(this.messages[0].date).toLocaleDateString('de-DE', {}) : undefined;
   }
 }

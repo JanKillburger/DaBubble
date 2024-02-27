@@ -41,7 +41,7 @@ export class ChannelComponent {
   }
 
   getChannel() {
-    return this.channelService.userChannels[0];
+    return this.channelService.userChannels.find(channel => channel.id === this.selectedChannel);
   }
 
   getChannelMessages() {
