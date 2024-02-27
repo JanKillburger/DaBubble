@@ -36,4 +36,13 @@ export class MessageComponent {
   getUser(): UserData | undefined {
    return this.message?.from ? this.channelService.users.get(this.message.from) : undefined;
   }
+
+  getFormattedDay() {
+    if (this.message?.created) {
+      const date = new Date(this.message.created).toLocaleDateString('de-DE', {day: "2-digit", month: "2-digit", year: "2-digit"});
+      const time = new Date(this.message.created).toLocaleTimeString('de-DE', {hour: "2-digit", minute: "2-digit"});
+      return `${date} ${time}`
+    }
+    return undefined;
+  }
 }

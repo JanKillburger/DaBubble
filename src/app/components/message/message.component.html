@@ -11,7 +11,7 @@
         [class.aligned-right]="isMyMessage"
       >
         <button class="btn btn--text user-name" (click)="showUserProfile()">{{getUser()?.name}}</button>
-        <span class="message-time">{{message?.created | date:'shortDate'}}</span>
+        <span class="message-time">{{getFormattedDay()}}</span>
       </p>
       <p
         class="message-content"
