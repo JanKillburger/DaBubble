@@ -10,7 +10,7 @@
   </div>
 </header>
 <div class="messages-wrapper">
-  <app-message [message]="message" [isMyMessage]="false" [showReplies]="false"></app-message>
+  <app-message container="thread" [message]="message" [isMyMessage]="false" [showReplies]="false"></app-message>
   <div class="replies-header flex ai-c inner-container">
     <span>{{getReplies()?.length}} Antworten </span>
     <div class="separator"></div>

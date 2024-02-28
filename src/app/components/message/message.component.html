@@ -11,7 +11,7 @@
         [class.aligned-right]="isMyMessage"
       >
         <button class="btn btn--text user-name" (click)="showUserProfile()">{{getUser()?.name}}</button>
-        <span class="message-time">{{getFormattedDay()}}</span>
+        <span class="message-time">{{getFormattedDay(message?.created)}}</span>
       </p>
       <p
         class="message-content"
@@ -24,8 +24,8 @@
           <mat-icon fontSet="material-symbols-outlined">add_reaction</mat-icon>
         </button>
       </div>
-      <button (click)="openThread($event)" class="btn replies" *ngIf="showReplies">
-        1 Antwort <span class="last-reply">Letzte Antwort 14:25</span>
+      <button (click)="openThread($event)" class="btn replies" *ngIf="hasReplies() && container==='channel'">
+        {{getReplies()?.length}} @if (hasReplies() && getReplies()!.length > 1) {Antworten } @else {Antwort } <span class="last-reply">Letzte Antwort {{getLastReplyDate()}}</span>
       </button>
     </div>
   </div>
