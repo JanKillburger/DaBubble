@@ -14,12 +14,12 @@ export class MessagesContainerComponent {
   @Input() date = '';
   @Input() messages!: Message[] | undefined;
   @Input() channelId!: string;
-  @Output() openThreadEv = new EventEmitter<string>;
+  @Output() openThreadEv = new EventEmitter<Message>;
 
   constructor(private channelService: FirebaseChannelService) { }
 
-  openThread(thread: string) {
-    this.openThreadEv.emit('');
+  openThread(message: Message) {
+    this.openThreadEv.emit(message);
   }
 
   getMessages() {

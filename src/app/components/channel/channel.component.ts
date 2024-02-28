@@ -5,7 +5,7 @@ import { MessageComponent } from '../message/message.component';
 import { MessagesContainerComponent } from '../messages-container/messages-container.component';
 import { JsonPipe, KeyValuePipe, NgFor, NgStyle } from '@angular/common';
 import { json } from 'stream/consumers';
-import { ChannelData, FirebaseChannelService } from '../../services/firebase-channel.service';
+import { ChannelData, FirebaseChannelService, Message } from '../../services/firebase-channel.service';
 import { MessagesInputComponent } from '../messages-input/messages-input.component';
 
 @Component({
@@ -25,7 +25,7 @@ import { MessagesInputComponent } from '../messages-input/messages-input.compone
   styleUrl: './channel.component.scss',
 })
 export class ChannelComponent {
-  @Output() openThreadEv = new EventEmitter<void>();
+  @Output() openThreadEv = new EventEmitter<Message>();
   teamMembers = [
     'assets/img/login/SingIn/avatar1.png',
     'assets/img/login/SingIn/avatar2.png',
@@ -36,8 +36,8 @@ export class ChannelComponent {
 
   constructor(public channelService: FirebaseChannelService) {}
 
-  openThread(ev: string) {
-    this.openThreadEv.emit();
+  openThread(message: Message) {
+    this.openThreadEv.emit(message);
   }
 
   getChannelMessages() {

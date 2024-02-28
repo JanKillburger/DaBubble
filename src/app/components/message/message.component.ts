@@ -19,15 +19,15 @@ export class MessageComponent {
   @Input() isMyMessage!: boolean;
   @Input() showReplies = false;
   @Input() container: "thread" | "channel" = "thread";
-  @Output() openThreadEv = new EventEmitter<string>;
+  @Output() openThreadEv = new EventEmitter<Message>;
 
   constructor(
     public dialog: MatDialog,
     public channelService: FirebaseChannelService
   ) { }
 
-  openThread(ev: Event) {
-    this.openThreadEv.emit('');
+  openThread() {
+    this.openThreadEv.emit(this.message!);
   }
 
   showUserProfile() {

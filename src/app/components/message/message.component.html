@@ -24,7 +24,7 @@
           <mat-icon fontSet="material-symbols-outlined">add_reaction</mat-icon>
         </button>
       </div>
-      <button (click)="openThread($event)" class="btn replies" *ngIf="hasReplies() && container==='channel'">
+      <button (click)="openThread()" class="btn replies" *ngIf="hasReplies() && container==='channel'">
         {{getReplies()?.length}} @if (hasReplies() && getReplies()!.length > 1) {Antworten } @else {Antwort } <span class="last-reply">Letzte Antwort {{getLastReplyDate()}}</span>
       </button>
     </div>

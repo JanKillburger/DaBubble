@@ -16,16 +16,20 @@ import { NgFor } from '@angular/common';
 })
 export class ThreadComponent {
   @Input() channel!: ChannelData | undefined;
-  @Input() message: Message = {id: "frEnT8DXHxqDYEq2ZGD4", message: "Dies ist der Start eines Threads!", from: "x4CLz3LHfsVxLltxaFo1", created: new Date()};
+  @Input() message: Message | undefined = { id: "frEnT8DXHxqDYEq2ZGD4", message: "Dies ist der Start eines Threads!", from: "x4CLz3LHfsVxLltxaFo1", created: new Date() };
   @Output() closeThreadEv = new EventEmitter<void>;
 
-  constructor(private channelService: FirebaseChannelService) {}
+  constructor(private channelService: FirebaseChannelService) { }
 
   closeThread() {
     this.closeThreadEv.emit();
   }
 
   getReplies() {
-    return this.channelService.replies.get(this.message.id);
+    if (this.message) {
+      return this.channelService.replies.get(this.message?.id);
+    } else {
+      return undefined;
+    }
   }
 }
