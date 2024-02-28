@@ -119,6 +119,10 @@ export class FirebaseChannelService {
     }
   }
 
+  getReplies(messageId: string) {
+    return this.replies.get(messageId);
+  }
+
   ngOnDestroy() {
     this.unsubChannels();
     this.unsubUserChannels.forEach(unsub => unsub());

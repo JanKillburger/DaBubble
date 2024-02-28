@@ -3,7 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MessageComponent } from '../message/message.component';
 import { MessagesInputComponent } from '../messages-input/messages-input.component';
-import { FirebaseChannelService, Message } from '../../services/firebase-channel.service';
+import { ChannelData, FirebaseChannelService, Message } from '../../services/firebase-channel.service';
 import { MessagesContainerComponent } from '../messages-container/messages-container.component';
 import { NgFor } from '@angular/common';
 
@@ -15,6 +15,7 @@ import { NgFor } from '@angular/common';
   styleUrl: './thread.component.scss'
 })
 export class ThreadComponent {
+  @Input() channel!: ChannelData | undefined;
   @Input() message: Message = {id: "frEnT8DXHxqDYEq2ZGD4", message: "Dies ist der Start eines Threads!", from: "x4CLz3LHfsVxLltxaFo1", created: new Date()};
   @Output() closeThreadEv = new EventEmitter<void>;
 

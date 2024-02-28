@@ -5,7 +5,7 @@ import { MessageComponent } from '../message/message.component';
 import { MessagesContainerComponent } from '../messages-container/messages-container.component';
 import { JsonPipe, KeyValuePipe, NgFor, NgStyle } from '@angular/common';
 import { json } from 'stream/consumers';
-import { FirebaseChannelService } from '../../services/firebase-channel.service';
+import { ChannelData, FirebaseChannelService } from '../../services/firebase-channel.service';
 import { MessagesInputComponent } from '../messages-input/messages-input.component';
 
 @Component({
@@ -31,8 +31,8 @@ export class ChannelComponent {
     'assets/img/login/SingIn/avatar2.png',
     'assets/img/login/SingIn/avatar3.png',
   ];
-  @Input() channel = {};
-  selectedChannel = 'yVkv2vilL4lVvya74f9Z';;
+  @Input() channel!: ChannelData | undefined;
+  selectedChannel = 'yVkv2vilL4lVvya74f9Z';
 
   constructor(public channelService: FirebaseChannelService) {}
 
@@ -40,11 +40,11 @@ export class ChannelComponent {
     this.openThreadEv.emit();
   }
 
-  getChannel() {
-    return this.channelService.userChannels.find(channel => channel.id === this.selectedChannel);
-  }
-
   getChannelMessages() {
-    return this.channelService.userChannelsMessages.get(this.selectedChannel);
+    if (this.channel?.id) {
+      return this.channelService.userChannelsMessages.get(this.channel.id);
+    } else {
+      return undefined;
+    }
   }
 }

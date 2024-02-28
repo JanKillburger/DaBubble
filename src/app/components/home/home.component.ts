@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MAX_INLINE_WIDTH, LARGE_WIDTH, MEDIUM_WIDTH, SMALL_WIDTH } from '../../../global-constants';
 import { UsersToChannelComponent } from '../dialog-components/users-to-channel/users-to-channel.component';
 import { Subscription } from 'rxjs';
-import { FirebaseChannelService } from '../../services/firebase-channel.service';
+import { ChannelData, FirebaseChannelService } from '../../services/firebase-channel.service';
 import { channel } from 'diagnostics_channel';
 
 @Component({
@@ -31,12 +31,13 @@ export class HomeComponent {
   @ViewChild('triggerUserDialog') triggerUserDialog!: ElementRef;
   private breakpointSubscription!: Subscription;
   channels: any[] = [];
+  selectedChannelId = "yVkv2vilL4lVvya74f9Z";
 
   constructor(
     public dialog: MatDialog,
     public viewport: ViewportService,
-    private responsive: BreakpointObserver) {
-  }
+    private responsive: BreakpointObserver,
+    private channelService: FirebaseChannelService) { }
 
   ngOnInit() {
     this.breakpointSubscription = this.responsive.observe([
@@ -63,7 +64,7 @@ export class HomeComponent {
           this.threadVisibleMq = true;
           this.channelVisible = true;
         }
-      })
+      });
   }
 
   ngOnDestroy() {
@@ -111,5 +112,9 @@ export class HomeComponent {
   openUserDialog() {
     const positionDetails = this.viewport.getPositionRelativeTo(this.triggerUserDialog, "bottom", "right");
     this.dialog.open(UserDialogComponent, { panelClass: 'custom-container', position: positionDetails, data: positionDetails });
-  } 
+  }
+
+  getSelectedChannel() {
+    return this.channelService.userChannels.find(channel => channel.id === this.selectedChannelId);
+  }
 }
