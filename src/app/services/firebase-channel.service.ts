@@ -61,7 +61,7 @@ export class FirebaseChannelService {
     this.allChannels = [];
   }
 
-  getUserChannels(userId: string) {//aktuell noch hard-coded gegen Testnutzer Noah Braun abgefragt
+  private getUserChannels(userId: string) {//aktuell noch hard-coded gegen Testnutzer Noah Braun abgefragt
     const q = query(collection(this.firestore, "channels"), where("users", "array-contains", userId));
     return onSnapshot(q, channels => {
       this.userChannels = [];
@@ -77,7 +77,7 @@ export class FirebaseChannelService {
     })
   }
 
-  getChannelUsers(channel: ChannelData) {
+  private getChannelUsers(channel: ChannelData) {
     for (let user of channel.users) {
       if (!this.users.has(user)) {
         this.unsubUsers.push(onSnapshot(doc(this.firestore, "users", user).withConverter(this.converterUser), user => {
@@ -87,7 +87,7 @@ export class FirebaseChannelService {
     }
   }
 
-  getChannelMessages(channelId: string) {
+  private getChannelMessages(channelId: string) {
     const messagesRef = query(collection(this.firestore, "channels", channelId, "messages"), orderBy("timestamp")).withConverter(this.converterMessage);
     return onSnapshot(messagesRef, messages => {
       const messagesObj: messages = {};
@@ -108,7 +108,7 @@ export class FirebaseChannelService {
     )
   }
 
-  getMessageReplies(channelId: string, messageId: string) {
+  private getMessageReplies(channelId: string, messageId: string) {
     const repliesRef = collection(this.firestore, "channels", channelId, "messages", messageId, "replies").withConverter(this.converterMessage);
     if (!this.replies.has(messageId)) {
       this.unsubReplies.push(onSnapshot(repliesRef, replies => {

@@ -5,11 +5,12 @@ import { MessageComponent } from '../message/message.component';
 import { MessagesInputComponent } from '../messages-input/messages-input.component';
 import { FirebaseChannelService, Message } from '../../services/firebase-channel.service';
 import { MessagesContainerComponent } from '../messages-container/messages-container.component';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-thread',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MessageComponent, MessagesInputComponent, MessagesContainerComponent],
+  imports: [MatIconModule, MatButtonModule, MessageComponent, MessagesInputComponent, MessagesContainerComponent, NgFor],
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss'
 })
