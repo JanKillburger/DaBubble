@@ -68,7 +68,7 @@ export class FirebaseChannelService {
     return onSnapshot(q, channels => {
       this.userChannels = [];
       channels.forEach(channel => {
-        if (this.userChannels.length === 0) this.homeService.setChannel(channel.data() as ChannelData);
+        if (this.userChannels.length === 0 && this.homeService.getScreenMode() !== "small") this.homeService.setChannel(channel.data() as ChannelData);
         this.userChannels.push(channel.data() as ChannelData);
         this.userChannels.at(-1)!.id = channel.id;
         this.getChannelUsers(channel.data() as ChannelData);

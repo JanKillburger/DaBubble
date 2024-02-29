@@ -18,36 +18,36 @@ export class HomeService {
   private breakpointSubscription!: Subscription;
 
   constructor(
-    private responsive: BreakpointObserver,) { 
-      this.breakpointSubscription = this.responsive.observe([
-        SMALL_WIDTH,
-        MEDIUM_WIDTH,
-        LARGE_WIDTH
-      ])
-        .subscribe(() => {
-  
-          if (this.responsive.isMatched(SMALL_WIDTH)) {
-            this.screenMode = "small";
-            if (this.navVisible) {
-              this.channelVisible = false;
-              this.threadVisibleMq = false;
-            }
-          } else if (this.responsive.isMatched(MEDIUM_WIDTH)) {
-            this.screenMode = "medium";
-            if (this.navVisible) {
-              this.channelVisible = true;
-              this.threadVisibleMq = false;
-            }
-          } else if (this.responsive.isMatched(LARGE_WIDTH)) {
-            this.screenMode = "large";
-            this.threadVisibleMq = true;
-            this.channelVisible = true;
+    private responsive: BreakpointObserver,) {
+    this.breakpointSubscription = this.responsive.observe([
+      SMALL_WIDTH,
+      MEDIUM_WIDTH,
+      LARGE_WIDTH
+    ])
+      .subscribe(() => {
+
+        if (this.responsive.isMatched(SMALL_WIDTH)) {
+          this.screenMode = "small";
+          if (this.navVisible) {
+            this.channelVisible = false;
+            this.threadVisibleMq = false;
           }
-        });
-    }
+        } else if (this.responsive.isMatched(MEDIUM_WIDTH)) {
+          this.screenMode = "medium";
+          if (this.navVisible) {
+            this.channelVisible = true;
+            this.threadVisibleMq = false;
+          }
+        } else if (this.responsive.isMatched(LARGE_WIDTH)) {
+          this.screenMode = "large";
+          this.threadVisibleMq = true;
+          this.channelVisible = true;
+        }
+      });
+  }
 
   ngOnInit() {
-    
+
   }
 
   ngOnDestroy() {
@@ -83,7 +83,9 @@ export class HomeService {
   }
 
   openChannel() {
-    this.navVisible = false;
+    if (this.screenMode === 'small') {
+      this.navVisible = false;
+    }
     this.channelVisible = true;
   }
 
@@ -110,6 +112,7 @@ export class HomeService {
   setChannel(channel: ChannelData) {
     if (channel !== this.selectedChannel) this.closeThread();
     this.selectedChannel = channel;
+    this.openChannel();
   }
 
   setThreadMessage(message: Message) {
@@ -123,5 +126,11 @@ export class HomeService {
 
   getThreadMessage() {
     return this.selectedMessage;
+  }
+
+  goToMenu() {
+    this.channelVisible = false;
+    this.threadVisible = false;
+    this.navVisible = true;
   }
 }

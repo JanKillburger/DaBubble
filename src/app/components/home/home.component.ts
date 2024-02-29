@@ -9,11 +9,12 @@ import { ThreadComponent } from '../thread/thread.component';
 import { MatIconModule } from '@angular/material/icon';
 import { UsersToChannelComponent } from '../dialog-components/users-to-channel/users-to-channel.component';
 import { HomeService } from '../../services/home.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatIconModule, NavMenuComponent, ChannelComponent, ThreadComponent, MatDialogModule, NgIf, NgClass, UsersToChannelComponent],
+  imports: [MatIconModule, NavMenuComponent, ChannelComponent, ThreadComponent, MatDialogModule, NgIf, NgClass, UsersToChannelComponent, MatButtonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -72,5 +73,9 @@ export class HomeComponent {
 
   isChannelVisible() {
     return this.homeService.isChannelVisible();
+  }
+
+  goToMenu() {
+    this.homeService.goToMenu();
   }
 }

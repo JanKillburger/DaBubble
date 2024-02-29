@@ -35,4 +35,8 @@ export class NavMenuComponent {
   openChannel(channel: ChannelData) {
     if (channel) this.homeService.setChannel(channel);
   }
+
+  getScreenMode() {
+    return this.homeService.getScreenMode();
+  }
 }
