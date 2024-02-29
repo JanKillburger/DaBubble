@@ -13,6 +13,7 @@ import { UsersToChannelComponent } from '../dialog-components/users-to-channel/u
 import { Subscription } from 'rxjs';
 import { ChannelData, FirebaseChannelService, Message, messages } from '../../services/firebase-channel.service';
 import { channel } from 'diagnostics_channel';
+import { HomeService } from '../../services/home.service';
 
 @Component({
   selector: 'app-home',
@@ -31,6 +32,8 @@ export class HomeComponent {
   @ViewChild('triggerUserDialog') triggerUserDialog!: ElementRef;
   private breakpointSubscription!: Subscription;
   channels: any[] = [];
+
+
   selectedChannelId = "yVkv2vilL4lVvya74f9Z";
   selectedMessage: Message | undefined;
 
@@ -38,7 +41,8 @@ export class HomeComponent {
     public dialog: MatDialog,
     public viewport: ViewportService,
     private responsive: BreakpointObserver,
-    private channelService: FirebaseChannelService) { }
+    private channelService: FirebaseChannelService,
+    private homeService: HomeService) { }
 
   ngOnInit() {
     this.breakpointSubscription = this.responsive.observe([
@@ -117,6 +121,6 @@ export class HomeComponent {
   }
 
   getSelectedChannel() {
-    return this.channelService.userChannels.find(channel => channel.id === this.selectedChannelId);
+    return this.homeService.getActiveChannel();
   }
 }

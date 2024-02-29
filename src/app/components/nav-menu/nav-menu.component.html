@@ -30,7 +30,7 @@
 </div>
 <menu *ngIf="channelsExpanded" class="flow">
   <div *ngFor="let channel of channelService.userChannels; let i = index">
-    <button class="icon-text btn">
+    <button class="icon-text btn" (click)="openChannel(channel)">
       <mat-icon class="icon-text__icn" fontSet="material-symbols-outlined">
         tag
       </mat-icon>

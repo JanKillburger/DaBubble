@@ -7,6 +7,7 @@ import { JsonPipe, KeyValuePipe, NgFor, NgStyle } from '@angular/common';
 import { json } from 'stream/consumers';
 import { ChannelData, FirebaseChannelService, Message } from '../../services/firebase-channel.service';
 import { MessagesInputComponent } from '../messages-input/messages-input.component';
+import { HomeService } from '../../services/home.service';
 
 @Component({
   selector: 'app-channel',
@@ -34,7 +35,7 @@ export class ChannelComponent {
   @Input() channel!: ChannelData | undefined;
   selectedChannel = 'yVkv2vilL4lVvya74f9Z';
 
-  constructor(public channelService: FirebaseChannelService) {}
+  constructor(public channelService: FirebaseChannelService, private homeService: HomeService) {}
 
   openThread(message: Message) {
     this.openThreadEv.emit(message);
@@ -46,5 +47,9 @@ export class ChannelComponent {
     } else {
       return undefined;
     }
+  }
+
+  getChannel() {
+    return this.homeService.getActiveChannel();
   }
 }
