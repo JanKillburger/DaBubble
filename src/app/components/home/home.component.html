@@ -22,23 +22,23 @@
 <main class="main">
   <nav
     class="primary-nav main-item"
-    [class.is-active]="navVisible || screenMode==='large'"
+    [class.is-active]="isNavVisible() || getScreenMode()==='large'"
   >
     <app-nav-menu></app-nav-menu>
   </nav>
-  <section class="channel-container main-item" *ngIf="channelVisible">
+  <section class="channel-container main-item" *ngIf="isChannelVisible()">
     <app-channel></app-channel>
   </section>
   <aside
     class="thread-container main-item"
-    [class.is-active]="threadVisible"
-    *ngIf="threadVisibleMq && getThreadMessage()"
+    [class.is-active]="isThreadVisible()"
+    *ngIf="hasThreadSpace() && getThreadMessage()"
   >
     <app-thread (closeThreadEv)="closeThread()"></app-thread>
   </aside>
 </main>
-<button (click)="toggleNav()" class="toggle-primary-nav" *ngIf="screenMode==='medium'">
-  @if (navVisible) { Workspace-Menü schließen  
+<button (click)="toggleNav()" class="toggle-primary-nav" *ngIf="getScreenMode()==='medium'">
+  @if (isNavVisible()) { Workspace-Menü schließen  
 <mat-icon fontSet="material-symbols-outlined">switch_right</mat-icon>
 }
 @else { Workspace-Menü öffnen
