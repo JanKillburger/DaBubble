@@ -21,7 +21,7 @@ import { HomeService } from '../../services/home.service';
     NgStyle,
     JsonPipe,
     MessagesInputComponent
-  , KeyValuePipe],
+    , KeyValuePipe],
   templateUrl: './channel.component.html',
   styleUrl: './channel.component.scss',
 })
@@ -33,7 +33,7 @@ export class ChannelComponent {
     'assets/img/login/SingIn/avatar3.png',
   ];
 
-  constructor(public channelService: FirebaseChannelService, private homeService: HomeService) {}
+  constructor(public channelService: FirebaseChannelService, private homeService: HomeService) { }
 
   openThread(message: Message) {
     this.openThreadEv.emit(message);
@@ -47,6 +47,19 @@ export class ChannelComponent {
       return undefined;
     }
   }
+
+  getChannelUserAvatars() {
+    const users = this.getChannel()?.users;
+    let avatars = [];
+    if (users) {
+      for (let user of users) {
+        avatars.push(this.channelService.users.get(user)?.avatar)
+        if (avatars.length === 3) break;
+      }
+    }
+    return avatars;
+  }
+
 
   getChannel() {
     return this.homeService.getActiveChannel();

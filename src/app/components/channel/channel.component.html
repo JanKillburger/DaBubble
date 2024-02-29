@@ -13,7 +13,7 @@
       <button class="btn flex ai-c toggle-members-menu">
         <img
           class="avatar avatar--small"
-          *ngFor="let member of teamMembers; let i = index"
+          *ngFor="let member of getChannelUserAvatars()"
           [src]="member"
           [ngStyle]="{ 'margin-left.px': -8 }"
         />
