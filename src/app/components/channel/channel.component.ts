@@ -32,8 +32,6 @@ export class ChannelComponent {
     'assets/img/login/SingIn/avatar2.png',
     'assets/img/login/SingIn/avatar3.png',
   ];
-  @Input() channel!: ChannelData | undefined;
-  selectedChannel = 'yVkv2vilL4lVvya74f9Z';
 
   constructor(public channelService: FirebaseChannelService, private homeService: HomeService) {}
 
@@ -42,8 +40,9 @@ export class ChannelComponent {
   }
 
   getChannelMessages() {
-    if (this.channel?.id) {
-      return this.channelService.userChannelsMessages.get(this.channel.id);
+    const channelId = this.getChannel()?.id;
+    if (channelId) {
+      return this.channelService.userChannelsMessages.get(channelId);
     } else {
       return undefined;
     }

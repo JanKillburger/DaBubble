@@ -32,9 +32,9 @@
   <aside
     class="thread-container main-item"
     [class.is-active]="threadVisible"
-    *ngIf="threadVisibleMq && selectedMessage"
+    *ngIf="threadVisibleMq && getThreadMessage()"
   >
-    <app-thread></app-thread>
+    <app-thread (closeThreadEv)="closeThread()"></app-thread>
   </aside>
 </main>
 <button (click)="toggleNav()" class="toggle-primary-nav" *ngIf="screenMode==='medium'">

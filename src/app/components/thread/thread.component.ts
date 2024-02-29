@@ -6,6 +6,7 @@ import { MessagesInputComponent } from '../messages-input/messages-input.compone
 import { ChannelData, FirebaseChannelService, Message } from '../../services/firebase-channel.service';
 import { MessagesContainerComponent } from '../messages-container/messages-container.component';
 import { NgFor } from '@angular/common';
+import { HomeService } from '../../services/home.service';
 
 @Component({
   selector: 'app-thread',
@@ -15,21 +16,29 @@ import { NgFor } from '@angular/common';
   styleUrl: './thread.component.scss'
 })
 export class ThreadComponent {
-  @Input() channel!: ChannelData | undefined;
-  @Input() message: Message | undefined = { id: "frEnT8DXHxqDYEq2ZGD4", message: "Dies ist der Start eines Threads!", from: "x4CLz3LHfsVxLltxaFo1", created: new Date() };
+
   @Output() closeThreadEv = new EventEmitter<void>;
 
-  constructor(private channelService: FirebaseChannelService) { }
+  constructor(private channelService: FirebaseChannelService, private homeService: HomeService) { }
 
   closeThread() {
     this.closeThreadEv.emit();
   }
 
   getReplies() {
-    if (this.message) {
-      return this.channelService.replies.get(this.message?.id);
+    const message = this.homeService.getThreadMessage();
+    if (message) {
+      return this.channelService.replies.get(message.id);
     } else {
       return undefined;
     }
+  }
+
+  getMessage() {
+    return this.homeService.getThreadMessage();
+  }
+
+  getChannel() {
+    return this.homeService.getActiveChannel();
   }
 }

@@ -2,7 +2,7 @@
   <div class="inner-container flex ai-c jc-sb">
     <div class="flex ai-c">
       <span class="title-text">Thread</span
-      ><span class="channel"># {{channel?.channelName}}</span>
+      ><span class="channel"># {{getChannel()?.channelName}}</span>
     </div>
     <button (click)="closeThread()" mat-icon-button>
       <mat-icon>close</mat-icon>
@@ -10,7 +10,7 @@
   </div>
 </header>
 <div class="messages-wrapper">
-  <app-message container="thread" [message]="message" [isMyMessage]="false" [showReplies]="false"></app-message>
+  <app-message container="thread" [message]="getMessage()" [isMyMessage]="false" [showReplies]="false"></app-message>
   <div class="replies-header flex ai-c inner-container">
     <span>{{getReplies()?.length}} Antworten </span>
     <div class="separator"></div>

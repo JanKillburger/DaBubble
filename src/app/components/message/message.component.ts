@@ -6,6 +6,7 @@ import { UserProfileDialogComponent } from '../dialog-components/user-profile-di
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { UserData } from '../../services/firebase-user.service';
 import { FirebaseChannelService, Message } from '../../services/firebase-channel.service';
+import { HomeService } from '../../services/home.service';
 
 @Component({
   selector: 'app-message',
@@ -23,11 +24,12 @@ export class MessageComponent {
 
   constructor(
     public dialog: MatDialog,
-    public channelService: FirebaseChannelService
+    public channelService: FirebaseChannelService,
+    private homeService: HomeService
   ) { }
 
   openThread() {
-    this.openThreadEv.emit(this.message!);
+    this.homeService.setThreadMessage(this.message!);
   }
 
   showUserProfile() {

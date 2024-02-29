@@ -30,7 +30,6 @@
     *ngFor="let messagesByDay of getChannelMessages() | keyvalue"
     [messages]="messagesByDay.value"
     [date]="messagesByDay.key"
-    (openThreadEv)="openThread(messagesByDay.value[0])"
   ></app-messages-container>
 </div>
 <app-messages-input></app-messages-input>

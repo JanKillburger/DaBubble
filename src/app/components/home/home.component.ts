@@ -35,7 +35,6 @@ export class HomeComponent {
 
 
   selectedChannelId = "yVkv2vilL4lVvya74f9Z";
-  selectedMessage: Message | undefined;
 
   constructor(
     public dialog: MatDialog,
@@ -92,8 +91,7 @@ export class HomeComponent {
     this.channelVisible = true;
   }
 
-  openThread(message?: Message) {
-    if (message) this.selectedMessage = message;
+  openThread() {
     this.threadVisibleMq = true;
     this.threadVisible = true;
     if (this.screenMode != "large") {
@@ -122,5 +120,9 @@ export class HomeComponent {
 
   getSelectedChannel() {
     return this.homeService.getActiveChannel();
+  }
+
+  getThreadMessage() {
+    return this.homeService.getThreadMessage();
   }
 }
