@@ -15,6 +15,7 @@ import {
 import { Channel } from '../models/channel.class';
 import { User } from '@angular/fire/auth';
 import { UserData } from './firebase-user.service';
+import { HomeService } from './home.service';
 
 @Injectable({
   providedIn: 'root',
@@ -55,17 +56,19 @@ export class FirebaseChannelService {
     fromFirestore: (snap: QueryDocumentSnapshot) => { return snap.data() as UserData }
   }
 
-  constructor() {
+  constructor(private homeService: HomeService) {
     this.unsubChannels = this.subChannelsList();
     this.unsubUserChannels.push(this.getUserChannels(this.currentUser));
     this.allChannels = [];
   }
+
 
   private getUserChannels(userId: string) {//aktuell noch hard-coded gegen Testnutzer Noah Braun abgefragt
     const q = query(collection(this.firestore, "channels"), where("users", "array-contains", userId));
     return onSnapshot(q, channels => {
       this.userChannels = [];
       channels.forEach(channel => {
+        if (this.userChannels.length === 0) this.homeService.setChannel(channel.data() as ChannelData);
         this.userChannels.push(channel.data() as ChannelData);
         this.userChannels.at(-1)!.id = channel.id;
         this.getChannelUsers(channel.data() as ChannelData);

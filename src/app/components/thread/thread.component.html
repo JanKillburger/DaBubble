@@ -12,7 +12,7 @@
 <div class="messages-wrapper">
   <app-message container="thread" [message]="getMessage()" [isMyMessage]="false" [showReplies]="false"></app-message>
   <div class="replies-header flex ai-c inner-container">
-    <span>{{getReplies()?.length}} Antworten </span>
+    <span>{{getReplies()?.length}} @if(getReplies()!.length > 1) {Antworten} @else {Antwort} </span>
     <div class="separator"></div>
   </div>
   <app-message *ngFor="let message of getReplies()" [message]="message"></app-message>

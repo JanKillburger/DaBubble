@@ -33,7 +33,10 @@ export class MessageComponent {
   }
 
   showUserProfile() {
-    this.dialog.open(UserProfileDialogComponent, { data: { name: "Noah Braun", email: "nbraun@email.de" } });
+    const user = this.getUser();
+    if (user) {
+      this.dialog.open(UserProfileDialogComponent, { data: user });
+    }
   }
 
   getUser(): UserData | undefined {
