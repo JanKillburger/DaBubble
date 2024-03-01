@@ -1,5 +1,5 @@
 <div class="inner-container">
-  <div class="message-wrapper" [class.aligned-right]="isMyMessage">
+  <div class="message-wrapper" [class.aligned-right]="getCurrentUser()===getUser()">
     <img
       class="avatar"
       [src]="getUser()?.avatar"
@@ -8,14 +8,14 @@
     <div class="message">
       <p
         class="message-meta-data flex ai-c"
-        [class.aligned-right]="isMyMessage"
+        [class.aligned-right]="getCurrentUser()===getUser()"
       >
         <button class="btn btn--text user-name" (click)="showUserProfile()">{{getUser()?.name}}</button>
         <span class="message-time">{{getFormattedDay(message?.created)}}</span>
       </p>
       <p
         class="message-content"
-        [class.message-content--aligned-right]="isMyMessage"
+        [class.message-content--aligned-right]="getCurrentUser()===getUser()"
       >
         {{message?.message}}
       </p>

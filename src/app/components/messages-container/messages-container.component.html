@@ -7,7 +7,6 @@
   container="channel"
   *ngFor="let message of messages"
   [message]="message"
-  [isMyMessage]="false"
   [showReplies]="true"
   (openThreadEv)="openThread(message)"
 ></app-message>

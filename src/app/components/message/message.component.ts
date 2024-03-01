@@ -17,7 +17,6 @@ import { HomeService } from '../../services/home.service';
 })
 export class MessageComponent {
   @Input() message?: Message;
-  @Input() isMyMessage!: boolean;
   @Input() showReplies = false;
   @Input() container: "thread" | "channel" = "thread";
   @Output() openThreadEv = new EventEmitter<Message>;
@@ -72,6 +71,10 @@ export class MessageComponent {
     } else {
       return false;
     }
+  }
+
+  getCurrentUser() {
+    return this.channelService.getCurrentUser();
   }
 
 }
