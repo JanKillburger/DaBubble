@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MessageComponent } from '../message/message.component';
@@ -8,6 +8,9 @@ import { json } from 'stream/consumers';
 import { ChannelData, FirebaseChannelService, Message } from '../../services/firebase-channel.service';
 import { MessagesInputComponent } from '../messages-input/messages-input.component';
 import { HomeService } from '../../services/home.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EditChannelComponent } from '../dialog-components/edit-channel/edit-channel.component';
+import { ViewportService } from '../../services/viewport.service';
 
 @Component({
   selector: 'app-channel',
@@ -27,13 +30,8 @@ import { HomeService } from '../../services/home.service';
 })
 export class ChannelComponent {
   @Output() openThreadEv = new EventEmitter<Message>();
-  teamMembers = [
-    'assets/img/login/SingIn/avatar1.png',
-    'assets/img/login/SingIn/avatar2.png',
-    'assets/img/login/SingIn/avatar3.png',
-  ];
-
-  constructor(public channelService: FirebaseChannelService, private homeService: HomeService) { }
+  @ViewChild('callEditChannel') callEditChannel!: ElementRef;
+  constructor(public channelService: FirebaseChannelService, private homeService: HomeService, private dialog: MatDialog, private viewport: ViewportService) { }
 
   openThread(message: Message) {
     this.openThreadEv.emit(message);
@@ -63,5 +61,9 @@ export class ChannelComponent {
 
   getChannel() {
     return this.homeService.getActiveChannel();
+  }
+
+  editChannel() {
+    this.dialog.open(EditChannelComponent, { position: this.viewport.getPositionRelativeTo(this.callEditChannel, "bottom", "left"), data: this.getChannel() })
   }
 }

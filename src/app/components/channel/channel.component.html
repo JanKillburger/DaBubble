@@ -1,6 +1,6 @@
 <header class="channel-header">
   <div class="inner-container flex jc-sb ai-c">
-    <button class="btn title-text toggle-channel-menu flex ai-c">
+    <button #callEditChannel (click)="editChannel()" class="btn title-text toggle-channel-menu flex ai-c">
       <mat-icon fontSet="material-symbols-outlined">tag</mat-icon>
       <span class="channel-name">{{
         getChannel()?.channelName
