@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ChannelData, Message } from './firebase-channel.service';
+import { ChannelData, FirebaseChannelService, Message } from './firebase-channel.service';
 import { Subscription } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MAX_INLINE_WIDTH, LARGE_WIDTH, MEDIUM_WIDTH, SMALL_WIDTH } from '../../global-constants';
+import { FirebaseAuthService } from './firebase-auth.service';
 
 @Injectable({
   providedIn: 'root'

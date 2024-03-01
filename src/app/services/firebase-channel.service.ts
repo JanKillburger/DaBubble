@@ -16,6 +16,7 @@ import { Channel } from '../models/channel.class';
 import { User } from '@angular/fire/auth';
 import { UserData } from './firebase-user.service';
 import { HomeService } from './home.service';
+import { FirebaseAuthService } from './firebase-auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -56,7 +57,7 @@ export class FirebaseChannelService {
     fromFirestore: (snap: QueryDocumentSnapshot) => { return snap.data() as UserData }
   }
 
-  constructor(private homeService: HomeService) {
+  constructor(private homeService: HomeService, private authService: FirebaseAuthService) {
     this.unsubChannels = this.subChannelsList();
     this.unsubUserChannels.push(this.getUserChannels(this.currentUser));
     this.allChannels = [];
@@ -120,6 +121,10 @@ export class FirebaseChannelService {
         this.replies.set(messageId, value);
       }))
     }
+  }
+
+  getCurrentUser() {
+    return this.users.get(this.authService.loggedInUser);
   }
 
   getReplies(messageId: string) {

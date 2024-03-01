@@ -20,11 +20,11 @@
     class="btn flex ai-c toggle-user-menu"
     (click)="openUserDialog()"
   >
-    <span class="current-user">Jan-Frederik Christian Alois Beck</span>
+    <span class="current-user">{{getCurrentUser()?.name}}</span>
     <div class="img-wrapper">
       <img
         class="avatar"
-        src="assets/img/login/SingIn/avatar2.png"
+        [src]="getCurrentUser()?.avatar"
         alt="User avatar"
       />
       <div class="status-indicator status-indicator--online"></div>

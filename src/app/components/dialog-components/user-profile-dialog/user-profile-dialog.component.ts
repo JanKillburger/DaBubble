@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgIf } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserData } from '../../../services/firebase-user.service';
+import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 
 @Component({
   selector: 'app-user-profile-dialog',
@@ -16,8 +17,9 @@ import { UserData } from '../../../services/firebase-user.service';
 export class UserProfileDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<UserProfileDialogComponent>,
+    private channelService: FirebaseChannelService,
     @Inject(MAT_DIALOG_DATA) public user: UserData) { }
-  myProfile = this.user.name === 'Frederik Beck'; //replace with expression loggedInUser === this.user
+
   formMode: 'view' | 'edit' = 'view';
   userProfileForm = new FormGroup({
     name: new FormControl(this.user.name),
@@ -30,5 +32,9 @@ export class UserProfileDialogComponent {
 
   editUserProfile() {
     this.formMode = 'edit';
+  }
+
+  getCurrentUser() {
+    return this.channelService.getCurrentUser();
   }
 }

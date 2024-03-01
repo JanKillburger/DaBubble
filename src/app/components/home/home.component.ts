@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { UsersToChannelComponent } from '../dialog-components/users-to-channel/users-to-channel.component';
 import { HomeService } from '../../services/home.service';
 import { MatButtonModule } from '@angular/material/button';
+import { FirebaseChannelService } from '../../services/firebase-channel.service';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +28,8 @@ export class HomeComponent {
   constructor(
     public dialog: MatDialog,
     public viewport: ViewportService,
-    private homeService: HomeService) { }
+    private homeService: HomeService,
+    private channelService: FirebaseChannelService) { }
 
   openDialog() {
     const positionDetails = this.viewport.getPositionRelativeTo(this.dialogTrigger, "top", "left");
@@ -77,5 +79,9 @@ export class HomeComponent {
 
   goToMenu() {
     this.homeService.goToMenu();
+  }
+
+  getCurrentUser() {
+    return this.channelService.getCurrentUser();
   }
 }
