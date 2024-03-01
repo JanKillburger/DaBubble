@@ -3,7 +3,12 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut 
+  onAuthStateChanged,
+  signOut,
+  sendPasswordResetEmail,
+  updatePassword,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from 'firebase/auth';
 import {
   Firestore,
@@ -16,12 +21,6 @@ import {
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { User } from '../models/user.class';
-import {
-  sendPasswordResetEmail,
-  updatePassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -34,11 +33,11 @@ export class FirebaseAuthService {
   querySnapshot: any;
   user: User = new User();
   provider = new GoogleAuthProvider();
-  loggedInUserAuth = ''
-  loggedInUser = ''
+  loggedInUserAuth = '';
+  loggedInUser = '';
 
   constructor(private router: Router) {
-    this.getData()
+    this.getData();
   }
 
   async registerWithEmailAndPassword(email: string, password: string) {
@@ -60,7 +59,7 @@ export class FirebaseAuthService {
       return await signInWithEmailAndPassword(this.auth, email, password).then(
         (userCredential) => {
           this.loggedInUserAuth = userCredential.user.uid;
-          this.getLoggedInUserId()
+          this.getLoggedInUserId();
           this.router.navigate(['/home']);
           return false;
         }
@@ -171,29 +170,30 @@ export class FirebaseAuthService {
     }
   }
 
-  userSingOut(){
-    signOut(this.auth).then(() => {
-      console.log('Sign-out successful')
-    }).catch((error) => {
-      console.log('An error happened')
-    });
+  userSingOut() {
+    signOut(this.auth)
+      .then(() => {
+        console.log('Sign-out successful');
+      })
+      .catch((error) => {
+        console.log('An error happened');
+      });
   }
 
-  getLoggedInUserId(){
+  async getLoggedInUserId() {
+    await this.getData() 
     this.allUsers.forEach((user) => {
-      if (user.authId === this.loggedInUserAuth){
-        this.loggedInUser = user.userId
-        console.log(user.authId)
-        console.log(this.loggedInUserAuth)
-        console.log(user.userId)
-    }})
+      if (user.authId === this.loggedInUserAuth) {
+        this.loggedInUser = user.userId;
+      }
+    });
   }
 }
 
 interface UserData {
   name: string;
   email: string;
-  authId: string
+  authId: string;
   userId: string;
   avatar: string;
   online: boolean;

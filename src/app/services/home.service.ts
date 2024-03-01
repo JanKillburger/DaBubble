@@ -19,7 +19,7 @@ export class HomeService {
   private breakpointSubscription!: Subscription;
 
   constructor(
-    private responsive: BreakpointObserver,) {
+    private responsive: BreakpointObserver) {
     this.breakpointSubscription = this.responsive.observe([
       SMALL_WIDTH,
       MEDIUM_WIDTH,
