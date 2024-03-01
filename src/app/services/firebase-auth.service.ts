@@ -183,6 +183,9 @@ export class FirebaseAuthService {
     this.allUsers.forEach((user) => {
       if (user.authId === this.loggedInUserAuth){
         this.loggedInUser = user.userId
+        console.log(user.authId)
+        console.log(this.loggedInUserAuth)
+        console.log(user.userId)
     }})
   }
 }

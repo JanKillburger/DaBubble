@@ -59,10 +59,9 @@ export class FirebaseChannelService {
 
   constructor(private homeService: HomeService, private authService: FirebaseAuthService) {
     this.unsubChannels = this.subChannelsList();
-    this.unsubUserChannels.push(this.getUserChannels(this.currentUser));
+    this.unsubUserChannels.push(this.getUserChannels(this.authService.loggedInUser));
     this.allChannels = [];
   }
-
 
   private getUserChannels(userId: string) {//aktuell noch hard-coded gegen Testnutzer Noah Braun abgefragt
     const q = query(collection(this.firestore, "channels"), where("users", "array-contains", userId));
