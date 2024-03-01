@@ -84,7 +84,7 @@ export class SelectAvatarComponent {
         this.userId
       );
       setTimeout(() => {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/']);
       }, 3000);
     }
   }

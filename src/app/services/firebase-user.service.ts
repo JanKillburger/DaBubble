@@ -22,6 +22,8 @@ export class FirebaseUserService {
 export interface UserData {
   name: string;
   email: string;
+  authId: string
   userId: string;
   avatar: string;
+  online: boolean;
 }

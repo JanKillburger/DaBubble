@@ -58,7 +58,7 @@ export class SignUpDialogComponent {
     this.createUser();
     this.userId = await this.userFirebaseService.registerWithEmailAndPassword(
       this.user.email,
-      this.user.password
+      this.password?.value
     );
     if (this.userId != 'error') {
       this.goOnToSelectAvatar();
@@ -68,10 +68,9 @@ export class SignUpDialogComponent {
   }
 
   createUser() {
-    if (this.name && this.email && this.password) {
+    if (this.name && this.email) {
       this.user.name = this.name.value;
       this.user.email = this.email.value;
-      this.user.password = this.password.value;
     }
   }
 
@@ -86,7 +85,7 @@ export class SignUpDialogComponent {
   }
 
   async goOnToSelectAvatar() {
-    this.user.userId = this.userId;
+    this.user.authId = this.userId;
     let docIdPromise = this.userFirebaseService.saveUserService(this.user);
     // this.sendDataToSelectAvatar();
     docIdPromise

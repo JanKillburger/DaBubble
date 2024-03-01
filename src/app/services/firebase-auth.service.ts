@@ -3,6 +3,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut 
 } from 'firebase/auth';
 import {
   Firestore,
@@ -33,8 +34,12 @@ export class FirebaseAuthService {
   querySnapshot: any;
   user: User = new User();
   provider = new GoogleAuthProvider();
+  loggedInUserAuth = ''
+  loggedInUser = ''
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    this.getData()
+  }
 
   async registerWithEmailAndPassword(email: string, password: string) {
     try {
@@ -51,15 +56,18 @@ export class FirebaseAuthService {
   }
 
   async loginWithEmailAndPassword(email: string, password: string) {
-    let wrongLogIn;
     try {
-      await signInWithEmailAndPassword(this.auth, email, password);
-      console.log('User is valid!');
-      this.router.navigate(['/home']);
-      return (wrongLogIn = false);
+      return await signInWithEmailAndPassword(this.auth, email, password).then(
+        (userCredential) => {
+          this.loggedInUserAuth = userCredential.user.uid;
+          this.getLoggedInUserId()
+          this.router.navigate(['/home']);
+          return false;
+        }
+      );
     } catch (err) {
-      console.log('that user does not exist');
-      return (wrongLogIn = true);
+      console.log('that user does not exist', err);
+      return true;
     }
   }
 
@@ -138,7 +146,7 @@ export class FirebaseAuthService {
       let createdAt = result.user.metadata.creationTime ?? '';
       this.user.name = result.user.displayName ?? '';
       this.user.email = result.user.email ?? '';
-      this.user.userId = result.user.uid ?? '';
+      this.user.authId = result.user.uid ?? '';
       if (this.googleUserCheck(createdAt)) {
         let docIdPromise = this.saveUserService(this.user);
         docIdPromise.then((docId) => {
@@ -162,11 +170,28 @@ export class FirebaseAuthService {
       return (newUser = false);
     }
   }
+
+  userSingOut(){
+    signOut(this.auth).then(() => {
+      console.log('Sign-out successful')
+    }).catch((error) => {
+      console.log('An error happened')
+    });
+  }
+
+  getLoggedInUserId(){
+    this.allUsers.forEach((user) => {
+      if (user.authId === this.loggedInUserAuth){
+        this.loggedInUser = user.userId
+    }})
+  }
 }
 
 interface UserData {
   name: string;
   email: string;
+  authId: string
   userId: string;
   avatar: string;
+  online: boolean;
 }
