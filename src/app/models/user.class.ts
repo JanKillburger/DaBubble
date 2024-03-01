@@ -22,7 +22,7 @@ export class User{
           authId: this.authId,
           userId: this.userId,
           avatar: this.avatar,
-          loginIn: this.online
+          online: this.online
         };
       }
 }

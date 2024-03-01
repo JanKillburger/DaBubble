@@ -139,7 +139,7 @@ export class MessagesInputComponent {
   createStringFromUserList(currentUserList: string[]) {
     let text = '';
     currentUserList.forEach((user) => {
-      text += `@${user} `;
+      text += `@${user}`;
     });
     return text;
   }
