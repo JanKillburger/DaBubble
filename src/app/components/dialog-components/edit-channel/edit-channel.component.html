@@ -1,7 +1,7 @@
 <header>
   <mat-icon fontSet="material-symbols-outlined">tag</mat-icon>
   <span class="title"> Entwicklerteam </span>
-  <button mat-icon-button type="button">
+  <button mat-icon-button type="button" (click)="closeDialog()">
     <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
   </button>
 </header>
@@ -9,23 +9,29 @@
   <fieldset>
     <div class="label-action">
       <label for="name">Channel-Name</label>
-      <button mat-icon-button type="button">
+      <button mat-icon-button type="button" (click)="editName()" *ngIf="nameDisplayMode==='view'">
         <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
       </button>
+      <button mat-icon-button type="button" (click)="saveName()" *ngIf="nameDisplayMode==='edit'">
+        <mat-icon fontSet="material-symbols-outlined">done</mat-icon>
+      </button>
     </div>
-    <input id="name" type="text" value="Entwicklerteam" />
+    <input id="name" name="name" type="text" [(ngModel)]="name" [ngClass]="{'edit': nameDisplayMode==='edit'}" [readOnly]="nameDisplayMode==='view'"/>
   </fieldset>
   <fieldset>
     <div class="label-action">
       <label for="desc">Beschreibung</label>
-      <button mat-icon-button>
+      <button mat-icon-button (click)="editDesc()" *ngIf="descDisplayMode==='view'">
         <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
       </button>
+      <button mat-icon-button (click)="saveDesc()" *ngIf="descDisplayMode==='edit'">
+        <mat-icon fontSet="material-symbols-outlined">done</mat-icon>
+      </button>
     </div>
-    <textarea id="desc">Dieser Channel bla bla bla...</textarea>
+    <textarea id="desc" name="desc" [(ngModel)]="desc" [ngClass]="{'edit': descDisplayMode==='edit'}" [readOnly]="descDisplayMode==='view'"></textarea>
     <hr />
     <label for="createdby">Erstellt von</label>
     <input id="createdby" type="text" value="Noah Braun" readonly />
   </fieldset>
 </form>
-<button class="btn">Channel verlassen</button>
+<button class="btn" (click)="leaveChannel()">Channel verlassen</button>

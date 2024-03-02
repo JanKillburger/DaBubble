@@ -270,6 +270,7 @@ export class FirebaseChannelService {
 
 export interface ChannelData {
   id?: string;
+  createdBy?: string;
   channelName: string;
   channelDescription: string;
   users: string[];
