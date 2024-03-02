@@ -1,0 +1,79 @@
+:host {
+  display: block;
+  padding: 1em;
+  width: min(90vw, 700px);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+
+  button {
+    margin-inline-start: auto;
+  }
+}
+
+fieldset {
+  border: 1px groove hsl(var(--accent-color-3));
+  border-radius: 1.2em;
+  margin-block: 1em;
+  transition: all 0.25s ease-in-out;
+
+  &:has(*.edit) {
+    border: none;
+    padding: 0;
+  }
+}
+
+label {
+  font-weight: 700;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  border-radius: 1.2em;
+}
+
+.edit {
+  padding: 0.5em 1em;
+  border: 1px solid hsl(var(--accent-color-3));
+  font-size: var(--fs-400);
+  font-weight: 400;
+
+  &:focus {
+    border-color: hsl(var(--accent-color));
+  }
+}
+
+.label-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn {
+  display: block;
+  margin-inline-start: auto;
+  padding: 0.5em 1em;
+  background-color: hsl(var(--accent-color));
+  color: white;
+  border-radius: 1.5em;
+
+  mat-icon {
+    margin-right: 0.5em;
+  }
+
+  &:hover {
+    background-color: hsl(var(--accent-color) / 0.8);
+  }
+}
+
+#createdby {
+  color: hsl(var(--accent-color));
+  font-size: var(--fs-500);
+  margin-block-start: 0.5em;
+}

@@ -238,6 +238,11 @@ a {
   border-top-right-radius: 0 !important;
 }
 
+.custom-container--top-left .mat-mdc-dialog-surface {
+  border-radius: 1.5em !important;
+  border-top-left-radius: 0 !important;
+}
+
 .default-container .mat-mdc-dialog-surface {
   border-radius: 2em !important;
 }
