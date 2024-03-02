@@ -11,6 +11,8 @@ import { HomeService } from '../../services/home.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditChannelComponent } from '../dialog-components/edit-channel/edit-channel.component';
 import { ViewportService } from '../../services/viewport.service';
+import { ChannelMembersComponent } from '../dialog-components/channel-members/channel-members.component';
+import { AddChannelMemberComponent } from '../dialog-components/add-channel-member/add-channel-member.component';
 
 @Component({
   selector: 'app-channel',
@@ -31,6 +33,8 @@ import { ViewportService } from '../../services/viewport.service';
 export class ChannelComponent {
   @Output() openThreadEv = new EventEmitter<Message>();
   @ViewChild('callEditChannel') callEditChannel!: ElementRef;
+  @ViewChild('callChannelMembers') callChannelMembers!: ElementRef;
+  @ViewChild('addMember') addMember!: ElementRef;
   constructor(public channelService: FirebaseChannelService, private homeService: HomeService, private dialog: MatDialog, private viewport: ViewportService) { }
 
   openThread(message: Message) {
@@ -65,5 +69,15 @@ export class ChannelComponent {
 
   editChannel() {
     this.dialog.open(EditChannelComponent, { panelClass: 'custom-container--top-left', position: this.viewport.getPositionRelativeTo(this.callEditChannel, "bottom", "left"), data: this.getChannel() })
+  }
+
+  openMembersListDialog() {
+    this.dialog.open(ChannelMembersComponent, { panelClass: 'custom-container', data: [], position: this.viewport.getPositionRelativeTo(this.callChannelMembers, 'bottom', 'right') })
+  }
+
+  addChannelMember() {
+    console.log(this.addMember.nativeElement);
+    console.log(this.callChannelMembers.nativeElement);
+    this.dialog.open(AddChannelMemberComponent, {panelClass: 'custom-container', position: this.viewport.getPositionRelativeTo(this.addMember, 'bottom', 'right') });
   }
 }

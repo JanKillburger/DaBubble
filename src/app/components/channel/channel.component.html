@@ -9,8 +9,8 @@
         >keyboard_arrow_down</mat-icon
       >
     </button>
-    <div class="channel-users flex ai-c">
-      <button class="btn flex ai-c toggle-members-menu">
+    <div class="channel-users flex ai-c" #addMember>
+      <button class="btn flex ai-c toggle-members-menu" #callChannelMembers (click)="openMembersListDialog()">
         <img
           class="avatar avatar--small"
           *ngFor="let member of getChannelUserAvatars()"
@@ -19,7 +19,7 @@
         />
         <span class="members-count">{{getChannel()?.users?.length}}</span>
       </button>
-      <button mat-icon-button>
+      <button mat-icon-button (click)="addChannelMember()">
         <mat-icon fontSet="material-symbols-outlined">person_add</mat-icon>
       </button>
     </div>
