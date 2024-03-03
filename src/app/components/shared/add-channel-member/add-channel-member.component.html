@@ -1,0 +1,16 @@
+<header class="flex jc-sb ai-c">
+  <span class="title">Leute hinzufügen</span>
+  <button mat-icon-button>
+    <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
+  </button>
+</header>
+<p class="flex ai-c">
+  <mat-icon fontSet="material-symbols-outlined">tag</mat-icon>Entwicklungsteam
+</p>
+<div class="search-wrapper">
+  <input #search type="text" placeholder="Name eingeben" />
+  <ul class="search-results">
+    <app-contact-button *ngFor="let result of getUserResults(search.value)" [user]="result" (click)="selectUser(result)"></app-contact-button>
+  </ul>
+</div>
+<button class="btn" disabled>Hinzufügen</button>

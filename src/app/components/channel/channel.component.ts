@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditChannelComponent } from '../dialog-components/edit-channel/edit-channel.component';
 import { ViewportService } from '../../services/viewport.service';
 import { ChannelMembersComponent } from '../dialog-components/channel-members/channel-members.component';
-import { AddChannelMemberComponent } from '../dialog-components/add-channel-member/add-channel-member.component';
+import { AddChannelMemberDialog } from '../dialog-components/add-channel-member/add-channel-member.component';
 import { UserData } from '../../services/firebase-user.service';
 
 @Component({
@@ -101,7 +101,7 @@ export class ChannelComponent {
   }
 
   addChannelMember() {
-    this.dialog.open(AddChannelMemberComponent, {
+    this.dialog.open(AddChannelMemberDialog, {
       panelClass: 'custom-container',
       position: this.viewport.getPositionRelativeTo(this.addMember, 'bottom', 'right')
     });

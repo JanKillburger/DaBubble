@@ -1,0 +1,36 @@
+.btn {
+  display: block;
+  margin-inline-start: auto;
+  padding: 0.5em 1em;
+  background-color: hsl(var(--accent-color));
+  color: white;
+  border-radius: 1.5em;
+
+  mat-icon {
+    margin-right: 0.5em;
+  }
+
+  &:disabled {
+    background-color: darkgray;
+  }
+
+  &:hover:not([disabled]) {
+    background-color: hsl(var(--accent-color) / 0.8);
+  }
+}
+
+input {
+  border-radius: 1.2em;
+  outline: none;
+  margin-block: 0.5em;
+  width: 300px;
+  max-width: min(100%, 400px);
+  padding: 0.5em 1em;
+  border: 1px solid hsl(var(--accent-color-3));
+  font-size: var(--fs-400);
+  font-weight: 400;
+
+  &:focus {
+    border-color: hsl(var(--accent-color));
+  }
+}

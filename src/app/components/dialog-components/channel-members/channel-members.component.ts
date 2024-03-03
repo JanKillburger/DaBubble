@@ -5,8 +5,6 @@ import { NgFor } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { HomeService } from '../../../services/home.service';
-import { AddChannelMemberComponent } from '../add-channel-member/add-channel-member.component';
 import { PositionDetails } from '../../../models/position-details.model';
 import { ChannelMembersListComponent } from '../../shared/channel-members-list/channel-members-list.component';
 

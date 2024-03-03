@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ContactButtonComponent } from '../../contact-button/contact-button.component';
 import { NgFor, NgIf } from '@angular/common';
-import { AddChannelMemberComponent } from '../../dialog-components/add-channel-member/add-channel-member.component';
+import { AddChannelMemberDialog } from '../../dialog-components/add-channel-member/add-channel-member.component';
 import { PositionDetails } from '../../../models/position-details.model';
 
 @Component({
@@ -38,7 +38,7 @@ export class ChannelMembersListComponent {
     if (this.homeService.getScreenMode() === "small") {
       console.log("Dialog fährt von unten herein: TO DO");
     } else {
-      this.dialog.open(AddChannelMemberComponent, { panelClass: 'custom-container', position: this.dialogPositionAddMember });
+      this.dialog.open(AddChannelMemberDialog, { panelClass: 'custom-container', position: this.dialogPositionAddMember });
     }
   }
 }
