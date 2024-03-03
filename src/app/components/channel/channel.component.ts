@@ -13,6 +13,7 @@ import { EditChannelComponent } from '../dialog-components/edit-channel/edit-cha
 import { ViewportService } from '../../services/viewport.service';
 import { ChannelMembersComponent } from '../dialog-components/channel-members/channel-members.component';
 import { AddChannelMemberComponent } from '../dialog-components/add-channel-member/add-channel-member.component';
+import { UserData } from '../../services/firebase-user.service';
 
 @Component({
   selector: 'app-channel',
@@ -72,10 +73,23 @@ export class ChannelComponent {
   }
 
   openMembersListDialog() {
-    this.dialog.open(ChannelMembersComponent, { panelClass: 'custom-container', data: [], position: this.viewport.getPositionRelativeTo(this.callChannelMembers, 'bottom', 'right') })
+    this.dialog.open(ChannelMembersComponent, { panelClass: 'custom-container', data: this.getChannelUsers(), position: this.viewport.getPositionRelativeTo(this.callChannelMembers, 'bottom', 'right') })
   }
 
   addChannelMember() {
     this.dialog.open(AddChannelMemberComponent, { panelClass: 'custom-container', position: this.viewport.getPositionRelativeTo(this.addMember, 'bottom', 'right') });
+  }
+
+  getChannelUsers() {
+    const userIds = this.getChannel()?.users;
+    if (userIds) {
+      const users: UserData[] = [];
+      for (const userId of userIds) {
+        const user = this.channelService.users.get(userId);
+        if (user) users.push(user);
+      }
+      return users;
+    }
+    return undefined
   }
 }
