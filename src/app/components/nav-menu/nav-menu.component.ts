@@ -6,11 +6,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateChannelComponent } from '../dialog-components/create-channel/create-channel.component';
 import { ChannelData, FirebaseChannelService, Message } from '../../services/firebase-channel.service';
 import { HomeService } from '../../services/home.service';
+import { ContactButtonComponent } from '../contact-button/contact-button.component';
 
 @Component({
   selector: 'app-nav-menu',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, NgIf, NgFor],
+  imports: [MatIconModule, MatButtonModule, NgIf, NgFor, ContactButtonComponent],
   templateUrl: './nav-menu.component.html',
   styleUrl: './nav-menu.component.scss',
 })
@@ -38,5 +39,9 @@ export class NavMenuComponent {
 
   getScreenMode() {
     return this.homeService.getScreenMode();
+  }
+
+  openChat() {
+    alert("This is a chat")
   }
 }

@@ -1,0 +1,24 @@
+button {
+  padding: 0.5em;
+
+  &:hover {
+    background-color: hsl(var(--accent-color) / 0.1);
+    border-radius: 1em;
+  }
+
+  &.btn--text:hover {
+    color: hsl(var(--accent-color));
+    background-color: unset;
+  }
+}
+
+.user-name {
+  margin-left: 0.5em;
+}
+
+.btn.btn-user {
+
+  &:hover {
+    border-radius: 2em;
+  }
+}

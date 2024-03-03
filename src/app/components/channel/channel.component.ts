@@ -76,8 +76,6 @@ export class ChannelComponent {
   }
 
   addChannelMember() {
-    console.log(this.addMember.nativeElement);
-    console.log(this.callChannelMembers.nativeElement);
-    this.dialog.open(AddChannelMemberComponent, {panelClass: 'custom-container', position: this.viewport.getPositionRelativeTo(this.addMember, 'bottom', 'right') });
+    this.dialog.open(AddChannelMemberComponent, { panelClass: 'custom-container', position: this.viewport.getPositionRelativeTo(this.addMember, 'bottom', 'right') });
   }
 }

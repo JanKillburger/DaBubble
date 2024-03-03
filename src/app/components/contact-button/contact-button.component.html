@@ -1,0 +1,12 @@
+<button class="btn flex ai-c btn-user">
+  <div class="img-wrapper">
+    <img class="avatar" [src]="user?.avatar" alt="User avatar" />
+    <div
+      class="status-indicator"
+      [ngClass]="{ 'status-indicator--online': user?.online }"
+    ></div>
+  </div>
+  <span class="user-name"
+    >{{ user?.name }}@if(user === channelService.getCurrentUser()){ (Du)}</span
+  >
+</button>
