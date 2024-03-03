@@ -4,6 +4,9 @@ import { Subscription } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MAX_INLINE_WIDTH, LARGE_WIDTH, MEDIUM_WIDTH, SMALL_WIDTH } from '../../global-constants';
 import { FirebaseAuthService } from './firebase-auth.service';
+import { UserData } from './firebase-user.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UserProfileDialogComponent } from '../components/dialog-components/user-profile-dialog/user-profile-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +22,8 @@ export class HomeService {
   private breakpointSubscription!: Subscription;
 
   constructor(
-    private responsive: BreakpointObserver) {
+    private responsive: BreakpointObserver,
+    private dialog: MatDialog) {
     this.breakpointSubscription = this.responsive.observe([
       SMALL_WIDTH,
       MEDIUM_WIDTH,
@@ -133,5 +137,9 @@ export class HomeService {
     this.channelVisible = false;
     this.threadVisible = false;
     this.navVisible = true;
+  }
+
+  openUserProfile(user: UserData) {
+    this.dialog.open(UserProfileDialogComponent, { panelClass: 'default-container', data: user });
   }
 }

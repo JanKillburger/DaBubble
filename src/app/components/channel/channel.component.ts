@@ -69,15 +69,26 @@ export class ChannelComponent {
   }
 
   editChannel() {
-    this.dialog.open(EditChannelComponent, { panelClass: 'custom-container--top-left', position: this.viewport.getPositionRelativeTo(this.callEditChannel, "bottom", "left"), data: this.getChannel() })
+    this.dialog.open(EditChannelComponent, {
+      panelClass: 'custom-container--top-left',
+      position: this.viewport.getPositionRelativeTo(this.callEditChannel, "bottom", "left"),
+      data: this.getChannel()
+    })
   }
 
   openMembersListDialog() {
-    this.dialog.open(ChannelMembersComponent, { panelClass: 'custom-container', data: this.getChannelUsers(), position: this.viewport.getPositionRelativeTo(this.callChannelMembers, 'bottom', 'right') })
+    this.dialog.open(ChannelMembersComponent, {
+      panelClass: 'custom-container',
+      data: [this.getChannelUsers(), this.viewport.getPositionRelativeTo(this.addMember, 'bottom', 'right')],
+      position: this.viewport.getPositionRelativeTo(this.callChannelMembers, 'bottom', 'right')
+    })
   }
 
   addChannelMember() {
-    this.dialog.open(AddChannelMemberComponent, { panelClass: 'custom-container', position: this.viewport.getPositionRelativeTo(this.addMember, 'bottom', 'right') });
+    this.dialog.open(AddChannelMemberComponent, {
+      panelClass: 'custom-container',
+      position: this.viewport.getPositionRelativeTo(this.addMember, 'bottom', 'right')
+    });
   }
 
   getChannelUsers() {
