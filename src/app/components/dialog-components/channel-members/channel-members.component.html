@@ -1,1 +1,16 @@
-<app-contact-button *ngFor="let user of users" [user]="user"></app-contact-button>
+<header class="flex jc-sb ai-c">
+  <span>Mitglieder</span>
+  <button mat-icon-button>
+    <mat-icon>close</mat-icon>
+  </button>
+</header>
+<div class="users">
+  <app-contact-button
+    *ngFor="let user of users"
+    [user]="user"
+  ></app-contact-button>
+</div>
+<button class="btn flex ai-c">
+  <mat-icon fontSet="material-symbols-outlined">person_add</mat-icon>
+  <span>Mitglieder hinzufügen</span>
+</button>
