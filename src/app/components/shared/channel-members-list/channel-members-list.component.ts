@@ -35,6 +35,10 @@ export class ChannelMembersListComponent {
   }
 
   openAddMemberDialog() {
-    this.dialog.open(AddChannelMemberComponent, { panelClass: 'custom-container', position: this.dialogPositionAddMember });
+    if (this.homeService.getScreenMode() === "small") {
+      console.log("Dialog fährt von unten herein: TO DO");
+    } else {
+      this.dialog.open(AddChannelMemberComponent, { panelClass: 'custom-container', position: this.dialogPositionAddMember });
+    }
   }
 }

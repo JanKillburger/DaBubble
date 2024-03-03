@@ -7,11 +7,12 @@ import { ChannelData, FirebaseChannelService } from '../../../services/firebase-
 import { FormsModule } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
 import { UserData } from '../../../services/firebase-user.service';
+import { ChannelMembersListComponent } from '../../shared/channel-members-list/channel-members-list.component';
 
 @Component({
   selector: 'app-edit-channel',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, FormsModule, NgClass, NgIf],
+  imports: [MatIconModule, MatButtonModule, FormsModule, NgClass, NgIf, ChannelMembersListComponent],
   templateUrl: './edit-channel.component.html',
   styleUrl: './edit-channel.component.scss'
 })
