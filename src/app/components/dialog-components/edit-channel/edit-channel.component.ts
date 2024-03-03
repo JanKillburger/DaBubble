@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
 import { UserData } from '../../../services/firebase-user.service';
 import { ChannelMembersListComponent } from '../../shared/channel-members-list/channel-members-list.component';
+import { HomeService } from '../../../services/home.service';
 
 @Component({
   selector: 'app-edit-channel',
@@ -19,6 +20,7 @@ import { ChannelMembersListComponent } from '../../shared/channel-members-list/c
 export class EditChannelComponent {
   constructor(public dialogRef: MatDialogRef<UserProfileDialogComponent>,
     private channelService: FirebaseChannelService,
+    private homeService: HomeService,
     @Inject(MAT_DIALOG_DATA) public data: [ChannelData, UserData[]]) { }
 
   name = this.data[0].channelName;
@@ -52,5 +54,7 @@ export class EditChannelComponent {
     console.log('You are out!')
   }
 
-
+  showMembers() {
+    return this.homeService.getScreenMode() === "small";
+  }
 }

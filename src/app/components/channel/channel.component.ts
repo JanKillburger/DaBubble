@@ -69,17 +69,26 @@ export class ChannelComponent {
   }
 
   editChannel() {
-    if (this.homeService.getScreenMode() === "small") {
-      this.dialog.open(EditChannelComponent, {
-        panelClass: 'fullscreen-container',
-        data: [this.getChannel(), this.getChannelUsers()]
-      })
-    } else {
-      this.dialog.open(EditChannelComponent, {
-        panelClass: 'custom-container--top-left',
-        position: this.viewport.getPositionRelativeTo(this.callEditChannel, "bottom", "left"),
-        data: [this.getChannel(), this.getChannelUsers()]
-      })
+    switch (this.homeService.getScreenMode()) {
+      case "small":
+        this.dialog.open(EditChannelComponent, {
+          panelClass: 'fullscreen-container',
+          data: [this.getChannel(), this.getChannelUsers()]
+        })
+        break;
+      case "medium":
+        this.dialog.open(EditChannelComponent, {
+          panelClass: 'default-container',
+          data: [this.getChannel(), this.getChannelUsers()]
+        })
+        break;
+      case "large":
+        this.dialog.open(EditChannelComponent, {
+          panelClass: 'custom-container--top-left',
+          position: this.viewport.getPositionRelativeTo(this.callEditChannel, "bottom", "left"),
+          data: [this.getChannel(), this.getChannelUsers()]
+        })
+        break;
     }
   }
 

@@ -1,7 +1,7 @@
 :host {
   display: block;
   padding: 1em;
-  width: min(90vw, 700px);
+  width: min(80vw, 700px);
 }
 
 header {
@@ -14,8 +14,13 @@ header {
   }
 }
 
-fieldset {
-  border: 1px groove hsl(var(--accent-color-3));
+app-channel-members-list {
+  display: block;
+  padding: 1em;
+}
+
+fieldset, app-channel-members-list {
+  border: 1px solid hsl(var(--accent-color-3));
   border-radius: 1.2em;
   margin-block: 1em;
   transition: all 0.25s ease-in-out;

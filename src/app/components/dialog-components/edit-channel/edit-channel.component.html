@@ -1,6 +1,6 @@
 <header>
-  <mat-icon fontSet="material-symbols-outlined">tag</mat-icon>
-  <span class="title"> Entwicklerteam </span>
+  <mat-icon *ngIf="!showMembers()" fontSet="material-symbols-outlined">tag</mat-icon>
+  <span *ngIf="!showMembers()" class="title">{{data[0].channelName}}</span>
   <button mat-icon-button type="button" (click)="closeDialog()">
     <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
   </button>
@@ -35,4 +35,4 @@
   </fieldset>
 </form>
 <button class="btn" (click)="leaveChannel()">Channel verlassen</button>
-<app-channel-members-list [users]="data[1]" [isInDialog]="false"></app-channel-members-list>
+<app-channel-members-list [users]="data[1]" [isInDialog]="false" *ngIf="showMembers()"></app-channel-members-list>
