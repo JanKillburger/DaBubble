@@ -1,0 +1,15 @@
+header>span {
+  font-size: var(--fs-600);
+  font-weight: 700;
+}
+
+.btn {
+  margin-block: 1em;
+  margin-inline: auto;
+  gap: 1em;
+}
+
+.users {
+  max-height: 220px;
+  overflow: auto;
+}

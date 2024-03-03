@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ChannelData, FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { FormsModule } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
+import { UserData } from '../../../services/firebase-user.service';
 
 @Component({
   selector: 'app-edit-channel',
@@ -17,10 +18,10 @@ import { NgClass, NgIf } from '@angular/common';
 export class EditChannelComponent {
   constructor(public dialogRef: MatDialogRef<UserProfileDialogComponent>,
     private channelService: FirebaseChannelService,
-    @Inject(MAT_DIALOG_DATA) public channel: ChannelData) { }
+    @Inject(MAT_DIALOG_DATA) public data: [ChannelData, UserData[]]) { }
 
-  name = this.channel.channelName;
-  desc = this.channel.channelDescription;
+  name = this.data[0].channelName;
+  desc = this.data[0].channelDescription;
   nameDisplayMode: "view" | "edit" = "view";
   descDisplayMode: "view" | "edit" = "view";
 

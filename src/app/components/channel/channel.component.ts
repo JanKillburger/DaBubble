@@ -69,11 +69,18 @@ export class ChannelComponent {
   }
 
   editChannel() {
-    this.dialog.open(EditChannelComponent, {
-      panelClass: 'custom-container--top-left',
-      position: this.viewport.getPositionRelativeTo(this.callEditChannel, "bottom", "left"),
-      data: this.getChannel()
-    })
+    if (this.homeService.getScreenMode() === "small") {
+      this.dialog.open(EditChannelComponent, {
+        panelClass: 'fullscreen-container',
+        data: [this.getChannel(), this.getChannelUsers()]
+      })
+    } else {
+      this.dialog.open(EditChannelComponent, {
+        panelClass: 'custom-container--top-left',
+        position: this.viewport.getPositionRelativeTo(this.callEditChannel, "bottom", "left"),
+        data: [this.getChannel(), this.getChannelUsers()]
+      })
+    }
   }
 
   openMembersListDialog() {
