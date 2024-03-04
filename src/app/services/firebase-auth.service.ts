@@ -3,7 +3,6 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
   signOut,
   sendPasswordResetEmail,
   updatePassword,
@@ -17,6 +16,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  setDoc,
   updateDoc,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
@@ -34,7 +34,8 @@ export class FirebaseAuthService {
   user: User = new User();
   provider = new GoogleAuthProvider();
   loggedInUserAuth = '';
-  loggedInUser = '';
+  loggedInUser:string = '';
+  authUserId:string = ''
 
   constructor(private router: Router) {
     this.getData();
@@ -47,10 +48,11 @@ export class FirebaseAuthService {
         email,
         password
       );
-      return userCredential.user.uid;
+      this.authUserId = userCredential.user.uid
+      return userCredential.user.uid
     } catch (err) {
       console.error(err);
-      return 'error';
+      return 'error'
     }
   }
 
@@ -58,8 +60,7 @@ export class FirebaseAuthService {
     try {
       return await signInWithEmailAndPassword(this.auth, email, password).then(
         (userCredential) => {
-          this.loggedInUserAuth = userCredential.user.uid;
-          this.getLoggedInUserId();
+          this.loggedInUser = userCredential.user.uid;
           this.router.navigate(['/home']);
           return false;
         }
@@ -72,10 +73,10 @@ export class FirebaseAuthService {
 
   async saveUserService(userData: User): Promise<string> {
     this.loading = true;
-    return addDoc(collection(this.firestore, 'users'), userData.toJson()).then(
-      (docRef) => {
+    const userRef = doc(this.firestore, 'users', this.authUserId);
+    return setDoc(userRef, userData.toJson()).then(() => {
         this.loading = false;
-        return docRef.id;
+        return this.authUserId;
       }
     );
   }
@@ -180,14 +181,14 @@ export class FirebaseAuthService {
       });
   }
 
-  async getLoggedInUserId() {
-    await this.getData() 
-    this.allUsers.forEach((user) => {
-      if (user.authId === this.loggedInUserAuth) {
-        this.loggedInUser = user.userId;
-      }
-    });
-  }
+  // async getLoggedInUserId() {
+  //   await this.getData() 
+  //   this.allUsers.forEach((user) => {
+  //     if (user.authId === this.loggedInUserAuth) {
+  //       this.loggedInUser = user.userId;
+  //     }
+  //   });
+  // }
 }
 
 interface UserData {

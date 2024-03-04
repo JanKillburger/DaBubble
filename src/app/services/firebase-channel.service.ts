@@ -38,7 +38,7 @@ export class FirebaseChannelService {
   channelId: string = '';
   currentUser: string = 'yoYpfM7zqselK2fBnIdS';
   auth = getAuth();
-  allChannels: Channel[];
+  allChannels: Channel[] = [];
   currentChannel?: Channel;
   users: Map<string, UserData> = new Map();
   userChannels: ChannelData[] = [];
@@ -78,20 +78,13 @@ export class FirebaseChannelService {
         this.getUserChannels(this.authService.loggedInUser)
       );
     }, 2000);
-    this.allChannels = [];
   }
 
   controlCurrentUser() {
     this.auth.onAuthStateChanged((user) => {
       if (user) {
-        this.authService.loggedInUserAuth = user.uid;
-        this.authService.getLoggedInUserId();
+        this.authService.loggedInUser = user.uid;
         this.router.navigate(['/home']);
-
-        // this.unsubUserChannels.push(
-        //   this.getUserChannels(this.authService.loggedInUser)
-        // );
-
       } else {
         this.router.navigate(['/']);
       }
@@ -99,7 +92,6 @@ export class FirebaseChannelService {
   }
 
   getUserChannels(userId: string) {
-    //aktuell noch hard-coded gegen Testnutzer Noah Braun abgefragt
     const q = query(
       collection(this.firestore, 'channels'),
       where('users', 'array-contains', userId)
