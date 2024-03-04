@@ -36,7 +36,7 @@ export class FirebaseChannelService {
   unsubChannels;
   firestore: Firestore = inject(Firestore);
   channelId: string = '';
-  currentUser: string = 'yoYpfM7zqselK2fBnIdS';
+  currentUser: string = "Jh3fjqq46UNxdEagOB1Je6xa0Yg1";
   auth = getAuth();
   allChannels: Channel[] = [];
   currentChannel?: Channel;
@@ -71,23 +71,27 @@ export class FirebaseChannelService {
     private router: Router,
     public authService: FirebaseAuthService
   ) {
-    this.controlCurrentUser();
     this.unsubChannels = this.subChannelsList();
-    setTimeout(() => {
-      this.unsubUserChannels.push(
-        this.getUserChannels(this.authService.loggedInUser)
-      );
-    }, 2000);
+    this.controlCurrentUser().then(() => {
+      return this.getUserChannels(this.authService.loggedInUser);
+    })
+    .then((unsubUserChannels) => {
+      this.unsubUserChannels.push(unsubUserChannels);
+    })
   }
-
-  controlCurrentUser() {
-    this.auth.onAuthStateChanged((user) => {
-      if (user) {
-        this.authService.loggedInUser = user.uid;
-        this.router.navigate(['/home']);
-      } else {
-        this.router.navigate(['/']);
-      }
+  
+  async controlCurrentUser() {
+    return new Promise((resolve, reject) => {
+      this.auth.onAuthStateChanged((user) => {
+        if (user) {
+          this.authService.loggedInUser = user.uid;
+          this.router.navigate(['/home']);
+          resolve(user.uid);
+        } else {
+          this.router.navigate(['/']);
+          reject('error');
+        }
+      });
     });
   }
 
