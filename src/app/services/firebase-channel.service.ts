@@ -11,20 +11,14 @@ import {
   query,
   updateDoc,
   where,
-  arrayUnion
+  arrayUnion,
 } from '@angular/fire/firestore';
 import { Channel } from '../models/channel.class';
 import { UserData } from './firebase-user.service';
 import { HomeService } from './home.service';
 import { FirebaseAuthService } from './firebase-auth.service';
 import { Router } from '@angular/router';
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +31,7 @@ export class FirebaseChannelService {
   unsubChannels;
   firestore: Firestore = inject(Firestore);
   channelId: string = '';
-  currentUser: string = "Jh3fjqq46UNxdEagOB1Je6xa0Yg1";
+  currentUser: string = 'Jh3fjqq46UNxdEagOB1Je6xa0Yg1';
   auth = getAuth();
   allChannels: Channel[] = [];
   currentChannel?: Channel;
@@ -73,12 +67,13 @@ export class FirebaseChannelService {
     public authService: FirebaseAuthService
   ) {
     this.unsubChannels = this.subChannelsList();
-    this.controlCurrentUser().then(() => {
-      return this.getUserChannels(this.authService.loggedInUser);
-    })
-    .then((unsubUserChannels) => {
-      this.unsubUserChannels.push(unsubUserChannels);
-    })
+    this.controlCurrentUser()
+      .then(() => {
+        return this.getUserChannels(this.authService.loggedInUser);
+      })
+      .then((unsubUserChannels) => {
+        this.unsubUserChannels.push(unsubUserChannels);
+      });
   }
 
   async controlCurrentUser() {
@@ -104,6 +99,7 @@ export class FirebaseChannelService {
     return onSnapshot(q, (channels) => {
       this.userChannels = [];
       channels.forEach((channel) => {
+        debugger
         if (
           this.userChannels.length === 0 &&
           this.homeService.getScreenMode() !== 'small'
@@ -264,15 +260,21 @@ export class FirebaseChannelService {
     });
   }
 
-  addUserInOfficeChannel(userId:any){
-    const channelDocRef = doc(this.firestore, "channels", "grDvJ7eyWqziuvoDsr41");
+  addUserInOfficeChannel(userId: any) {
+    const channelDocRef = doc(
+      this.firestore,
+      'channels',
+      'grDvJ7eyWqziuvoDsr41'
+    );
     updateDoc(channelDocRef, {
-      users: arrayUnion(userId)
-    }).then(() => {
-      console.log("Neuer Benutzer wurde zum 'users'-Array hinzugefügt");
-    }).catch((error) => {
-      console.error("Fehler beim Hinzufügen eines neuen Benutzers:", error);
-    });
+      users: arrayUnion(userId),
+    })
+      .then(() => {
+        console.log("Neuer Benutzer wurde zum 'users'-Array hinzugefügt");
+      })
+      .catch((error) => {
+        console.error('Fehler beim Hinzufügen eines neuen Benutzers:', error);
+      });
   }
 }
 

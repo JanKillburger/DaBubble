@@ -15,6 +15,7 @@ import { MatSelect } from '@angular/material/select';
 import { FirebaseStorageService } from '../../services/firebase-storage.service';
 import { FirebaseChannelService } from '../../services/firebase-channel.service';
 import { FirebaseUserService } from '../../services/firebase-user.service';
+import { HomeService } from '../../services/home.service';
 
 @Component({
   selector: 'app-messages-input',
@@ -43,6 +44,7 @@ export class MessagesInputComponent {
   currentUserString: string = '';
 
   constructor(
+    private homeService: HomeService,
     private storage: FirebaseStorageService,
     private channels: FirebaseChannelService,
     private users: FirebaseUserService
@@ -63,7 +65,7 @@ export class MessagesInputComponent {
     await this.getUsersOfChannel();
     setTimeout(() => {
       select.open();
-    }, 1000);
+    }, 500);
   }
 
   onFileSelected(event: Event) {
@@ -83,8 +85,7 @@ export class MessagesInputComponent {
   async getUsersOfChannel() {
     this.userList = [];
     await this.users.getUserData();
-    await this.channels.getCurrentChannel('r9pAinLencc8VLsKWeXe');
-    this.channels.currentChannel?.users.forEach((usersInChannel) => {
+    this.homeService.selectedChannel?.users.forEach((usersInChannel) => {
       this.filterUserName(usersInChannel);
     });
   }

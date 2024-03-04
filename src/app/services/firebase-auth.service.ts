@@ -52,7 +52,7 @@ export class FirebaseAuthService {
       return userCredential.user.uid
     } catch (err) {
       console.error("Register ERROR", err);
-      return 'error'
+      return 'Test - error'
     }
   }
 
