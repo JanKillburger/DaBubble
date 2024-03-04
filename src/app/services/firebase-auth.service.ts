@@ -51,7 +51,7 @@ export class FirebaseAuthService {
       this.authUserId = userCredential.user.uid
       return userCredential.user.uid
     } catch (err) {
-      console.error(err);
+      console.error("Register ERROR", err);
       return 'error'
     }
   }
@@ -100,7 +100,7 @@ export class FirebaseAuthService {
       );
       return true;
     } catch (error) {
-      console.error(error);
+      console.error("Update User ERROR:", error);
       return false;
     } finally {
       this.loading = false;
@@ -180,15 +180,6 @@ export class FirebaseAuthService {
         console.log('An error happened');
       });
   }
-
-  // async getLoggedInUserId() {
-  //   await this.getData() 
-  //   this.allUsers.forEach((user) => {
-  //     if (user.authId === this.loggedInUserAuth) {
-  //       this.loggedInUser = user.userId;
-  //     }
-  //   });
-  // }
 }
 
 interface UserData {

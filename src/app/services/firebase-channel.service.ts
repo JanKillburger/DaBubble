@@ -11,6 +11,7 @@ import {
   query,
   updateDoc,
   where,
+  arrayUnion
 } from '@angular/fire/firestore';
 import { Channel } from '../models/channel.class';
 import { UserData } from './firebase-user.service';
@@ -79,7 +80,7 @@ export class FirebaseChannelService {
       this.unsubUserChannels.push(unsubUserChannels);
     })
   }
-  
+
   async controlCurrentUser() {
     return new Promise((resolve, reject) => {
       this.auth.onAuthStateChanged((user) => {
@@ -260,6 +261,17 @@ export class FirebaseChannelService {
     querySnapshot.forEach((channel: any) => {
       let channelData: Channel = channel.data();
       this.allChannels.push(channelData);
+    });
+  }
+
+  addUserInOfficeChannel(userId:any){
+    const channelDocRef = doc(this.firestore, "channels", "grDvJ7eyWqziuvoDsr41");
+    updateDoc(channelDocRef, {
+      users: arrayUnion(userId)
+    }).then(() => {
+      console.log("Neuer Benutzer wurde zum 'users'-Array hinzugefügt");
+    }).catch((error) => {
+      console.error("Fehler beim Hinzufügen eines neuen Benutzers:", error);
     });
   }
 }

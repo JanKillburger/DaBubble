@@ -5,6 +5,7 @@ import { PositionDetails } from '../../../models/position-details.model';
 import { UserProfileDialogComponent } from '../user-profile-dialog/user-profile-dialog.component';
 import { NgIf } from '@angular/common';
 import { FirebaseChannelService } from '../../../services/firebase-channel.service';
+import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class UserDialogComponent {
     public dialogRef: MatDialogRef<UserDialogComponent>,
     public dialog: MatDialog,
     private channelService: FirebaseChannelService,
+    private athService: FirebaseAuthService,
     @Inject(MAT_DIALOG_DATA) public positionDetails:  PositionDetails ) { }
 
   showUserProfile() {
@@ -27,6 +29,7 @@ export class UserDialogComponent {
   }
 
   onLogOut() {
+    this.athService.userSingOut();
     this.dialogRef.close();
   }
 }

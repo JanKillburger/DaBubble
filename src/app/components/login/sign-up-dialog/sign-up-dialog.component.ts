@@ -11,11 +11,19 @@ import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { User } from '../../../models/user.class';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
+import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 
 @Component({
   selector: 'app-sign-up-dialog',
   standalone: true,
-  imports: [NgIf, NgClass, CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    NgIf,
+    NgClass,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterLink,
+  ],
   templateUrl: './sign-up-dialog.component.html',
   styleUrls: [
     './sign-up-dialog.component.scss',
@@ -28,6 +36,7 @@ export class SignUpDialogComponent {
 
   constructor(
     public userFirebaseService: FirebaseAuthService,
+    private channelService: FirebaseChannelService,
     private router: Router
   ) {}
 
@@ -87,14 +96,17 @@ export class SignUpDialogComponent {
   async goOnToSelectAvatar() {
     this.user.authId = this.userId;
     let docIdPromise = this.userFirebaseService.saveUserService(this.user);
-    // this.sendDataToSelectAvatar();
+    this.addUserToOpenChannels(this.userId)
     docIdPromise
       .then((docId) => {
         this.router.navigate([`avatarPicker/${docId}`]);
       })
       .catch((error) => {
-        // Fehlerbehandlung
-        console.error('Fehler beim Erhalten der Dokumenten-ID:', error);
+        console.error('Fehler beim Erhalten der Dokumenten-ID:', error.message);
       });
+  }
+
+  addUserToOpenChannels(userId:any){
+    this.channelService.addUserInOfficeChannel(userId)
   }
 }
