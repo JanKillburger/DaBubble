@@ -31,7 +31,7 @@ export class FirebaseChannelService {
   unsubChannels;
   firestore: Firestore = inject(Firestore);
   channelId: string = '';
-  currentUser: string = 'Jh3fjqq46UNxdEagOB1Je6xa0Yg1';
+  currentUser: string = '';
   auth = getAuth();
   allChannels: Channel[] = [];
   currentChannel?: Channel;
@@ -208,6 +208,7 @@ export class FirebaseChannelService {
       channelName: obj.channelsName || 'unknown',
       channelDescription: obj.channelsDescription || '',
       users: obj.users || [],
+      channelCreator: obj.channelCreater || ''
     };
   }
 
@@ -283,6 +284,7 @@ export interface ChannelData {
   channelName: string;
   channelDescription: string;
   users: string[];
+  channelCreator: string
 }
 
 export interface messages {

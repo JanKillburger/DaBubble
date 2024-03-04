@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { UsersToChannelComponent } from '../users-to-channel/users-to-channel.component';
 import { Channel } from '../../../models/channel.class';
+import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 
 @Component({
   selector: 'app-create-channel',
@@ -34,12 +35,14 @@ export class CreateChannelComponent {
   constructor(
     public dialog: MatDialog,
     private dialogRef: MatDialogRef<CreateChannelComponent>,
-    private channelService: FirebaseChannelService
+    private channelService: FirebaseChannelService,
+    private authService: FirebaseAuthService
   ) {}
   channel = new Channel();
   nameExists = false;
   showCreateChannelDialog = false;
   channelId: string = '';
+  currentUser: any = '';
 
   channelsForm: FormGroup = new FormGroup({
     channelName: new FormControl('', Validators.required),
@@ -68,10 +71,12 @@ export class CreateChannelComponent {
   }
 
   async addToChannel() {
+    this.currentUser = this.channelService.getCurrentUser();
     this.channel.channelName = this.channelName?.value;
     this.channel.channelDescription = this.channelDescription?.value;
-    this.channel.users.push(this.channelService.currentUser);
+    this.channel.users.push(this.currentUser.authId);
     this.channelId = await this.channelService.addChannel(this.channel);
+    this.channel.channelCreator = this.currentUser.name;
   }
 
   openUseToChannelDialog() {
