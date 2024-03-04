@@ -62,6 +62,7 @@ export class FirebaseAuthService {
         (userCredential) => {
           this.loggedInUser = userCredential.user.uid;
           this.router.navigate(['/home']);
+          window.location.reload();
           return false;
         }
       );

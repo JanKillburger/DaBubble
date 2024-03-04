@@ -99,7 +99,6 @@ export class FirebaseChannelService {
     return onSnapshot(q, (channels) => {
       this.userChannels = [];
       channels.forEach((channel) => {
-        debugger
         if (
           this.userChannels.length === 0 &&
           this.homeService.getScreenMode() !== 'small'
