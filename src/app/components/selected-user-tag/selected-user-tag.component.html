@@ -1,0 +1,5 @@
+<img [src]="user?.avatar" alt="Profile pic of {{user?.name}}" class="avatar avatar--small">
+<span>{{user?.name}}</span>
+<button mat-icon-button (click)="deselectUser()">
+  <mat-icon>close</mat-icon>
+</button>

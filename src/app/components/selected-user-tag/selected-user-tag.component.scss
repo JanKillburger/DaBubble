@@ -1,0 +1,14 @@
+:host {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+  background-color: white;
+  left: 1em;
+  border-radius: 1.5em;
+
+  &:hover {
+    background-color: var(--backgroundColor);
+  }
+}

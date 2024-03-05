@@ -19,13 +19,22 @@
   }
 }
 
+.title {
+  font-size: var(--fs-600);
+  font-weight: 700;
+}
+
+.channel-name {
+  color: hsl(var(--accent-color));
+}
+
 input {
-  border-radius: 1.2em;
+  border-radius: 1.7em;
   outline: none;
   margin-block: 0.5em;
   width: 300px;
   max-width: min(100%, 400px);
-  padding: 0.5em 1em;
+  padding: 1em;
   border: 1px solid hsl(var(--accent-color-3));
   font-size: var(--fs-400);
   font-weight: 400;
@@ -34,3 +43,14 @@ input {
     border-color: hsl(var(--accent-color));
   }
 }
+
+.search-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+// .search-results {
+//   position: fixed;
+//   top: 0;
+// }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AddChannelMemberComponent } from '../../shared/add-channel-member/add-channel-member.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-channel-member-dialog',
@@ -10,4 +11,11 @@ import { AddChannelMemberComponent } from '../../shared/add-channel-member/add-c
 })
 export class AddChannelMemberDialog {
 
+  constructor(public dialogRef: MatDialogRef<AddChannelMemberDialog>,) {
+
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
+  }
 }

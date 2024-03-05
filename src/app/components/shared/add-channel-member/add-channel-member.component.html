@@ -1,16 +1,21 @@
 <header class="flex jc-sb ai-c">
   <span class="title">Leute hinzufügen</span>
-  <button mat-icon-button>
+  <button mat-icon-button (click)="closeDialog()">
     <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
   </button>
 </header>
-<p class="flex ai-c">
-  <mat-icon fontSet="material-symbols-outlined">tag</mat-icon>Entwicklungsteam
+<p class="flex ai-c channel-name">
+  <mat-icon fontSet="material-symbols-outlined">tag</mat-icon>{{homeService.getActiveChannel()?.channelName}}
 </p>
 <div class="search-wrapper">
-  <input #search type="text" placeholder="Name eingeben" />
-  <ul class="search-results">
-    <app-contact-button *ngFor="let result of getUserResults(search.value)" [user]="result" (click)="selectUser(result)"></app-contact-button>
-  </ul>
+  <input type="text" [(ngModel)]="query" placeholder="Name eingeben" [readOnly]="selectedUser" (keyup)="getUserResults()"/>
+  <app-selected-user-tag [user]="selectedUser" (userremove)="deselectUser()" *ngIf="selectedUser"></app-selected-user-tag>
 </div>
-<button class="btn" disabled>Hinzufügen</button>
+<ul class="search-results">
+  <app-contact-button
+    *ngFor="let result of results"
+    [user]="result"
+    (click)="selectUser(result)"
+  ></app-contact-button>
+</ul>
+<button class="btn" [disabled]="!selectedUser" (click)="addUser()">Hinzufügen</button>
