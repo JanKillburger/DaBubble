@@ -1,5 +1,6 @@
 :host {
   display: block;
+
   &:hover {
     background-color: var(--backgroundColor);
 
@@ -50,7 +51,10 @@ p {
   padding: 1em;
   border-radius: 1em;
   border-top-left-radius: 0;
-  word-break: break-all;
+
+  @media (max-width: 450px) {
+    word-break: break-all;
+  }
 }
 
 .message-content--aligned-right {
@@ -62,7 +66,7 @@ p {
 
 .replies {
   color: hsl(var(--accent-color));
-    background-color: unset;
+  background-color: unset;
 }
 
 .last-reply {
