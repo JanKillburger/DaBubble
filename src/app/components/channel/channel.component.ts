@@ -103,7 +103,7 @@ export class ChannelComponent {
   addChannelMember() {
     if (this.homeService.getScreenMode() === "small") {
       this.dialog.open(AddChannelMemberDialog, {
-        panelClass: 'default-container'
+        panelClass: 'fullscreen-container'
       });
     } else {
       this.dialog.open(AddChannelMemberDialog, {
