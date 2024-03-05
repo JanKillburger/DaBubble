@@ -101,10 +101,16 @@ export class ChannelComponent {
   }
 
   addChannelMember() {
-    this.dialog.open(AddChannelMemberDialog, {
-      panelClass: 'custom-container',
-      position: this.viewport.getPositionRelativeTo(this.addMember, 'bottom', 'right')
-    });
+    if (this.homeService.getScreenMode() === "small") {
+      this.dialog.open(AddChannelMemberDialog, {
+        panelClass: 'default-container'
+      });
+    } else {
+      this.dialog.open(AddChannelMemberDialog, {
+        panelClass: 'custom-container',
+        position: this.viewport.getPositionRelativeTo(this.addMember, 'bottom', 'right')
+      });
+    }
   }
 
   getChannelUsers() {
