@@ -28,7 +28,9 @@ export class AddChannelMemberComponent {
     if (this.query === "") {
       this.results = [];
     } else {
-      let results = this.authService.allUsers.filter(user => user.name.toLowerCase().includes(this.query.toLowerCase()));
+      let results = this.authService.allUsers.filter(user =>
+        user.name.toLowerCase().includes(this.query.toLowerCase()) &&
+        !this.homeService.getActiveChannel()?.users.includes(user.userId));
       if (results.length > 5) results = results.slice(0, 5);
       this.results = results;
     }
