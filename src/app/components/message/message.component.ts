@@ -29,6 +29,7 @@ export class MessageComponent {
 
   openThread() {
     this.homeService.setThreadMessage(this.message!);
+    this.channelService.currentThreadForMessage = this.message?.id
   }
 
   showUserProfile() {

@@ -1,4 +1,4 @@
-<form>
+<form >
   <textarea
     placeholder="Type your message"
     [(ngModel)]="message"
@@ -52,7 +52,7 @@
         </mat-select>
       </div>
     </div>
-    <button mat-icon-button type="submit">
+    <button mat-icon-button type="submit" (click)="sendMessageToFirebase()">
       <mat-icon class="sendButton" fontSet="material-symbols-outlined">
         send
       </mat-icon>

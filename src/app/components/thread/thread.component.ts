@@ -27,7 +27,7 @@ export class ThreadComponent {
 
   getReplies() {
     const message = this.homeService.getThreadMessage();
-    if (message) {
+    if (message?.id) {
       return this.channelService.replies.get(message.id);
     } else {
       return undefined;

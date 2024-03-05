@@ -17,4 +17,4 @@
   </div>
   <app-message *ngFor="let message of getReplies()" [message]="message"></app-message>
 </div>
-<app-messages-input></app-messages-input>
+<app-messages-input [pathForMessage]="'thread'"></app-messages-input>

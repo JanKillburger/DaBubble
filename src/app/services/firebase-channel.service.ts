@@ -12,6 +12,7 @@ import {
   updateDoc,
   where,
   arrayUnion,
+  setDoc,
 } from '@angular/fire/firestore';
 import { Channel } from '../models/channel.class';
 import { UserData } from './firebase-user.service';
@@ -43,6 +44,8 @@ export class FirebaseChannelService {
   unsubReplies: any[] = [];
   unsubUserChannels: any[] = [];
   unsubUserChannelsMessages: any[] = [];
+  currentChannelForMessages: string = ''
+  currentThreadForMessage: string | undefined = ''
   converterMessage = {
     toFirestore: (data: Message) => {
       delete data.created;
@@ -202,16 +205,6 @@ export class FirebaseChannelService {
     });
   }
 
-  setChannelObject(obj: any, id: string): ChannelData {
-    return {
-      id: id,
-      channelName: obj.channelsName || 'unknown',
-      channelDescription: obj.channelsDescription || '',
-      users: obj.users || [],
-      channelCreator: obj.channelCreater || ''
-    };
-  }
-
   getChannelsRef() {
     return collection(this.firestore, 'channels');
   }
@@ -276,15 +269,24 @@ export class FirebaseChannelService {
         console.error('Fehler beim Hinzufügen eines neuen Benutzers:', error);
       });
   }
-}
 
+  setChannelObject(obj: any, id: string): ChannelData {
+    return {
+      id: id,
+      channelName: obj.channelsName || 'unknown',
+      channelDescription: obj.channelsDescription || '',
+      users: obj.users || [],
+      channelCreator: obj.channelCreater || '',
+    };
+  }
+}
 export interface ChannelData {
   id?: string;
   createdBy?: string;
   channelName: string;
   channelDescription: string;
   users: string[];
-  channelCreator: string
+  channelCreator: string;
 }
 
 export interface messages {
@@ -292,7 +294,7 @@ export interface messages {
 }
 
 export interface Message {
-  id: string;
+  id?: string;
   message: string;
   from?: string;
   timestamp?: number;

@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input  } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -16,6 +16,7 @@ import { FirebaseStorageService } from '../../services/firebase-storage.service'
 import { FirebaseChannelService } from '../../services/firebase-channel.service';
 import { FirebaseUserService } from '../../services/firebase-user.service';
 import { HomeService } from '../../services/home.service';
+import { FirebaseMessageService } from '../../services/firebase-messages.service';
 
 @Component({
   selector: 'app-messages-input',
@@ -34,6 +35,8 @@ import { HomeService } from '../../services/home.service';
   styleUrl: './messages-input.component.scss',
 })
 export class MessagesInputComponent {
+  @Input() pathForMessage: string = '';
+
   showEmojiPicker = false;
   message = '';
   userToPick: boolean = false;
@@ -47,11 +50,11 @@ export class MessagesInputComponent {
     private homeService: HomeService,
     private storage: FirebaseStorageService,
     private channels: FirebaseChannelService,
-    private users: FirebaseUserService
+    private users: FirebaseUserService,
+    private messageService: FirebaseMessageService
   ) {}
 
   toggleEmojiPicker() {
-    console.log(this.showEmojiPicker);
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
@@ -140,8 +143,15 @@ export class MessagesInputComponent {
   createStringFromUserList(currentUserList: string[]) {
     let text = '';
     currentUserList.forEach((user) => {
-      text += `@${user}`;
+      text += `@${user}:`;
     });
     return text;
+  }
+
+  sendMessageToFirebase() {
+    this.channels.currentChannelForMessages;
+    let currentUser = this.channels.getCurrentUser();
+    this.messageService.updateMessage(this.message, currentUser?.authId, this.pathForMessage);
+    this.message = '';
   }
 }

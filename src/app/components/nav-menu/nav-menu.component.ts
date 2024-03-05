@@ -12,6 +12,7 @@ import {
 import { HomeService } from '../../services/home.service';
 import { ContactButtonComponent } from '../contact-button/contact-button.component';
 import { FirebaseAuthService } from '../../services/firebase-auth.service';
+import { FirebaseMessageService } from '../../services/firebase-messages.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -34,7 +35,8 @@ export class NavMenuComponent {
     public dialog: MatDialog,
     public channelService: FirebaseChannelService,
     private homeService: HomeService,
-    private authService: FirebaseAuthService
+    private authService: FirebaseAuthService,
+    private messageService: FirebaseMessageService
   ) {}
 
   toggleMessages() {
@@ -52,7 +54,10 @@ export class NavMenuComponent {
   }
 
   openChannel(channel: ChannelData) {
-    if (channel) this.homeService.setChannel(channel);
+    if (channel.id) {
+      this.homeService.setChannel(channel);
+      this.messageService.getMessagesFromChannel(channel.id);
+    } 
   }
 
   getScreenMode() {
