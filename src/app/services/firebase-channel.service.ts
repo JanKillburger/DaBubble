@@ -175,8 +175,8 @@ export class FirebaseChannelService {
         onSnapshot(repliesRef, (replies) => {
           const value: Message[] = [];
           replies.forEach((reply) => {
-            const replyData = reply.data() as Message; // Cast zu Message, wenn notwendig
-            replyData.id = reply.id; // Füge id zum Message Objekt hinzu
+            const replyData = reply.data() as Message;
+            replyData.id = reply.id;
             value.push(replyData);
           });
           this.replies.set(messageId, value);

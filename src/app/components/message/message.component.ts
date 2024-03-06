@@ -125,4 +125,8 @@ export class MessageComponent {
   getCurrentUser() {
     return this.channelService.getCurrentUser();
   }
+
+  addOrDeleteEmoji(emoji:any){
+    this.addEmojiToFirebase(emoji)
+  }
 }

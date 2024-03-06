@@ -57,34 +57,67 @@ export class FirebaseMessageService {
     return `${year}-${month}-${day}`;
   }
 
-  UpdateMessageWithEmojis(emoji:any, MessagePath:string | undefined, reactions:any, container:string) {
+  UpdateMessageWithEmojis(
+    emoji: any,
+    MessagePath: string | undefined,
+    reactions: any,
+    container: string
+  ) {
     let emojiIsInDB = this.emojiAlreadyUsed(emoji, reactions);
-    let emojiPath = this.checkItIsEmojiForMessageOrThread(container, MessagePath)
+    let emojiPath = this.checkItIsEmojiForMessageOrThread(container,MessagePath);
     if (emojiIsInDB) {
-      this.addUserForEmoji(emoji, reactions, emojiPath);
+      let iUseTheEmojiBefore = reactions.find((reaction: any) =>
+        reaction.userId.includes(this.authService.loggedInUser)
+      );
+      if (iUseTheEmojiBefore) {
+        this.deleteUserForEmoji(emoji, reactions, emojiPath);
+      } else {
+        this.addUserForEmoji(emoji, reactions, emojiPath);
+      }
     } else {
       this.addEmojiinDB(emoji, emojiPath);
     }
   }
 
-  checkItIsEmojiForMessageOrThread(path: string, MessagePath:string | undefined) {
+  checkItIsEmojiForMessageOrThread(
+    path: string,
+    MessagePath: string | undefined
+  ) {
     if (path === 'channel') {
-      return 'channels/' + this.channel.currentChannelForMessages + '/messages/' + MessagePath;
+      return ('channels/' + this.channel.currentChannelForMessages + '/messages/' + MessagePath);
     } else {
-      return 'channels/' + this.channel.currentChannelForMessages + '/messages/' + this.channel.currentThreadForMessage + '/replies/' + MessagePath;
+      return ('channels/' + this.channel.currentChannelForMessages + '/messages/' + this.channel.currentThreadForMessage + '/replies/' + MessagePath);
     }
   }
 
-  addUserForEmoji(emoji: any, reactions: any, emojiPath:string) {
-  const reactionToUpdate = reactions.find((reaction: any) => reaction.emoji === emoji);
-  if (!reactionToUpdate.userId.includes(this.authService.loggedInUser)) {
-    reactionToUpdate.userId.push(this.authService.loggedInUser);
-    const messageRef = doc(this.firestore, emojiPath);
-    updateDoc(messageRef, { reactions: reactions });
-  }
+  addUserForEmoji(emoji: any, reactions: any, emojiPath: string) {
+    const reactionToUpdate = reactions.find(
+      (reaction: any) => reaction.emoji === emoji
+    );
+    if (!reactionToUpdate.userId.includes(this.authService.loggedInUser)) {
+      reactionToUpdate.userId.push(this.authService.loggedInUser);
+      const messageRef = doc(this.firestore, emojiPath);
+      updateDoc(messageRef, { reactions: reactions });
+    }
   }
 
-  addEmojiinDB(emoji: any, emojiPath:string) {
+  deleteUserForEmoji(emoji: any, reactions: any, emojiPath: string) {
+    const reactionIndex = reactions.findIndex(
+      (reaction: any) => reaction.emoji === emoji
+    );
+    const reactionToUpdate = reactions[reactionIndex];
+    const userIndex = reactionToUpdate.userId.indexOf(this.authService.loggedInUser);
+    if (userIndex > -1) {
+      reactionToUpdate.userId.splice(userIndex, 1);
+      if (reactionToUpdate.userId.length === 0) {
+        reactions.splice(reactionIndex, 1);
+      }
+      const messageRef = doc(this.firestore, emojiPath);
+      updateDoc(messageRef, { reactions: reactions });
+    }
+  }
+
+  addEmojiinDB(emoji: any, emojiPath: string) {
     const newReaction = {
       emoji: emoji,
       userId: [this.authService.loggedInUser],

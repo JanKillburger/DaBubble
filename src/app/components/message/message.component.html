@@ -23,8 +23,8 @@
         {{ message?.message }}
       </p>
       <div class="reactions">
-        <div *ngFor="let reactions of message?.reactions" class="showEmoji">
-          {{ reactions.userId.length}}{{ reactions.emoji }}
+        <div *ngFor="let reactions of message?.reactions" class="showEmoji" (click)="addOrDeleteEmoji(reactions.emoji)">
+          <div *ngIf="reactions.userId.length > 0">{{ reactions.userId.length}}{{ reactions.emoji }}</div>
         </div>
         <button mat-icon-button (click)="toggleEmojiPicker()">
           <mat-icon fontSet="material-symbols-outlined">add_reaction</mat-icon>
@@ -34,7 +34,7 @@
           *ngIf="showEmojiPicker"
           (emojiSelect)="addEmoji($event)"
         ></emoji-mart>
-        <button mat-icon-button>
+        <button mat-icon-button *ngIf="container === 'channel'">
           <mat-icon fontSet="material-symbols-outlined">comment</mat-icon>
         </button>
       </div>
