@@ -334,3 +334,12 @@ a {
 .mat-mdc-select-arrow {
   display: none;
 }
+
+.link-to-doc{
+  color: red;
+  padding: 0;
+  padding-right: 8px;
+  &:hover{
+    border: none;
+  }
+}

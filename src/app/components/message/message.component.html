@@ -17,14 +17,22 @@
         }}</span>
       </p>
       <p
+        id='{{message?.id}}'
         class="message-content"
+        [innerHTML]="message?.message! | linkify"
         [class.message-content--aligned-right]="getCurrentUser() === getUser()"
       >
         {{ message?.message }}
       </p>
       <div class="reactions">
-        <div *ngFor="let reactions of message?.reactions" class="showEmoji" (click)="addOrDeleteEmoji(reactions.emoji)">
-          <div *ngIf="reactions.userId.length > 0">{{ reactions.userId.length}}{{ reactions.emoji }}</div>
+        <div
+          *ngFor="let reactions of message?.reactions"
+          class="showEmoji"
+          (click)="addOrDeleteEmoji(reactions.emoji)"
+        >
+          <div *ngIf="reactions.userId.length > 0">
+            {{ reactions.userId.length }}{{ reactions.emoji }}
+          </div>
         </div>
         <button mat-icon-button (click)="toggleEmojiPicker()">
           <mat-icon fontSet="material-symbols-outlined">add_reaction</mat-icon>

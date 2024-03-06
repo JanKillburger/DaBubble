@@ -6,7 +6,7 @@ import {
   NgIf,
   CommonModule
 } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, NgModule, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { UserProfileDialogComponent } from '../dialog-components/user-profile-dialog/user-profile-dialog.component';
@@ -19,6 +19,7 @@ import {
 } from '../../services/firebase-channel.service';
 import { HomeService } from '../../services/home.service';
 import { FirebaseMessageService } from '../../services/firebase-messages.service';
+import { LinkifyPipe } from '../../services/linkify.pipe';
 
 @Component({
   selector: 'app-message',
@@ -32,7 +33,8 @@ import { FirebaseMessageService } from '../../services/firebase-messages.service
     KeyValuePipe,
     JsonPipe,
     DatePipe,
-    CommonModule
+    CommonModule,
+    LinkifyPipe
   ],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss',
@@ -51,6 +53,12 @@ export class MessageComponent {
     private homeService: HomeService,
     private messageService: FirebaseMessageService
   ) {}
+
+  @NgModule({
+    declarations: [LinkifyPipe],
+    imports: [CommonModule],
+    exports: [LinkifyPipe] // Exportieren Sie die Pipe
+  })
 
   toggleEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
