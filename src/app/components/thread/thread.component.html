@@ -11,7 +11,7 @@
 </header>
 <div class="messages-wrapper">
   <app-message container="thread" [message]="getMessage()" [showReplies]="false"></app-message>
-  <div class="replies-header flex ai-c inner-container">
+  <div class="replies-header flex ai-c inner-container" *ngIf="getReplies()?.length">
     <span>{{getReplies()?.length}} @if(getReplies()!.length > 1) {Antworten} @else {Antwort} </span>
     <div class="separator"></div>
   </div>

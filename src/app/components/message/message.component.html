@@ -34,7 +34,7 @@
           *ngIf="showEmojiPicker"
           (emojiSelect)="addEmoji($event)"
         ></emoji-mart>
-        <button mat-icon-button *ngIf="container === 'channel'">
+        <button mat-icon-button *ngIf="container === 'channel'" (click)="openThread()">
           <mat-icon fontSet="material-symbols-outlined">comment</mat-icon>
         </button>
       </div>
