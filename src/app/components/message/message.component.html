@@ -1,31 +1,51 @@
 <div class="inner-container">
-  <div class="message-wrapper" [class.aligned-right]="getCurrentUser()===getUser()">
-    <img
-      class="avatar"
-      [src]="getUser()?.avatar"
-      alt="Profilbild"
-    />
+  <div
+    class="message-wrapper"
+    [class.aligned-right]="getCurrentUser() === getUser()"
+  >
+    <img class="avatar" [src]="getUser()?.avatar" alt="Profilbild" />
     <div class="message">
       <p
         class="message-meta-data flex ai-c"
-        [class.aligned-right]="getCurrentUser()===getUser()"
+        [class.aligned-right]="getCurrentUser() === getUser()"
       >
-        <button class="btn btn--text user-name" (click)="showUserProfile()">{{getUser()?.name}}</button>
-        <span class="message-time">{{getFormattedDay(message?.created)}}</span>
+        <button class="btn btn--text user-name" (click)="showUserProfile()">
+          {{ getUser()?.name }}
+        </button>
+        <span class="message-time">{{
+          getFormattedDay(message?.created)
+        }}</span>
       </p>
       <p
         class="message-content"
-        [class.message-content--aligned-right]="getCurrentUser()===getUser()"
+        [class.message-content--aligned-right]="getCurrentUser() === getUser()"
       >
-        {{message?.message}}
+        {{ message?.message }}
       </p>
       <div class="reactions">
-        <button mat-icon-button>
+        <div *ngFor="let reactions of message?.reactions" class="showEmoji">
+          {{ reactions.userId.length}}{{ reactions.emoji }}
+        </div>
+        <button mat-icon-button (click)="toggleEmojiPicker()">
           <mat-icon fontSet="material-symbols-outlined">add_reaction</mat-icon>
         </button>
+        <emoji-mart
+          class="emoji-mart"
+          *ngIf="showEmojiPicker"
+          (emojiSelect)="addEmoji($event)"
+        ></emoji-mart>
+        <button mat-icon-button>
+          <mat-icon fontSet="material-symbols-outlined">comment</mat-icon>
+        </button>
       </div>
-      <button (click)="openThread()" class="btn replies" *ngIf="hasReplies() && container==='channel'">
-        {{getReplies()?.length}} @if (hasReplies() && getReplies()!.length > 1) {Antworten } @else {Antwort } <span class="last-reply">Letzte Antwort {{getLastReplyDate()}}</span>
+      <button
+        (click)="openThread()"
+        class="btn replies"
+        *ngIf="hasReplies() && container === 'channel'"
+      >
+        {{ getReplies()?.length }} @if (hasReplies() && getReplies()!.length >
+        1) {Antworten } @else {Antwort }
+        <span class="last-reply">Letzte Antwort {{ getLastReplyDate() }}</span>
       </button>
     </div>
   </div>

@@ -1,35 +1,75 @@
-import { DatePipe, JsonPipe, KeyValuePipe, NgClass, NgIf } from '@angular/common';
+import {
+  DatePipe,
+  JsonPipe,
+  KeyValuePipe,
+  NgClass,
+  NgIf,
+  CommonModule
+} from '@angular/common';
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { UserProfileDialogComponent } from '../dialog-components/user-profile-dialog/user-profile-dialog.component';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { UserData } from '../../services/firebase-user.service';
-import { FirebaseChannelService, Message } from '../../services/firebase-channel.service';
+import {
+  FirebaseChannelService,
+  Message,
+} from '../../services/firebase-channel.service';
 import { HomeService } from '../../services/home.service';
+import { FirebaseMessageService } from '../../services/firebase-messages.service';
 
 @Component({
   selector: 'app-message',
   standalone: true,
-  imports: [NgClass, NgIf, MatIconModule, MatButtonModule, KeyValuePipe, JsonPipe, DatePipe],
+  imports: [
+    NgClass,
+    NgIf,
+    MatIconModule,
+    PickerModule,
+    MatButtonModule,
+    KeyValuePipe,
+    JsonPipe,
+    DatePipe,
+    CommonModule
+  ],
   templateUrl: './message.component.html',
-  styleUrl: './message.component.scss'
+  styleUrl: './message.component.scss',
 })
 export class MessageComponent {
   @Input() message?: Message;
   @Input() showReplies = false;
-  @Input() container: "thread" | "channel" = "thread";
-  @Output() openThreadEv = new EventEmitter<Message>;
+  @Input() container: 'thread' | 'channel' = 'thread';
+  @Output() openThreadEv = new EventEmitter<Message>();
+  showEmojiPicker = false;
+  emoji = '';
 
   constructor(
     public dialog: MatDialog,
     public channelService: FirebaseChannelService,
-    private homeService: HomeService
-  ) { }
+    private homeService: HomeService,
+    private messageService: FirebaseMessageService
+  ) {}
+
+  toggleEmojiPicker() {
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmoji(event: any) {
+    const { emoji } = this;
+    const text = `${emoji}${event.emoji.native}`;
+    this.addEmojiToFirebase(text)
+  }
+
+  addEmojiToFirebase(emoji:any){
+    let messagePath = this.message?.id
+    this.messageService.UpdateMessageWithEmojis(emoji, messagePath, this.message?.reactions)
+  }
 
   openThread() {
     this.homeService.setThreadMessage(this.message!);
-    this.channelService.currentThreadForMessage = this.message?.id
+    this.channelService.currentThreadForMessage = this.message?.id;
   }
 
   showUserProfile() {
@@ -40,23 +80,32 @@ export class MessageComponent {
   }
 
   getUser(): UserData | undefined {
-    return this.message?.from ? this.channelService.users.get(this.message.from) : undefined;
+    return this.message?.from
+      ? this.channelService.users.get(this.message.from)
+      : undefined;
   }
 
   getFormattedDay(date: Date | undefined) {
     if (date) {
-      const dateSection = new Date(date).toLocaleDateString('de-DE', { day: "2-digit", month: "2-digit", year: "2-digit" });
-      const timeSection = new Date(date).toLocaleTimeString('de-DE', { hour: "2-digit", minute: "2-digit" });
-      return `${dateSection} ${timeSection}`
+      const dateSection = new Date(date).toLocaleDateString('de-DE', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+      });
+      const timeSection = new Date(date).toLocaleTimeString('de-DE', {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+      return `${dateSection} ${timeSection}`;
     }
     return undefined;
   }
 
   getReplies(): Message[] | undefined {
     if (this.message?.id) {
-      return this.channelService.replies.get(this.message?.id)
+      return this.channelService.replies.get(this.message?.id);
     } else {
-      return undefined
+      return undefined;
     }
   }
 
@@ -77,5 +126,4 @@ export class MessageComponent {
   getCurrentUser() {
     return this.channelService.getCurrentUser();
   }
-
 }
