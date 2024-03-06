@@ -44,8 +44,8 @@ export class FirebaseChannelService {
   unsubReplies: any[] = [];
   unsubUserChannels: any[] = [];
   unsubUserChannelsMessages: any[] = [];
-  currentChannelForMessages: string = ''
-  currentThreadForMessage: string | undefined = ''
+  currentChannelForMessages: string = '';
+  currentThreadForMessage: string | undefined = '';
   converterMessage = {
     toFirestore: (data: Message) => {
       delete data.created;
@@ -169,11 +169,16 @@ export class FirebaseChannelService {
       messageId,
       'replies'
     ).withConverter(this.converterMessage);
+
     if (!this.replies.has(messageId)) {
       this.unsubReplies.push(
         onSnapshot(repliesRef, (replies) => {
           const value: Message[] = [];
-          replies.forEach((reply) => value.push(reply.data()));
+          replies.forEach((reply) => {
+            const replyData = reply.data() as Message; // Cast zu Message, wenn notwendig
+            replyData.id = reply.id; // Füge id zum Message Objekt hinzu
+            value.push(replyData);
+          });
           this.replies.set(messageId, value);
         })
       );

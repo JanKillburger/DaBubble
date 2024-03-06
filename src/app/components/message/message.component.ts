@@ -63,8 +63,7 @@ export class MessageComponent {
   }
 
   addEmojiToFirebase(emoji:any){
-    let messagePath = this.message?.id
-    this.messageService.UpdateMessageWithEmojis(emoji, messagePath, this.message?.reactions)
+    this.messageService.UpdateMessageWithEmojis(emoji, this.message?.id, this.message?.reactions, this.container)
   }
 
   openThread() {

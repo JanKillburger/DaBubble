@@ -9,7 +9,6 @@ import {
 } from '@angular/fire/firestore';
 import { FirebaseChannelService, Message } from './firebase-channel.service';
 import { FirebaseAuthService } from './firebase-auth.service';
-import { Console } from 'console';
 
 @Injectable({ providedIn: 'root' })
 export class FirebaseMessageService {
@@ -47,13 +46,7 @@ export class FirebaseMessageService {
     if (path === 'message') {
       return 'channels/' + this.channel.currentChannelForMessages + '/messages';
     } else {
-      return (
-        'channels/' +
-        this.channel.currentChannelForMessages +
-        '/messages/' +
-        this.channel.currentThreadForMessage +
-        '/replies'
-      );
+      return ('channels/' + this.channel.currentChannelForMessages + '/messages/' + this.channel.currentThreadForMessage + '/replies');
     }
   }
 
@@ -64,17 +57,25 @@ export class FirebaseMessageService {
     return `${year}-${month}-${day}`;
   }
 
-  UpdateMessageWithEmojis(emoji:any, MessagePath:string | undefined, reactions:any) {
+  UpdateMessageWithEmojis(emoji:any, MessagePath:string | undefined, reactions:any, container:string) {
     let emojiIsInDB = this.emojiAlreadyUsed(emoji, reactions);
+    let emojiPath = this.checkItIsEmojiForMessageOrThread(container, MessagePath)
     if (emojiIsInDB) {
-      this.addUserForEmoji(emoji, MessagePath, reactions);
+      this.addUserForEmoji(emoji, reactions, emojiPath);
     } else {
-      this.addEmojiinDB(emoji, MessagePath);
+      this.addEmojiinDB(emoji, emojiPath);
     }
   }
 
-  addUserForEmoji(emoji: any, MessagePath: string | undefined, reactions: any) {
-  let emojiPath = 'channels/' + this.channel.currentChannelForMessages + '/messages/' + MessagePath;
+  checkItIsEmojiForMessageOrThread(path: string, MessagePath:string | undefined) {
+    if (path === 'channel') {
+      return 'channels/' + this.channel.currentChannelForMessages + '/messages/' + MessagePath;
+    } else {
+      return 'channels/' + this.channel.currentChannelForMessages + '/messages/' + this.channel.currentThreadForMessage + '/replies/' + MessagePath;
+    }
+  }
+
+  addUserForEmoji(emoji: any, reactions: any, emojiPath:string) {
   const reactionToUpdate = reactions.find((reaction: any) => reaction.emoji === emoji);
   if (!reactionToUpdate.userId.includes(this.authService.loggedInUser)) {
     reactionToUpdate.userId.push(this.authService.loggedInUser);
@@ -83,8 +84,7 @@ export class FirebaseMessageService {
   }
   }
 
-  addEmojiinDB(emoji: any, MessagePath: string | undefined) {
-    let emojiPath = 'channels/' + this.channel.currentChannelForMessages + '/messages/' + MessagePath;
+  addEmojiinDB(emoji: any, emojiPath:string) {
     const newReaction = {
       emoji: emoji,
       userId: [this.authService.loggedInUser],
