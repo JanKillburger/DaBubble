@@ -161,13 +161,16 @@ export class FirebaseChannelService {
   }
 
   private getMessageReplies(channelId: string, messageId: string) {
-    const repliesRef = collection(
+    const repliesRef = query(
+      collection(
       this.firestore,
       'channels',
       channelId,
       'messages',
       messageId,
       'replies'
+      ),
+      orderBy('timestamp')
     ).withConverter(this.converterMessage);
 
     if (!this.replies.has(messageId)) {
