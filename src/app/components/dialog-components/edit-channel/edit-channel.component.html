@@ -31,7 +31,7 @@
     <textarea id="desc" name="desc" [(ngModel)]="desc" [ngClass]="{'edit': descDisplayMode==='edit'}" [readOnly]="descDisplayMode==='view'"></textarea>
     <hr />
     <label for="createdby">Erstellt von</label>
-    <input id="createdby" type="text" value="Noah Braun" readonly />
+    <input id="createdby" type="text" [value]="data[0].createdBy" readonly />
   </fieldset>
 </form>
 <button class="btn" (click)="leaveChannel()">Channel verlassen</button>
