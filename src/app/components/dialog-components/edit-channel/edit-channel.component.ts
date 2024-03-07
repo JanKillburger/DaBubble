@@ -9,6 +9,7 @@ import { NgClass, NgIf } from '@angular/common';
 import { UserData } from '../../../services/firebase-user.service';
 import { ChannelMembersListComponent } from '../../shared/channel-members-list/channel-members-list.component';
 import { HomeService } from '../../../services/home.service';
+import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 
 @Component({
   selector: 'app-edit-channel',
@@ -21,6 +22,7 @@ export class EditChannelComponent {
   constructor(public dialogRef: MatDialogRef<UserProfileDialogComponent>,
     private channelService: FirebaseChannelService,
     private homeService: HomeService,
+    private authService: FirebaseAuthService,
     @Inject(MAT_DIALOG_DATA) public data: [ChannelData, UserData[]]) { }
 
   name = this.data[0].channelName;
@@ -41,17 +43,21 @@ export class EditChannelComponent {
   }
 
   saveName() {
-    console.log('name saved');
+    this.data[0].channelName = this.name;
+    this.channelService.editChannel(this.data[0]);
     this.nameDisplayMode = 'view';
   }
 
   saveDesc() {
-    console.log('desc saved');
+    this.data[0].channelDescription = this.desc;
+    this.channelService.editChannel(this.data[0]);
     this.descDisplayMode = 'view';
   }
 
   leaveChannel() {
-    console.log('You are out!')
+    this.data[0].users = this.data[0].users.filter(el => el !== this.authService.loggedInUser);
+    this.channelService.editChannel(this.data[0]);
+    this.dialogRef.close();
   }
 
   showMembers() {

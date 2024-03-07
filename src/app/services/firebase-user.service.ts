@@ -26,4 +26,5 @@ export interface UserData {
   userId: string;
   avatar: string;
   online: boolean;
+  id?: string;
 }

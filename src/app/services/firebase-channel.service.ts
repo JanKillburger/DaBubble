@@ -65,6 +65,13 @@ export class FirebaseChannelService {
       return snap.data() as UserData;
     },
   };
+  converterChannel = {
+    toFirestore: (data: ChannelData) => data,
+    fromFirestore: (snap: QueryDocumentSnapshot) => {
+      snap.data()['id'] = snap.id;
+      return snap.data() as ChannelData;
+    },
+  };
 
   constructor(
     private homeService: HomeService,
@@ -104,14 +111,16 @@ export class FirebaseChannelService {
     return onSnapshot(q, (channels) => {
       this.userChannels = [];
       channels.forEach((channel) => {
+        let rawData = channel.data();
+        rawData["id"] = channel.id;
         if (
-          this.userChannels.length === 0 &&
+          !this.homeService.getActiveChannel() &&
           this.homeService.getScreenMode() !== 'small'
         )
-          this.homeService.setChannel(channel.data() as ChannelData);
-        this.userChannels.push(channel.data() as ChannelData);
+          this.homeService.setChannel(rawData as ChannelData);
+        this.userChannels.push(rawData as ChannelData);
         this.userChannels.at(-1)!.id = channel.id;
-        this.getChannelUsers(channel.data() as ChannelData);
+        this.getChannelUsers(rawData as ChannelData);
         if (!this.userChannelsMessages.has(channel.id)) {
           this.userChannelsMessages.set(channel.id, {});
           this.unsubUserChannelsMessages.push(
@@ -131,7 +140,9 @@ export class FirebaseChannelService {
               this.converterUser
             ),
             (user) => {
-              this.users.set(user.id, user.data() as UserData);
+              let rawData = user.data()!;
+              rawData['id'] = user.id;
+              this.users.set(user.id, rawData as UserData);
             }
           )
         );
@@ -163,8 +174,13 @@ export class FirebaseChannelService {
     });
   }
 
-  saveMessageForSearchingFiel(channelId:string, message:string, messageId:string){
-    let searchData: searchData = {channelId: '', messageId: '' , message: ''};
+  editChannel(channel: ChannelData) {
+    const docRef = doc(this.firestore, "channels/" + channel.id).withConverter(this.converterChannel);
+    updateDoc(docRef, channel);
+  }
+
+  saveMessageForSearchingFiel(channelId: string, message: string, messageId: string) {
+    let searchData: searchData = { channelId: '', messageId: '', message: '' };
     searchData.channelId = channelId;
     searchData.messageId = messageId;
     searchData.message = message;
@@ -189,7 +205,9 @@ export class FirebaseChannelService {
         onSnapshot(repliesRef, (replies) => {
           const value: Message[] = [];
           replies.forEach((reply) => {
-            const replyData = reply.data() as Message;
+            let rawData = reply.data();
+            rawData["id"] = reply.id;
+            const replyData = rawData as Message;
             replyData.id = reply.id;
             value.push(replyData);
           });
