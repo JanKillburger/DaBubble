@@ -1,5 +1,9 @@
 <header class="header">
-  <button (click)="goToMenu()" mat-icon-button *ngIf="getScreenMode() === 'small' && !isNavVisible()">
+  <button
+    (click)="goToMenu()"
+    mat-icon-button
+    *ngIf="getScreenMode() === 'small' && !isNavVisible()"
+  >
     <mat-icon fontSet="material-symbols-outlined">keyboard_arrow_left</mat-icon>
   </button>
   <img
@@ -8,11 +12,16 @@
     alt="DA Bubble Logo"
   />
   <div class="search-wrapper">
-    <mat-icon fontSet="material-symbols-outlined">search</mat-icon>
+    <div class="searchingButtons">
+      <mat-icon (click)="clickBack()" fontSet="material-symbols-outlined">expand_less</mat-icon>
+      <mat-icon (click)="clickNext()" fontSet="material-symbols-outlined">expand_more</mat-icon>
+    </div>
     <input
       type="text"
       class="searchbar"
       placeholder="Code learning durchsuchen"
+      [(ngModel)]="searchTerm"
+      (keyup)="search()"
     />
   </div>
   <button
@@ -20,13 +29,9 @@
     class="btn flex ai-c toggle-user-menu"
     (click)="openUserDialog()"
   >
-    <span class="current-user">{{getCurrentUser()?.name}}</span>
+    <span class="current-user">{{ getCurrentUser()?.name }}</span>
     <div class="img-wrapper">
-      <img
-        class="avatar"
-        [src]="getCurrentUser()?.avatar"
-        alt="User avatar"
-      />
+      <img class="avatar" [src]="getCurrentUser()?.avatar" alt="User avatar" />
       <div class="status-indicator status-indicator--online"></div>
     </div>
     <mat-icon fontSet="material-symbols-outlined">keyboard_arrow_down</mat-icon>

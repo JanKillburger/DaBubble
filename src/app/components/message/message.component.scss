@@ -99,3 +99,13 @@ p {
   right: 0;
   z-index: 1;
 }
+
+.highlighted-message {
+  background-color: yellow; 
+  color: black;
+}
+
+.found-message {
+  background-color: orange;
+  color: black; 
+}

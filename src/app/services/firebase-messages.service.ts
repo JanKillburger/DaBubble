@@ -13,6 +13,10 @@ import { FirebaseAuthService } from './firebase-auth.service';
 @Injectable({ providedIn: 'root' })
 export class FirebaseMessageService {
   firestore: Firestore = inject(Firestore);
+  messageMatches: any;
+  searchTerm: any = '';
+  currentMatchId: string = '';
+  currentMatchIndex: number = -1
   constructor(
     private channel: FirebaseChannelService,
     private authService: FirebaseAuthService
@@ -46,7 +50,13 @@ export class FirebaseMessageService {
     if (path === 'message') {
       return 'channels/' + this.channel.currentChannelForMessages + '/messages';
     } else {
-      return ('channels/' + this.channel.currentChannelForMessages + '/messages/' + this.channel.currentThreadForMessage + '/replies');
+      return (
+        'channels/' +
+        this.channel.currentChannelForMessages +
+        '/messages/' +
+        this.channel.currentThreadForMessage +
+        '/replies'
+      );
     }
   }
 
@@ -64,7 +74,10 @@ export class FirebaseMessageService {
     container: string
   ) {
     let emojiIsInDB = this.emojiAlreadyUsed(emoji, reactions);
-    let emojiPath = this.checkItIsEmojiForMessageOrThread(container,MessagePath);
+    let emojiPath = this.checkItIsEmojiForMessageOrThread(
+      container,
+      MessagePath
+    );
     if (emojiIsInDB) {
       let iUseTheEmojiBefore = reactions.find((reaction: any) =>
         reaction.userId.includes(this.authService.loggedInUser)
@@ -84,9 +97,21 @@ export class FirebaseMessageService {
     MessagePath: string | undefined
   ) {
     if (path === 'channel') {
-      return ('channels/' + this.channel.currentChannelForMessages + '/messages/' + MessagePath);
+      return (
+        'channels/' +
+        this.channel.currentChannelForMessages +
+        '/messages/' +
+        MessagePath
+      );
     } else {
-      return ('channels/' + this.channel.currentChannelForMessages + '/messages/' + this.channel.currentThreadForMessage + '/replies/' + MessagePath);
+      return (
+        'channels/' +
+        this.channel.currentChannelForMessages +
+        '/messages/' +
+        this.channel.currentThreadForMessage +
+        '/replies/' +
+        MessagePath
+      );
     }
   }
 
@@ -106,7 +131,9 @@ export class FirebaseMessageService {
       (reaction: any) => reaction.emoji === emoji
     );
     const reactionToUpdate = reactions[reactionIndex];
-    const userIndex = reactionToUpdate.userId.indexOf(this.authService.loggedInUser);
+    const userIndex = reactionToUpdate.userId.indexOf(
+      this.authService.loggedInUser
+    );
     if (userIndex > -1) {
       reactionToUpdate.userId.splice(userIndex, 1);
       if (reactionToUpdate.userId.length === 0) {
@@ -128,6 +155,35 @@ export class FirebaseMessageService {
 
   emojiAlreadyUsed(emoji: any, reactions: any) {
     return reactions.some((reaction: any) => reaction.emoji === emoji);
+  }
+
+  searchingMessages(searchTerm: string) {
+    this.searchTerm = searchTerm;
+    let currentMessages = this.channel.messagesToSeach.filter((channel) =>
+      channel.channelId.includes(this.channel.currentChannelForMessages)
+    );
+    this.messageMatches = currentMessages.filter((message) =>
+      message.message.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    if (this.searchTerm == "") {
+      this.currentMatchId = ""
+    }
+  }
+
+  goToNextMatch(plusOrMinus: number) {
+    if (this.messageMatches.length > 0) {
+      this.currentMatchIndex = this.currentMatchIndex + plusOrMinus
+      this.currentMatchIndex = (this.currentMatchIndex) % this.messageMatches.length;
+      this.currentMatchId = this.messageMatches[this.currentMatchIndex].messageId;
+      this.scrollToElement(this.currentMatchId);
+    } 
+  }
+
+  scrollToElement(id: string) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   messageToJson(message: Message) {

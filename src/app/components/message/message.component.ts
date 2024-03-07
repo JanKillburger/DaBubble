@@ -4,9 +4,16 @@ import {
   KeyValuePipe,
   NgClass,
   NgIf,
-  CommonModule
+  CommonModule,
 } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, NgModule, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  NgModule,
+  Output,
+} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { UserProfileDialogComponent } from '../dialog-components/user-profile-dialog/user-profile-dialog.component';
@@ -34,7 +41,7 @@ import { LinkifyPipe } from '../../services/linkify.pipe';
     JsonPipe,
     DatePipe,
     CommonModule,
-    LinkifyPipe
+    LinkifyPipe,
   ],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss',
@@ -57,9 +64,8 @@ export class MessageComponent {
   @NgModule({
     declarations: [LinkifyPipe],
     imports: [CommonModule],
-    exports: [LinkifyPipe] // Exportieren Sie die Pipe
+    exports: [LinkifyPipe], // Exportieren Sie die Pipe
   })
-
   toggleEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
@@ -67,11 +73,16 @@ export class MessageComponent {
   addEmoji(event: any) {
     const { emoji } = this;
     const text = `${emoji}${event.emoji.native}`;
-    this.addEmojiToFirebase(text)
+    this.addEmojiToFirebase(text);
   }
 
-  addEmojiToFirebase(emoji:any){
-    this.messageService.UpdateMessageWithEmojis(emoji, this.message?.id, this.message?.reactions, this.container)
+  addEmojiToFirebase(emoji: any) {
+    this.messageService.UpdateMessageWithEmojis(
+      emoji,
+      this.message?.id,
+      this.message?.reactions,
+      this.container
+    );
   }
 
   openThread() {
@@ -134,7 +145,29 @@ export class MessageComponent {
     return this.channelService.getCurrentUser();
   }
 
-  addOrDeleteEmoji(emoji:any){
-    this.addEmojiToFirebase(emoji)
+  addOrDeleteEmoji(emoji: any) {
+    this.addEmojiToFirebase(emoji);
+  }
+
+  isMessageMatched(message: any): boolean {
+    if (this.messageService.searchTerm.trim().length > 0) {
+      return (
+        this.messageService.messageMatches?.some(
+          (match: any) => match.messageId === message.id
+        ) ?? false
+      );
+    } else {
+      return false;
+    }
+  }
+
+  isMessageFound(message: any): boolean {
+    if (this.messageService.currentMatchId != "") {
+      return (
+        this.messageService.currentMatchId === message.id ?? false
+      );
+    } else {
+      return false;
+    }
   }
 }

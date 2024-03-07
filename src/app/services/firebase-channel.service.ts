@@ -46,6 +46,8 @@ export class FirebaseChannelService {
   unsubUserChannelsMessages: any[] = [];
   currentChannelForMessages: string = '';
   currentThreadForMessage: string | undefined = '';
+  messagesToSeach: searchData[] = [];
+
   converterMessage = {
     toFirestore: (data: Message) => {
       delete data.created;
@@ -146,8 +148,9 @@ export class FirebaseChannelService {
       const messagesObj: messages = {};
       let dayKey = '';
       messages.forEach((message) => {
-        const rawData = message.data();
+        let rawData = message.data();
         rawData['id'] = message.id;
+        this.saveMessageForSearchingFiel(channelId, rawData.message, message.id)
         if (message.data()['date'] === dayKey) {
           messagesObj[dayKey].push(rawData);
         } else {
@@ -160,15 +163,23 @@ export class FirebaseChannelService {
     });
   }
 
+  saveMessageForSearchingFiel(channelId:string, message:string, messageId:string){
+    let searchData: searchData = {channelId: '', messageId: '' , message: ''};
+    searchData.channelId = channelId;
+    searchData.messageId = messageId;
+    searchData.message = message;
+    this.messagesToSeach.push(searchData);
+  }
+
   private getMessageReplies(channelId: string, messageId: string) {
     const repliesRef = query(
       collection(
-      this.firestore,
-      'channels',
-      channelId,
-      'messages',
-      messageId,
-      'replies'
+        this.firestore,
+        'channels',
+        channelId,
+        'messages',
+        messageId,
+        'replies'
       ),
       orderBy('timestamp')
     ).withConverter(this.converterMessage);
@@ -309,4 +320,10 @@ export interface Message {
   date?: string;
   reactions?: any[];
   created?: Date;
+}
+
+export interface searchData {
+  channelId: string
+  messageId: string;
+  message: string;
 }

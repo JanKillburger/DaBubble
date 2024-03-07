@@ -21,6 +21,8 @@
         class="message-content"
         [innerHTML]="message?.message! | linkify"
         [class.message-content--aligned-right]="getCurrentUser() === getUser()"
+        [class.highlighted-message]="isMessageMatched(message)"
+        [class.found-message]="isMessageFound(message)"
       >
         {{ message?.message }}
       </p>

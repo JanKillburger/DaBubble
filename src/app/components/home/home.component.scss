@@ -172,10 +172,25 @@ header .search-wrapper {
     display: flex;
   }
 
-  mat-icon {
+  .searchingButtons{
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     right: 1.5em;
+  }
+
+  mat-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: gray;
+    border-radius: 100%;
+    cursor: pointer;
+
+    &:hover{
+      background-color: rgba(0 0 0 / 0.2);
+    }
   }
 
   input {

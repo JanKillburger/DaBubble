@@ -11,34 +11,61 @@ import { UsersToChannelComponent } from '../dialog-components/users-to-channel/u
 import { HomeService } from '../../services/home.service';
 import { MatButtonModule } from '@angular/material/button';
 import { FirebaseChannelService } from '../../services/firebase-channel.service';
+import { FormsModule } from '@angular/forms';
+import { FirebaseMessageService } from '../../services/firebase-messages.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatIconModule, NavMenuComponent, ChannelComponent, ThreadComponent, MatDialogModule, NgIf, NgClass, UsersToChannelComponent, MatButtonModule],
+  imports: [
+    MatIconModule,
+    NavMenuComponent,
+    ChannelComponent,
+    ThreadComponent,
+    MatDialogModule,
+    NgIf,
+    NgClass,
+    UsersToChannelComponent,
+    MatButtonModule,
+    FormsModule,
+  ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  
   @ViewChild('dialogTrigger') dialogTrigger!: ElementRef;
   @ViewChild('triggerUserDialog') triggerUserDialog!: ElementRef;
   channels: any[] = [];
+  searchTerm: string = '';
 
   constructor(
     public dialog: MatDialog,
     public viewport: ViewportService,
     private homeService: HomeService,
-    private channelService: FirebaseChannelService) { }
+    private messageService: FirebaseMessageService,
+    private channelService: FirebaseChannelService
+  ) {}
 
   openDialog() {
-    const positionDetails = this.viewport.getPositionRelativeTo(this.dialogTrigger, "top", "left");
+    const positionDetails = this.viewport.getPositionRelativeTo(
+      this.dialogTrigger,
+      'top',
+      'left'
+    );
     this.dialog.open(UserDialogComponent, { position: positionDetails });
   }
 
   openUserDialog() {
-    const positionDetails = this.viewport.getPositionRelativeTo(this.triggerUserDialog, "bottom", "right");
-    this.dialog.open(UserDialogComponent, { panelClass: 'custom-container', position: positionDetails, data: positionDetails });
+    const positionDetails = this.viewport.getPositionRelativeTo(
+      this.triggerUserDialog,
+      'bottom',
+      'right'
+    );
+    this.dialog.open(UserDialogComponent, {
+      panelClass: 'custom-container',
+      position: positionDetails,
+      data: positionDetails,
+    });
   }
 
   getSelectedChannel() {
@@ -83,5 +110,17 @@ export class HomeComponent {
 
   getCurrentUser() {
     return this.channelService.getCurrentUser();
+  }
+
+  search() {
+    this.messageService.searchingMessages(this.searchTerm);
+  }
+
+  clickBack() {
+    this.messageService.goToNextMatch(-1);
+  }
+
+  clickNext() {
+    this.messageService.goToNextMatch(+1);
   }
 }
