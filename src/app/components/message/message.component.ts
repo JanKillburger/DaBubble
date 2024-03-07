@@ -164,7 +164,7 @@ export class MessageComponent {
   isMessageFound(message: any): boolean {
     if (this.messageService.currentMatchId != "") {
       return (
-        this.messageService.currentMatchId === message.id ?? false
+        this.messageService.currentMatchId === message.id
       );
     } else {
       return false;
