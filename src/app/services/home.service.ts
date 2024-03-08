@@ -25,6 +25,7 @@ export class HomeService {
 
   constructor(
     private responsive: BreakpointObserver,
+    private authService: FirebaseAuthService,
     private dialog: MatDialog) {
     this.breakpointSubscription = this.responsive.observe([
       SMALL_WIDTH,
@@ -150,4 +151,7 @@ export class HomeService {
     this.selectedChat = chat;
   }
 
+  getChatContact(chat: Chat) {
+    return this.authService.allUsers.find(user => chat.users.includes(user.userId) && user.userId !== this.authService.loggedInUser);
+  }
 }

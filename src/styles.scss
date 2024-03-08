@@ -185,7 +185,8 @@ a {
 
 .channel-header,
 .thread-header,
-.new-message-header {
+.new-message-header,
+.direct-messages-header {
   box-shadow: 0 3px rgba(0 0 0 / 0.05);
   padding-block: 1rem;
   margin-block-end: 3px;

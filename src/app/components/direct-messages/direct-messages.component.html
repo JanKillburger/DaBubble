@@ -1,3 +1,10 @@
-<app-messages-container *ngFor="let messagesByDay of getMessages() | keyvalue"
-[messages]="messagesByDay.value"
-[date]="messagesByDay.key"></app-messages-container>
+<header class="direct-messages-header">
+  <div class="inner-container">
+    <app-contact-button [user]="getContact()" (click)="openUserProfile()"></app-contact-button>
+  </div>
+</header>
+<app-messages-container
+  *ngFor="let messagesByDay of getMessages() | keyvalue"
+  [messages]="messagesByDay.value"
+  [date]="messagesByDay.key"
+></app-messages-container>

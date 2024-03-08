@@ -77,8 +77,9 @@ export class NavMenuComponent {
   getChats() {
     return this.channelService.userChats;
   }
-
-  getContact(chat: Chat) { 
-    return this.authService.allUsers.find(user => chat.users.includes(user.userId) && user.userId !== this.channelService.currentUser);
+  
+  getContact(chat: Chat) {
+    return this.homeService.getChatContact(chat);
   }
+
 }
