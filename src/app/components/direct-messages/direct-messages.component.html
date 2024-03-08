@@ -9,8 +9,21 @@
 </header>
 <div>
   <div class="conversation-intro inner-container">
-    @if (homeService.getCurrentUser() !== user.user) { Beginn einer
-    fantastischen Unterhaltung } @else { Persönlicher Bereich }
+    @if (homeService.getCurrentUser() !== user.user) {
+
+    <!-- <img [src]="user.user?.avatar" class="avatar">
+      <span>{{user.user?.name}}</span> -->
+    <p>
+      Diese Unterhaltung findet nur zwischen
+      <span class="at-link">&#64;{{ user.user?.name }}</span> und dir statt.
+    </p>
+    } @else {
+    <p>
+      Dieser Raum ist nur für dich da. Mache dir Notizen, liste deine To-dos auf
+      oder bewahre Links und Dateien griffbereit auf. Du kannst hier auch gerne
+      Dinge mit dir selbst besprechen.
+    </p>
+    }
   </div>
 </div>
 <div class="messages-wrapper">
