@@ -65,6 +65,10 @@ export class NavMenuComponent {
   }
 
   openChat() {
-    alert('This is a chat');
+    this.homeService.mainContent = "direct-message";
+  }
+
+  newMessage() {
+    this.homeService.mainContent = "new-message";
   }
 }

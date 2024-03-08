@@ -45,7 +45,9 @@
     <app-nav-menu></app-nav-menu>
   </nav>
   <section class="channel-container main-item" *ngIf="isChannelVisible()">
-    <app-channel></app-channel>
+    <app-channel *ngIf="getMainContent()==='channel'"></app-channel>
+    <app-new-message *ngIf="getMainContent()==='new-message'"></app-new-message>
+    <app-direct-messages *ngIf="getMainContent()==='direct-message'"></app-direct-messages>
   </section>
   <aside
     class="thread-container main-item"

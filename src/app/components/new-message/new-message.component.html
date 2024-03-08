@@ -1,0 +1,15 @@
+<header class="new-message-header">
+  <div class="inner-container">
+    <p class="title">Neue Nachricht</p>
+    <div class="search-wrapper">
+      <input #input type="text" placeholder="An: #channel, oder @jemand oder E-Mail Adresse" (keyup)="getSearchResults(input.value)" />
+    </div>
+    <ul>
+      <li *ngFor="let result of userSearchResults">{{result.name}}</li>
+      <li *ngFor="let result of channelSearchResults">{{result.channelName}}</li>
+    </ul>
+  </div>
+</header>
+<div class="message-wrapper">
+  <app-messages-input></app-messages-input>
+</div>

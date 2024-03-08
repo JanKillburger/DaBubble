@@ -13,6 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { FirebaseChannelService } from '../../services/firebase-channel.service';
 import { FormsModule } from '@angular/forms';
 import { FirebaseMessageService } from '../../services/firebase-messages.service';
+import { NewMessageComponent } from '../new-message/new-message.component';
+import { DirectMessagesComponent } from '../direct-messages/direct-messages.component';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +30,8 @@ import { FirebaseMessageService } from '../../services/firebase-messages.service
     UsersToChannelComponent,
     MatButtonModule,
     FormsModule,
+    NewMessageComponent,
+    DirectMessagesComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -44,7 +48,7 @@ export class HomeComponent {
     private homeService: HomeService,
     private messageService: FirebaseMessageService,
     private channelService: FirebaseChannelService
-  ) {}
+  ) { }
 
   openDialog() {
     const positionDetails = this.viewport.getPositionRelativeTo(
@@ -122,5 +126,9 @@ export class HomeComponent {
 
   clickNext() {
     this.messageService.goToNextMatch(+1);
+  }
+
+  getMainContent() {
+    return this.homeService.mainContent;
   }
 }

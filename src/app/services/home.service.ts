@@ -20,6 +20,7 @@ export class HomeService {
   threadVisibleMq!: boolean;
   channelVisible!: boolean;
   private breakpointSubscription!: Subscription;
+  mainContent: "channel" | "new-message" | "direct-message" = "channel"
 
   constructor(
     private responsive: BreakpointObserver,
@@ -92,6 +93,7 @@ export class HomeService {
       this.navVisible = false;
     }
     this.channelVisible = true;
+    this.mainContent = "channel";
   }
 
   getScreenMode() {
@@ -142,4 +144,5 @@ export class HomeService {
   openUserProfile(user: UserData) {
     this.dialog.open(UserProfileDialogComponent, { panelClass: 'default-container', data: user });
   }
+
 }
