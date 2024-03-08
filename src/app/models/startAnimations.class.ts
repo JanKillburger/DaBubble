@@ -25,7 +25,7 @@ export class startAnimations {
         group([
           query('.logo-wrapper', [
             animate(
-              '1000ms ease-in-out',
+              '500ms ease-in-out',
               style({
                 left: 'calc(50% - (180px + 16px))',
               })
@@ -47,7 +47,7 @@ export class startAnimations {
         group([
           query('.logo-mask', [
             animate(
-              '50ms ease-in-out',
+              '0ms ease-in-out',
               style({
                 opacity: '0',
               })
@@ -65,7 +65,7 @@ export class startAnimations {
           ]),
           query('.logo-wrapper span', [
             animate(
-              '800ms ease-in-out',
+              '1000ms ease-in-out',
               style({
                 color: 'black',
                 fontSize: '26px',
@@ -143,7 +143,7 @@ export class startAnimations {
             ),
           ]),
           query('.mobile-background', [
-            animate('500ms ease-in-out', style({ opacity: '0' })),
+            animate('1000ms ease-in-out', style({ opacity: '0' })),
           ]),
         ]),
       ])
