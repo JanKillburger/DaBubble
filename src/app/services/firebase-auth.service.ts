@@ -11,7 +11,7 @@ import {
 } from 'firebase/auth';
 import {
   Firestore,
-  addDoc,
+  arrayUnion,
   collection,
   doc,
   getDoc,
@@ -21,6 +21,7 @@ import {
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { User } from '../models/user.class';
+import { FirebaseChannelService } from './firebase-channel.service';
 
 @Injectable({
   providedIn: 'root',
@@ -148,13 +149,16 @@ export class FirebaseAuthService {
       this.user.name = result.user.displayName ?? '';
       this.user.email = result.user.email ?? '';
       this.user.authId = result.user.uid ?? '';
+      this.user.userId = result.user.uid ?? '';
+      this.authUserId = result.user.uid
       if (this.googleUserCheck(createdAt)) {
-        let docIdPromise = this.saveUserService(this.user);
-        docIdPromise.then((docId) => {
-          this.router.navigate([`avatarPicker/${docId}`]);
-        });
+        this.saveUserService(this.user);
+        this.googleAddUserInOfficeChannel(this.authUserId)
+        this.router.navigate([`avatarPicker/${this.authUserId}`]);
       } else {
+        this.loggedInUser = this.authUserId;
         this.router.navigate(['home']);
+        window.location.reload();
       }
     });
   }
@@ -170,6 +174,13 @@ export class FirebaseAuthService {
     } else {
       return (newUser = false);
     }
+  }
+
+  googleAddUserInOfficeChannel(userId: any) {
+    const channelDocRef = doc(this.firestore, 'channels', 'grDvJ7eyWqziuvoDsr41');
+    updateDoc(channelDocRef, {users: arrayUnion(userId)})
+      .then(() => {console.log("Neuer Benutzer wurde zum 'users'-Array hinzugefügt");})
+      .catch((error) => {console.error('Fehler beim Hinzufügen eines neuen Benutzers:', error);});
   }
 
   userSingOut() {
