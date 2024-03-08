@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateChannelComponent } from '../dialog-components/create-channel/create-channel.component';
 import {
   ChannelData,
+  Chat,
   FirebaseChannelService,
   Message,
 } from '../../services/firebase-channel.service';
@@ -37,7 +38,7 @@ export class NavMenuComponent {
     private homeService: HomeService,
     private authService: FirebaseAuthService,
     private messageService: FirebaseMessageService
-  ) {}
+  ) { }
 
   toggleMessages() {
     this.messagesExpanded = !this.messagesExpanded;
@@ -57,7 +58,7 @@ export class NavMenuComponent {
     if (channel.id) {
       this.homeService.setChannel(channel);
       this.messageService.getMessagesFromChannel(channel.id);
-    } 
+    }
   }
 
   getScreenMode() {
@@ -70,5 +71,13 @@ export class NavMenuComponent {
 
   newMessage() {
     this.homeService.mainContent = "new-message";
+  }
+
+  getChats() {
+    return this.channelService.userChats;
+  }
+
+  getContact(chat: Chat) { 
+    return this.authService.allUsers.find(user => chat.users.includes(user.userId) && user.userId !== this.channelService.currentUser);
   }
 }

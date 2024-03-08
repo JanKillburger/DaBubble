@@ -5,10 +5,15 @@ import {
   arrayUnion,
   collection,
   doc,
+  onSnapshot,
+  orderBy,
+  query,
   updateDoc,
+  where,
 } from '@angular/fire/firestore';
-import { FirebaseChannelService, Message } from './firebase-channel.service';
+import { FirebaseChannelService, Message, messages } from './firebase-channel.service';
 import { FirebaseAuthService } from './firebase-auth.service';
+import { Unsubscribe } from '@angular/fire/auth';
 
 @Injectable({ providedIn: 'root' })
 export class FirebaseMessageService {
@@ -16,11 +21,14 @@ export class FirebaseMessageService {
   messageMatches: any;
   searchTerm: any = '';
   currentMatchId: string = '';
-  currentMatchIndex: number = -1
+  currentMatchIndex: number = -1;
+
   constructor(
     private channel: FirebaseChannelService,
     private authService: FirebaseAuthService
   ) {}
+
+  
 
   getMessagesFromChannel(channel: string) {
     this.channel.currentChannelForMessages = channel;
