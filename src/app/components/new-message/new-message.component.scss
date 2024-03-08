@@ -10,6 +10,24 @@
   align-items: end;
 }
 
+.search-wrapper {
+  position: relative;
+}
+
+.results {
+  position: absolute;
+  background-color: white;
+  box-shadow: 4px 4px 7px 0 rgba(0 0 0 / 0.2);
+  margin: 0;
+  padding: 0 1em 1em;
+  list-style-type: none;
+  border-bottom-right-radius: 1em;
+
+  li {
+    cursor: pointer;
+  }
+}
+
 app-messages-input {
   width: 100%;
 }

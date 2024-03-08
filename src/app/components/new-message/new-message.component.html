@@ -2,12 +2,12 @@
   <div class="inner-container">
     <p class="title">Neue Nachricht</p>
     <div class="search-wrapper">
-      <input #input type="text" placeholder="An: #channel, oder @jemand oder E-Mail Adresse" (keyup)="getSearchResults(input.value)" />
+      <input [(ngModel)]="query" type="text" placeholder="An: #channel, oder @jemand oder E-Mail Adresse" (keyup)="getSearchResults()" />
+      <ul class="results" *ngIf="userSearchResults.length || channelSearchResults.length">
+        <li *ngFor="let result of userSearchResults" (click)="selectUser(result)">{{result.name}}</li>
+        <li *ngFor="let result of channelSearchResults" (click)="selectChannel(result)">{{result.channelName}}</li>
+      </ul>
     </div>
-    <ul>
-      <li *ngFor="let result of userSearchResults">{{result.name}}</li>
-      <li *ngFor="let result of channelSearchResults">{{result.channelName}}</li>
-    </ul>
   </div>
 </header>
 <div class="message-wrapper">
