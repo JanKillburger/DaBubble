@@ -32,7 +32,7 @@
     <span class="current-user">{{ getCurrentUser()?.name }}</span>
     <div class="img-wrapper">
       <img class="avatar" [src]="getCurrentUser()?.avatar" alt="User avatar" />
-      <div class="status-indicator status-indicator--online"></div>
+      <div class="status-indicator" [ngClass]="{'status-indicator--online': getCurrentUser()?.online}"></div>
     </div>
     <mat-icon fontSet="material-symbols-outlined">keyboard_arrow_down</mat-icon>
   </button>
