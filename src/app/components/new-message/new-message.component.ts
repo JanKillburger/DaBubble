@@ -34,8 +34,8 @@ export class NewMessageComponent {
       this.channelSearchResults = [];
       this.userSearchResults = this.getFirstN(this.authService.allUsers.filter(user => user.name.toLowerCase().includes(this.query.replace('@', '').toLowerCase())), 5);
     } else {
-      this.userSearchResults = [];
       this.channelSearchResults = [];
+      this.userSearchResults = this.getFirstN(this.authService.allUsers.filter(user => user.email.toLowerCase().includes(this.query.toLowerCase())), 5);
     }
   }
 
