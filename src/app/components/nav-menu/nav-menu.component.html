@@ -57,5 +57,5 @@
   <span>Direktnachrichten</span>
 </button>
 <menu *ngIf="messagesExpanded">
-  <app-contact-button *ngFor="let chat of getChats()" (click)="openChat()" [user]="getContact(chat)"></app-contact-button>
+  <app-contact-button *ngFor="let chat of getChats()" (click)="openChat(chat)" [user]="getContact(chat)"></app-contact-button>
 </menu>

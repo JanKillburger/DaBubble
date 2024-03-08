@@ -65,8 +65,9 @@ export class NavMenuComponent {
     return this.homeService.getScreenMode();
   }
 
-  openChat() {
+  openChat(chat: Chat) {
     this.homeService.mainContent = "direct-message";
+    this.homeService.selectedChat = chat;
   }
 
   newMessage() {

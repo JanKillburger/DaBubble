@@ -135,7 +135,7 @@ export class FirebaseChannelService {
 
   private getChatMessages(chatId: string) {
     const messagesRef = query(
-      collection(this.firestore, 'channels', chatId, 'messages'),
+      collection(this.firestore, 'chats', chatId, 'messages'),
       orderBy('timestamp')
     ).withConverter(this.converterMessage);
     return onSnapshot(messagesRef, (messages) => {
@@ -161,7 +161,7 @@ export class FirebaseChannelService {
     const repliesRef = query(
       collection(
         this.firestore,
-        'channels',
+        'chats',
         chatId,
         'messages',
         messageId,
@@ -433,4 +433,5 @@ export interface searchData {
 export interface Chat {
   users: string[];
   recipient?: UserData;
+  id: string;
 }

@@ -28,7 +28,11 @@ export class ThreadComponent {
   getReplies() {
     const message = this.homeService.getThreadMessage();
     if (message?.id) {
+      if (this.homeService.mainContent === "channel") {
       return this.channelService.replies.get(message.id);
+    } else if (this.homeService.mainContent === "direct-message") {
+      return this.channelService.userChatReplies.get(message.id);
+    } else { return }
     } else {
       return undefined;
     }
@@ -40,5 +44,9 @@ export class ThreadComponent {
 
   getChannel() {
     return this.homeService.getActiveChannel();
+  }
+
+  isChannelMessage() {
+    return this.homeService.mainContent === "channel"
   }
 }

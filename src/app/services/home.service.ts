@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChannelData, FirebaseChannelService, Message } from './firebase-channel.service';
+import { ChannelData, Chat, FirebaseChannelService, Message } from './firebase-channel.service';
 import { Subscription } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MAX_INLINE_WIDTH, LARGE_WIDTH, MEDIUM_WIDTH, SMALL_WIDTH } from '../../global-constants';
@@ -14,6 +14,7 @@ import { UserProfileDialogComponent } from '../components/dialog-components/user
 export class HomeService {
   selectedChannel: ChannelData | undefined;
   selectedMessage: Message | undefined;
+  selectedChat: Chat | undefined;
   screenMode: "small" | "medium" | "large" = "large";
   navVisible = true;
   threadVisible = true;
@@ -143,6 +144,10 @@ export class HomeService {
 
   openUserProfile(user: UserData) {
     this.dialog.open(UserProfileDialogComponent, { panelClass: 'default-container', data: user });
+  }
+
+  setChat(chat: Chat) {
+    this.selectedChat = chat;
   }
 
 }

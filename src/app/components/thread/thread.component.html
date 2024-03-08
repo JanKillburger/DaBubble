@@ -2,7 +2,7 @@
   <div class="inner-container flex ai-c jc-sb">
     <div class="flex ai-c">
       <span class="title-text">Thread</span
-      ><span class="channel"># {{getChannel()?.channelName}}</span>
+      ><span class="channel">@if (isChannelMessage()) {# {{getChannel()?.channelName}}}</span>
     </div>
     <button (click)="closeThread()" mat-icon-button>
       <mat-icon>close</mat-icon>
