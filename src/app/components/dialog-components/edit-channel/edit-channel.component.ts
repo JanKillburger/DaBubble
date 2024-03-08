@@ -57,6 +57,8 @@ export class EditChannelComponent {
   leaveChannel() {
     this.data[0].users = this.data[0].users.filter(el => el !== this.authService.loggedInUser);
     this.channelService.editChannel(this.data[0]);
+    const newChannel = this.channelService.userChannels.find(channel => this.homeService.getActiveChannel()?.id !== channel.id);
+    if (newChannel) this.homeService.setChannel(newChannel);
     this.dialogRef.close();
   }
 
