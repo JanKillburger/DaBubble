@@ -165,6 +165,7 @@ export class FirebaseMessageService {
     this.messageMatches = currentMessages.filter((message) =>
       message.message.toLowerCase().includes(searchTerm.toLowerCase())
     );
+    this.goToNextMatch(0)
     if (this.searchTerm == "") {
       this.currentMatchId = ""
     }

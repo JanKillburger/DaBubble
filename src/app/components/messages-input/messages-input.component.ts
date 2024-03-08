@@ -149,7 +149,6 @@ export class MessagesInputComponent {
   }
 
   sendMessageToFirebase() {
-    debugger
     this.channels.currentChannelForMessages;
     let currentUser = this.channels.getCurrentUser();
     this.messageService.updateMessage(this.message, currentUser?.authId, this.pathForMessage);
