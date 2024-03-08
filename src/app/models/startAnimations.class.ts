@@ -68,7 +68,7 @@ export class startAnimations {
               '800ms ease-in-out',
               style({
                 color: 'black',
-                'font-size': '26px',
+                fontSize: '26px',
                 top: '15px',
                 left: 'calc(70px + 16px)',
               })
