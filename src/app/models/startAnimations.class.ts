@@ -25,7 +25,7 @@ export class startAnimations {
         group([
           query('.logo-wrapper', [
             animate(
-              '500ms ease-in-out',
+              '1000ms ease-in-out',
               style({
                 left: 'calc(50% - (180px + 16px))',
               })
@@ -41,13 +41,13 @@ export class startAnimations {
           ]),
         ]),
         query('.logo-wrapper span', [
-          animate('1000ms ease-in-out', style({ left: ' calc(180px + 16px)' })),
+          animate('500ms ease-in-out', style({ left: ' calc(180px + 16px)' })),
         ]),
         animate('500ms', style({})),
         group([
           query('.logo-mask', [
             animate(
-              '1ms ease-in-out',
+              '50ms ease-in-out',
               style({
                 opacity: '0',
               })
@@ -57,26 +57,27 @@ export class startAnimations {
             animate(
               '1000ms ease-in-out',
               style({
-                left: ' 45px',
-                top: '32px',
-                height: 'calc(128px - 50px)',
+                left: ' 55px',
+                top: '30px',
+                height: 'calc(128px - 45px)',
               })
             ),
           ]),
           query('.logo-wrapper span', [
             animate(
-              '1000ms ease-in-out',
+              '800ms ease-in-out',
               style({
                 color: 'black',
                 'font-size': '26px',
+                top: '15px',
                 left: 'calc(70px + 16px)',
               })
             ),
           ]),
           query('.logo-wrapper img', [
             animate(
-              '1000ms ease-in-out',
-              style({ height: '70px', width: '70px' })
+              '500ms ease-in-out',
+              style({ height: '75px', width: '75px' })
             ),
           ]),
           query('.background', [
@@ -110,7 +111,7 @@ export class startAnimations {
           ]),
         ]),
         query('.mobile-logo-wrapper span', [
-          animate('1000ms ease-in-out', style({ left: '85px' })),
+          animate('500ms ease-in-out', style({ left: '85px' })),
         ]),
         animate('500ms', style({})),
         group([
@@ -126,7 +127,7 @@ export class startAnimations {
             animate(
               '1000ms ease-in-out',
               style({
-                top: '32px',
+                top: '30px',
               })
             ),
           ]),
@@ -135,7 +136,9 @@ export class startAnimations {
               '1000ms ease-in-out',
               style({
                 top: '16px',
+                left: '85px',
                 color: 'black',
+                fontSize: '26px',
               })
             ),
           ]),
