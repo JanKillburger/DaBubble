@@ -6,6 +6,8 @@
     ></app-contact-button>
   </div>
 </header>
+<div class="conversation-intro"></div>
+<div class="conversation-intro-personal"></div>
 <div class="messages-wrapper">
   <app-messages-container
     *ngFor="let messagesByDay of getMessages() | keyvalue"
