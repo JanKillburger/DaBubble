@@ -35,4 +35,6 @@ export class DirectMessagesComponent {
   openUserProfile() {
     this.homeService.openUserProfile(this.getContact()!);
   }
+
+  
 }

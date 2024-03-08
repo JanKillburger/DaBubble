@@ -1,13 +1,18 @@
 <header class="direct-messages-header">
   <div class="inner-container">
     <app-contact-button
+      #user
       [user]="getContact()"
       (click)="openUserProfile()"
     ></app-contact-button>
   </div>
 </header>
-<div class="conversation-intro"></div>
-<div class="conversation-intro-personal"></div>
+<div>
+  <div class="conversation-intro inner-container">
+    @if (homeService.getCurrentUser() !== user.user) { Beginn einer
+    fantastischen Unterhaltung } @else { Persönlicher Bereich }
+  </div>
+</div>
 <div class="messages-wrapper">
   <app-messages-container
     *ngFor="let messagesByDay of getMessages() | keyvalue"
