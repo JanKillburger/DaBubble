@@ -35,11 +35,4 @@ export class DirectMessagesComponent {
   openUserProfile() {
     this.homeService.openUserProfile(this.getContact()!);
   }
-
-  isPersonalChat() {
-    const usersCount = this.homeService.selectedChat?.users.length;
-    if (usersCount) {
-      return !(usersCount > 1);
-    } else { return }
-  }
 }

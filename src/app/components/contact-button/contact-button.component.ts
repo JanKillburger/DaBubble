@@ -13,13 +13,4 @@ import { Chat, FirebaseChannelService } from '../../services/firebase-channel.se
 export class ContactButtonComponent {
   @Input() user: UserData | undefined;
   channelService = inject(FirebaseChannelService);
-
-  ngOnInit() {
-    this.isCurrentUser();
-  }
-
-  isCurrentUser() {
-    console.log(this.user);
-    console.log(this.channelService.getCurrentUser());
-  }
 }
