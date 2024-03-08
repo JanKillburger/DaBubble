@@ -66,8 +66,7 @@ export class NavMenuComponent {
   }
 
   openChat(chat: Chat) {
-    this.homeService.mainContent = "direct-message";
-    this.homeService.selectedChat = chat;
+    this.homeService.openChat(chat);
   }
 
   newMessage() {

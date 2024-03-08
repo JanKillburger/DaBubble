@@ -59,7 +59,7 @@ export class MessageComponent {
     public channelService: FirebaseChannelService,
     private homeService: HomeService,
     private messageService: FirebaseMessageService
-  ) {}
+  ) { }
 
   @NgModule({
     declarations: [LinkifyPipe],
@@ -121,7 +121,11 @@ export class MessageComponent {
 
   getReplies(): Message[] | undefined {
     if (this.message?.id) {
-      return this.channelService.replies.get(this.message?.id);
+      if (this.homeService.mainContent === "channel") {
+        return this.channelService.replies.get(this.message?.id);
+      } else {
+        return this.channelService.userChatReplies.get(this.message.id);
+      }
     } else {
       return undefined;
     }

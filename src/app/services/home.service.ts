@@ -98,6 +98,15 @@ export class HomeService {
     this.mainContent = "channel";
   }
 
+  openChat(chat: Chat) {
+    if (this.screenMode === 'small') {
+      this.navVisible = false;
+    }
+    this.channelVisible = true;
+    this.mainContent = "direct-message";
+    this.selectedChat = chat;
+  }
+
   getScreenMode() {
     return this.screenMode;
   }

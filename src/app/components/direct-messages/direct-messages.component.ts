@@ -5,11 +5,12 @@ import { KeyValuePipe, NgFor } from '@angular/common';
 import { HomeService } from '../../services/home.service';
 import { ContactButtonComponent } from '../contact-button/contact-button.component';
 import { UserData } from '../../services/firebase-user.service';
+import { MessagesInputComponent } from '../messages-input/messages-input.component';
 
 @Component({
   selector: 'app-direct-messages',
   standalone: true,
-  imports: [MessagesContainerComponent, KeyValuePipe, NgFor, ContactButtonComponent],
+  imports: [MessagesContainerComponent, KeyValuePipe, NgFor, ContactButtonComponent, MessagesInputComponent],
   templateUrl: './direct-messages.component.html',
   styleUrl: './direct-messages.component.scss'
 })
