@@ -57,8 +57,8 @@ export class startAnimations {
             animate(
               '1000ms ease-in-out',
               style({
-                left: ' 55px',
-                top: '30px',
+                left: '75px',
+                top: '32px',
                 height: 'calc(128px - 45px)',
               })
             ),
@@ -68,22 +68,24 @@ export class startAnimations {
               '1000ms ease-in-out',
               style({
                 color: 'black',
-                fontSize: '26px',
+                fontSize: '32px',
+                fontWeight: '750',
                 top: '15px',
-                left: 'calc(70px + 16px)',
+                left: 'calc(70px + 14px)',
               })
             ),
           ]),
           query('.logo-wrapper img', [
             animate(
               '500ms ease-in-out',
-              style({ height: '75px', width: '75px' })
+              style({ height: '70px', width: '70px' })
             ),
           ]),
           query('.background', [
             animate('500ms ease-in-out', style({ opacity: '0' })),
           ]),
         ]),
+        animate('5000ms', style({})),
       ])
     ),
   ]);
@@ -97,7 +99,7 @@ export class startAnimations {
             animate(
               '500ms ease-in-out',
               style({
-                left: 'calc(40% - 40px)',
+                left: 'calc(40% - 53px)',
               })
             ),
           ]),
@@ -113,11 +115,10 @@ export class startAnimations {
         query('.mobile-logo-wrapper span', [
           animate('500ms ease-in-out', style({ left: '85px' })),
         ]),
-        animate('500ms', style({})),
         group([
           query('.mobile-logo-mask', [
             animate(
-              '1ms ease-in-out',
+              '0ms ease-in-out',
               style({
                 opacity: '0',
               })
@@ -127,7 +128,8 @@ export class startAnimations {
             animate(
               '1000ms ease-in-out',
               style({
-                top: '30px',
+                top: '32px',
+                height: 'calc(128px - 45px)'
               })
             ),
           ]),
@@ -135,17 +137,19 @@ export class startAnimations {
             animate(
               '1000ms ease-in-out',
               style({
-                top: '16px',
-                left: '85px',
                 color: 'black',
-                fontSize: '26px',
+                fontSize: '32px',
+                fontWeight: '750',
+                top: '15px',
+                left: 'calc(70px + 14px)',
               })
             ),
           ]),
           query('.mobile-background', [
-            animate('1000ms ease-in-out', style({ opacity: '0' })),
+            animate('500ms ease-in-out', style({ opacity: '0' })),
           ]),
         ]),
+        animate('5000ms', style({})),
       ])
     ),
   ]);
