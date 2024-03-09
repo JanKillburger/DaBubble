@@ -14,6 +14,7 @@ import {
 import { FirebaseChannelService, Message, messages } from './firebase-channel.service';
 import { FirebaseAuthService } from './firebase-auth.service';
 import { Unsubscribe } from '@angular/fire/auth';
+import { HomeService } from './home.service';
 
 @Injectable({ providedIn: 'root' })
 export class FirebaseMessageService {
@@ -22,10 +23,13 @@ export class FirebaseMessageService {
   searchTerm: any = '';
   currentMatchId: string = '';
   currentMatchIndex: number = -1;
+  channelOrChatValue: string = ''
+  channelOrChatId: string = ''
 
   constructor(
     private channel: FirebaseChannelService,
-    private authService: FirebaseAuthService
+    private authService: FirebaseAuthService,
+    private homeService: HomeService
   ) {}
 
   
@@ -38,9 +42,10 @@ export class FirebaseMessageService {
     this.channel.currentThreadForMessage = threadId;
   }
 
-  updateMessage(message: string, currentUser: any, path: string) {
+  updateMessage(message: string, currentUser: any, path: string, type: string | undefined) {
     let now = new Date(Date.now());
     let formattedDate = this.formatDate(now);
+    this.checkItIsChannelORChat(type)
     let currentPath = this.checkItIsMessageOrThread(path);
     let newMessage: Message = {
       date: formattedDate,
@@ -56,15 +61,27 @@ export class FirebaseMessageService {
 
   checkItIsMessageOrThread(path: string) {
     if (path === 'message') {
-      return 'channels/' + this.channel.currentChannelForMessages + '/messages';
+      return this.channelOrChatValue + this.channelOrChatId + '/messages';
     } else {
       return (
-        'channels/' +
-        this.channel.currentChannelForMessages +
+        this.channelOrChatValue +
+        this.channelOrChatId +
         '/messages/' +
-        this.channel.currentThreadForMessage +
+        this.homeService.selectedMessage?.id +
         '/replies'
       );
+    }
+  }
+
+  checkItIsChannelORChat(type: string | undefined){
+    if (type === 'user') {
+      this.channelOrChatValue =  'chats/'
+      this.channelOrChatId = this.homeService.selectedChat?.id!
+    } else if (type === 'channel'){
+      this.channelOrChatValue = 'channels/'
+      this.channelOrChatId = this.homeService.selectedChannel?.id!
+    } else {
+      console.error('No Channel or Chat is defined')
     }
   }
 

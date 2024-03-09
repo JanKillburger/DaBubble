@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, Input  } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -36,6 +36,7 @@ import { FirebaseMessageService } from '../../services/firebase-messages.service
 })
 export class MessagesInputComponent {
   @Input() pathForMessage: string = '';
+  @Input() channelOrChat: string | undefined = '';
 
   showEmojiPicker = false;
   message = '';
@@ -151,7 +152,12 @@ export class MessagesInputComponent {
   sendMessageToFirebase() {
     this.channels.currentChannelForMessages;
     let currentUser = this.channels.getCurrentUser();
-    this.messageService.updateMessage(this.message, currentUser?.authId, this.pathForMessage);
+    this.messageService.updateMessage(
+      this.message,
+      currentUser?.authId,
+      this.pathForMessage,
+      this.channelOrChat
+    );
     this.message = '';
   }
 }

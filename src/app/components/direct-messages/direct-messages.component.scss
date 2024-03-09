@@ -6,7 +6,8 @@
 
 .messages-wrapper {
   flex: auto;
-  max-height: 60vh;
+  max-height: 50vh;
+  overflow: auto;
 }
 
 .at-link {

@@ -67,6 +67,7 @@ export class NavMenuComponent {
 
   openChat(chat: Chat) {
     this.homeService.openChat(chat);
+    this.messageService.getMessagesFromChannel(chat.id);
   }
 
   newMessage() {

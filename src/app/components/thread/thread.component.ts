@@ -49,4 +49,14 @@ export class ThreadComponent {
   isChannelMessage() {
     return this.homeService.mainContent === "channel"
   }
+
+  getContext(){
+    if (this.homeService.mainContent === 'direct-message') {
+      return 'user'
+    } else if (this.homeService.mainContent === 'channel'){
+      return 'channel'
+    } else{
+      return
+    }  
+  }
 }
