@@ -7,6 +7,7 @@
     ></app-contact-button>
   </div>
 </header>
+<div class="messages-wrapper">
 <div>
   <div class="conversation-intro inner-container">
     @if (homeService.getCurrentUser() !== user.user) {
@@ -26,7 +27,7 @@
     }
   </div>
 </div>
-<div class="messages-wrapper">
+
   <app-messages-container
     *ngFor="let messagesByDay of getMessages() | keyvalue"
     [messages]="messagesByDay.value"

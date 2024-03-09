@@ -6,7 +6,7 @@
 
 .messages-wrapper {
   flex: auto;
-  max-height: 60vh;
+  max-height: calc(100vh - 375px);
   overflow: auto;
 }
 

@@ -95,7 +95,7 @@ menu {
 }
 
 .scroll-wrapper {
-  max-height: 75vh;
+  max-height: calc(100vh - 210px);
   overflow: auto;
 
   @media (max-width: $small-medium-width){
