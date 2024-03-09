@@ -82,4 +82,17 @@ export class NavMenuComponent {
     return this.homeService.getChatContact(chat);
   }
 
+  filterChannels(query: string) {
+    return this.channelService.userChannels.filter(channel => channel.channelName.toLowerCase().includes(query.toLowerCase()));
+  }
+
+  filterContacts(query: string) {
+    const userIds = this.authService.allUsers.filter(user => user.name.toLowerCase().includes(query.toLowerCase())).map(user => user.userId);
+    return this.channelService.userChats.filter(chat => chat.users.some(user => userIds.includes(user)));
+  }
+
+  filterLists(query: string) {
+    
+  }
+
 }
