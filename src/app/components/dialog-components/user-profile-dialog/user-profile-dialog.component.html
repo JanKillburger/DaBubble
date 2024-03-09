@@ -54,7 +54,7 @@
     <button class="btn">Speichern</button>
   </div>
 </form>
-<button class="btn flex ai-c" *ngIf="user!==getCurrentUser()">
+<button class="btn flex ai-c" *ngIf="user!==getCurrentUser()" (click)="createChat()">
   <mat-icon fontSet="material-symbols-outlined">mode_comment</mat-icon>
   Nachricht
 </button>

@@ -32,13 +32,10 @@ export class ChannelMembersListComponent {
 
   openUserProfile(user: UserData) {
     this.homeService.openUserProfile(user);
+    this.closeDialog();
   }
 
   openAddMemberDialog() {
-    if (this.homeService.getScreenMode() === "small") {
-      console.log("Dialog fährt von unten herein: TO DO");
-    } else {
-      this.dialog.open(AddChannelMemberDialog, { panelClass: 'custom-container', position: this.dialogPositionAddMember });
-    }
+    this.dialog.open(AddChannelMemberDialog, { panelClass: 'custom-container', position: this.dialogPositionAddMember });
   }
 }

@@ -11,6 +11,7 @@
   <mat-icon fontSet="material-symbols-outlined">search</mat-icon>
   <input type="text" class="searchbar" placeholder="Gehe zu..." />
 </div>
+<div class="scroll-wrapper">
 <div class="flex jc-sb ai-c">
   <button class="icon-text heading" (click)="toggleChannels()">
     <mat-icon fontSet="material-symbols-outlined" *ngIf="!channelsExpanded"
@@ -59,3 +60,4 @@
 <menu *ngIf="messagesExpanded">
   <app-contact-button *ngFor="let chat of getChats()" (click)="openChat(chat)" [user]="getContact(chat)"></app-contact-button>
 </menu>
+</div>

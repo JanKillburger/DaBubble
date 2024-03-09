@@ -93,3 +93,12 @@ menu {
     border-radius: 1.2em;
   }
 }
+
+.scroll-wrapper {
+  max-height: 75vh;
+  overflow: auto;
+
+  @media (max-width: $small-medium-width){
+    max-height: 68vh;
+  }
+}

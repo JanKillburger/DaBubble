@@ -55,6 +55,23 @@ export class FirebaseChannelService {
   userChatMessages: Map<string, messages> = new Map();
   userChatReplies: Map<string, Message[]> = new Map();
 
+  constructor(
+    private homeService: HomeService,
+    private router: Router,
+    public authService: FirebaseAuthService,
+
+  ) {
+    this.unsubChannels = this.subChannelsList();
+    this.controlCurrentUser()
+      .then(() => {
+        this.getUserChats(this.authService.loggedInUser);
+        return this.getUserChannels(this.authService.loggedInUser);
+      })
+      .then((unsubUserChannels) => {
+        this.unsubUserChannels.push(unsubUserChannels);
+      });
+  }
+
   converterMessage = {
     toFirestore: (data: Message) => {
       delete data.created;
@@ -79,23 +96,6 @@ export class FirebaseChannelService {
       return snap.data() as ChannelData;
     },
   };
-
-  constructor(
-    private homeService: HomeService,
-    private router: Router,
-    public authService: FirebaseAuthService,
-
-  ) {
-    this.unsubChannels = this.subChannelsList();
-    this.controlCurrentUser()
-      .then(() => {
-        this.getUserChats(this.authService.loggedInUser);
-        return this.getUserChannels(this.authService.loggedInUser);
-      })
-      .then((unsubUserChannels) => {
-        this.unsubUserChannels.push(unsubUserChannels);
-      });
-  }
 
   async controlCurrentUser() {
     return new Promise((resolve, reject) => {
@@ -399,6 +399,19 @@ export class FirebaseChannelService {
       users: obj.users || [],
       channelCreator: obj.channelCreater || '',
     };
+  }
+
+  async addDirectChat(recipient:string){
+    const docRef = await addDoc(
+      collection(this.firestore, 'chats'),
+      {users:[this.authService.loggedInUser, recipient]}
+    );
+    let chatId = docRef.id;
+    return chatId;
+  }
+
+  getDirectChat(chatId:string){
+    return this.userChats.find(chat => chat.id === chatId) 
   }
 }
 export interface ChannelData {
