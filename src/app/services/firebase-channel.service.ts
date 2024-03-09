@@ -224,9 +224,11 @@ export class FirebaseChannelService {
               this.converterUser
             ),
             (user) => {
-              let rawData = user.data()!;
-              rawData['id'] = user.id;
-              this.users.set(user.id, rawData as UserData);
+              let rawData = user.data();
+              if (rawData) {
+                rawData['id'] = user.id;
+                this.users.set(user.id, rawData as UserData);
+              }
             }
           )
         );
@@ -401,24 +403,24 @@ export class FirebaseChannelService {
     };
   }
 
-  async addDirectChat(recipient:string){
+  async addDirectChat(recipient: string) {
     const docRef = await addDoc(
       collection(this.firestore, 'chats'),
-      {users:[this.authService.loggedInUser, recipient]}
+      { users: [this.authService.loggedInUser, recipient] }
     );
     let chatId = docRef.id;
     return chatId;
   }
 
-  async addPersonalChat(Userid:any){
+  async addPersonalChat(Userid: any) {
     const docRef = await addDoc(
       collection(this.firestore, 'chats'),
-      {users:[Userid]}
+      { users: [Userid] }
     );
   }
 
-  getDirectChat(chatId:string){
-    return this.userChats.find(chat => chat.id === chatId) 
+  getDirectChat(chatId: string) {
+    return this.userChats.find(chat => chat.id === chatId)
   }
 }
 export interface ChannelData {

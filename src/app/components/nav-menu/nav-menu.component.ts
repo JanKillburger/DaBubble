@@ -77,7 +77,7 @@ export class NavMenuComponent {
   getChats() {
     return this.channelService.userChats;
   }
-  
+
   getContact(chat: Chat) {
     return this.homeService.getChatContact(chat);
   }
@@ -88,11 +88,12 @@ export class NavMenuComponent {
 
   filterContacts(query: string) {
     const userIds = this.authService.allUsers.filter(user => user.name.toLowerCase().includes(query.toLowerCase())).map(user => user.userId);
-    return this.channelService.userChats.filter(chat => chat.users.some(user => userIds.includes(user)));
+    return this.channelService.userChats.filter(chat => userIds.includes(chat.users.find(user => user !== this.authService.loggedInUser)!)
+      || chat.users.length === 1 && this.channelService.getCurrentUser()?.name.toLowerCase().includes(query.toLowerCase()));
   }
 
   filterLists(query: string) {
-    
+
   }
 
 }

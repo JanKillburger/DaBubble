@@ -51,10 +51,6 @@ p {
   padding: 1em;
   border-radius: 1em;
   border-top-left-radius: 0;
-
-  @media (max-width: 450px) {
-    word-break: break-all;
-  }
 }
 
 .message-content--aligned-right {
