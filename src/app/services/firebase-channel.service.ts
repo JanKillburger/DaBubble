@@ -410,6 +410,13 @@ export class FirebaseChannelService {
     return chatId;
   }
 
+  async addPersonalChat(Userid:any){
+    const docRef = await addDoc(
+      collection(this.firestore, 'chats'),
+      {users:[Userid]}
+    );
+  }
+
   getDirectChat(chatId:string){
     return this.userChats.find(chat => chat.id === chatId) 
   }

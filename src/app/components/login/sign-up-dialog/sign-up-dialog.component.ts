@@ -6,6 +6,7 @@ import {
   Validators,
   FormsModule,
   ReactiveFormsModule,
+  AbstractControl, ValidationErrors, ValidatorFn
 } from '@angular/forms';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { User } from '../../../models/user.class';
@@ -47,8 +48,14 @@ export class SignUpDialogComponent {
       Validators.required,
       Validators.minLength(6),
     ]),
-    privacy: new FormControl(false, Validators.required),
+    privacy: new FormControl(false, this.requiredTrueValidator()),
   });
+
+  requiredTrueValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      return control.value === true ? null : { required: true };
+    };
+  }
 
   get name() {
     return this.singInForm.get('name');
@@ -97,6 +104,7 @@ export class SignUpDialogComponent {
     this.user.authId = this.userId;
     let docIdPromise = this.userFirebaseService.saveUserService(this.user);
     this.addUserToOpenChannels(this.userId)
+    this.createdPersonalChat(this.userId)
     docIdPromise
       .then((docId) => {
         this.router.navigate([`avatarPicker/${docId}`]);
@@ -108,5 +116,9 @@ export class SignUpDialogComponent {
 
   addUserToOpenChannels(userId:any){
     this.channelService.addUserInOfficeChannel(userId)
+  }
+
+  createdPersonalChat(userId:any){
+    this.channelService.addPersonalChat(userId)
   }
 }
