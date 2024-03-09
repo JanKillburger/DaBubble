@@ -99,6 +99,6 @@ menu {
   overflow: auto;
 
   @media (max-width: $small-medium-width){
-    max-height: 68vh;
+    max-height: calc(100vh - 210px);
   }
 }
