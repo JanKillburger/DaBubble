@@ -27,6 +27,7 @@ import {
 import { HomeService } from '../../services/home.service';
 import { FirebaseMessageService } from '../../services/firebase-messages.service';
 import { LinkifyPipe } from '../../services/linkify.pipe';
+import { FirebaseAuthService } from '../../services/firebase-auth.service';
 
 @Component({
   selector: 'app-message',
@@ -58,7 +59,8 @@ export class MessageComponent {
     public dialog: MatDialog,
     public channelService: FirebaseChannelService,
     private homeService: HomeService,
-    private messageService: FirebaseMessageService
+    private messageService: FirebaseMessageService,
+    private authService: FirebaseAuthService
   ) { }
 
   @NgModule({
@@ -173,5 +175,18 @@ export class MessageComponent {
     } else {
       return false;
     }
+  }
+
+  getReactionsPeople(emoji:any) {
+    let names:any = [];
+    emoji.userId.forEach((id:any) => {
+      let index = this.authService.allUsers.findIndex((user) => user.userId === id);
+      if (index !== -1) {
+        if (id === this.authService.loggedInUser) {
+          names.push('Du');
+        } else { names.push(this.authService.allUsers[index].name) }
+      }
+    });
+    return names;
   }
 }

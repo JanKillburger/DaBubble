@@ -17,7 +17,7 @@
         }}</span>
       </p>
       <p
-        id='{{message?.id}}'
+        id="{{ message?.id }}"
         class="message-content"
         [innerHTML]="message?.message! | linkify"
         [class.message-content--aligned-right]="getCurrentUser() === getUser()"
@@ -30,8 +30,19 @@
         <div
           *ngFor="let reactions of message?.reactions"
           class="showEmoji"
-          (click)="addOrDeleteEmoji(reactions.emoji)"
-        >
+          (click)="addOrDeleteEmoji(reactions)" >
+          <div class="reactionsPeopleSubDiv" *ngFor="let name of getReactionsPeople(reactions); let i = index" >
+            {{ name }}
+            <span class="reactedSpan" *ngIf="getReactionsPeople(reactions).length > 1">
+              und {{(getReactionsPeople(reactions).length) - 1}} weitere haben reagiert
+            </span>
+            <span class="reactedSpan" *ngIf="name === 'Du' && getReactionsPeople(reactions).length < 1">
+              hast reagiert
+            </span>
+            <span class="reactedSpan" *ngIf="name !== 'Du' && getReactionsPeople(reactions).length === 1">
+                hat reagiert
+            </span>
+          </div>
           <div *ngIf="reactions.userId.length > 0">
             {{ reactions.userId.length }}{{ reactions.emoji }}
           </div>
@@ -44,7 +55,11 @@
           *ngIf="showEmojiPicker"
           (emojiSelect)="addEmoji($event)"
         ></emoji-mart>
-        <button mat-icon-button *ngIf="container === 'channel'" (click)="openThread()">
+        <button
+          mat-icon-button
+          *ngIf="container === 'channel'"
+          (click)="openThread()"
+        >
           <mat-icon fontSet="material-symbols-outlined">comment</mat-icon>
         </button>
       </div>

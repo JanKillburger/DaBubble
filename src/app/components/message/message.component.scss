@@ -81,7 +81,8 @@ p {
   gap: 8px;
 }
 
-.showEmoji{
+.showEmoji {
+  position: relative;
   padding: 1px 8px 1px 8px;
   border: 0.25px solid rgba($color: #000000, $alpha: 0.4);
   border-radius: 16px;
@@ -97,11 +98,27 @@ p {
 }
 
 .highlighted-message {
-  background-color: yellow; 
+  background-color: yellow;
   color: black;
 }
 
 .found-message {
   background-color: orange;
-  color: black; 
+  color: black;
+}
+
+.reactionsPeopleSubDiv {
+  display: none;
+  background-color: blue;
+  border-radius: 16px;
+  color: white;
+  position: absolute;
+  bottom: 28px;
+  padding: 16px;
+  z-index: 99999;
+  width: 160px;
+}
+
+.showEmoji:hover .reactionsPeopleSubDiv {
+  display: block; /* oder ein anderes Display-Property je nach Layout */
 }

@@ -104,8 +104,8 @@ export class FirebaseMessageService {
       MessagePath
     );
     if (emojiIsInDB) {
-      let iUseTheEmojiBefore = reactions.find((reaction: any) =>
-        reaction.userId.includes(this.authService.loggedInUser)
+      let iUseTheEmojiBefore = emojiIsInDB.userId.find((user: any) =>
+      user.includes(this.authService.loggedInUser)
       );
       if (iUseTheEmojiBefore) {
         this.deleteUserForEmoji(emoji, reactions, emojiPath);
@@ -142,7 +142,7 @@ export class FirebaseMessageService {
 
   addUserForEmoji(emoji: any, reactions: any, emojiPath: string) {
     const reactionToUpdate = reactions.find(
-      (reaction: any) => reaction.emoji === emoji
+      (reaction: any) => reaction.emoji === emoji.emoji
     );
     if (!reactionToUpdate.userId.includes(this.authService.loggedInUser)) {
       reactionToUpdate.userId.push(this.authService.loggedInUser);
@@ -153,7 +153,7 @@ export class FirebaseMessageService {
 
   deleteUserForEmoji(emoji: any, reactions: any, emojiPath: string) {
     const reactionIndex = reactions.findIndex(
-      (reaction: any) => reaction.emoji === emoji
+      (reaction: any) => reaction.emoji === emoji.emoji
     );
     const reactionToUpdate = reactions[reactionIndex];
     const userIndex = reactionToUpdate.userId.indexOf(
@@ -179,7 +179,7 @@ export class FirebaseMessageService {
   }
 
   emojiAlreadyUsed(emoji: any, reactions: any) {
-    return reactions.some((reaction: any) => reaction.emoji === emoji);
+    return reactions.find((reaction: any) => reaction.emoji === emoji.emoji);
   }
 
   searchingMessages(searchTerm: string) {
@@ -198,7 +198,6 @@ export class FirebaseMessageService {
 
   goToNextMatch(plusOrMinus: number) {
     if (this.messageMatches.length > 0) {
-      debugger
       this.currentMatchIndex = this.currentMatchIndex + plusOrMinus
       this.currentMatchIndex = (this.currentMatchIndex) % this.messageMatches.length;
       this.currentMatchId = this.messageMatches[this.currentMatchIndex].messageId;
