@@ -37,24 +37,28 @@
       <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
     </button>
   </div>
+  <div *ngIf="name?.errors?.['required']" class="error-message">Dies ist ein Pflichtfeld.</div>
   <label for="email" class="form-label flex ai-c icon-text">
     <mat-icon fontSet="material-symbols-outlined">mail</mat-icon>
     E-Mail-Adresse
   </label>
   <input
     class="email"
+    type="email"
     [class.edit]="formMode === 'edit'"
     class="form-input"
     formControlName="email"
     id="email"
     [readOnly]="formMode === 'view'"
   />
+  <div *ngIf="email?.errors?.['required']" class="error-message">Dies ist ein Pflichtfeld.</div>
+  <div *ngIf="email?.errors?.['email']" class="error-message">Bitte eine gültige Email-Adresse eingeben.</div>
   <div class="actions flex" *ngIf="formMode === 'edit'">
     <button class="btn btn--secondary" (click)="closeDialog()">Abbrechen</button>
-    <button class="btn">Speichern</button>
+    <button class="btn" (click)="saveUserProfileEdits()" [disabled]="userProfileForm.invalid" [ngClass]="{'btn-disabled': userProfileForm.invalid}">Speichern</button>
   </div>
 </form>
-<button class="btn flex ai-c" *ngIf="user!==getCurrentUser()" (click)="createChat()">
+<button class="btn flex ai-c" *ngIf="user!.authId!==getCurrentUser()?.authId" (click)="createChat()">
   <mat-icon fontSet="material-symbols-outlined">mode_comment</mat-icon>
   Nachricht
 </button>

@@ -79,3 +79,17 @@
 .hidden {
   visibility: hidden;
 }
+
+.btn-disabled {
+  background-color: darkgray;
+
+  &:hover {
+    background-color: darkgray;
+  }
+}
+
+.error-message {
+  color: red;
+  display: block;
+  font-size: var(--fs-300);
+}
