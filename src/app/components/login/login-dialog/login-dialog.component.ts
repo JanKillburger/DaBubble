@@ -1,10 +1,12 @@
 import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
@@ -28,7 +30,11 @@ export class LoginDialogComponent {
   constructor(public authService: FirebaseAuthService) {}
 
   logInForm: FormGroup = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email,
+      this.emailDomainValidator()
+    ]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(6),
@@ -40,6 +46,15 @@ export class LoginDialogComponent {
   }
   get password() {
     return this.logInForm.get('password');
+  }
+
+  emailDomainValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      const email: string = control.value || '';
+      const domainPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      const isValid = domainPattern.test(email);
+      return isValid ? null : { 'invalidDomain': true };
+    };
   }
 
   async loginFunction() {

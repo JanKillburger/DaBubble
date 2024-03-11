@@ -43,7 +43,11 @@ export class SignUpDialogComponent {
 
   singInForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email,
+      this.emailDomainValidator()
+    ]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(6),
@@ -54,6 +58,15 @@ export class SignUpDialogComponent {
   requiredTrueValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       return control.value === true ? null : { required: true };
+    };
+  }
+
+  emailDomainValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      const email: string = control.value || '';
+      const domainPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      const isValid = domainPattern.test(email);
+      return isValid ? null : { 'invalidDomain': true };
     };
   }
 
