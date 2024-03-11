@@ -134,14 +134,14 @@ export class FirebaseAuthService {
     }
   }
 
-  updateNewPasswordWithEmail(user: any, newPassword: string) {
-    try {
-      updatePassword(user, newPassword);
-      return true;
-    } catch {
-      return false;
-    }
-  }
+  // updateNewPasswordWithEmail(user: any, newPassword: string) {
+  //   try {
+  //     updatePassword(user, newPassword);
+  //     return true;
+  //   } catch {
+  //     return false;
+  //   }
+  // }
 
   async googleAuth() {
     return signInWithPopup(this.auth, this.provider).then((result) => {

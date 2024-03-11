@@ -198,6 +198,7 @@ export class FirebaseMessageService {
 
   goToNextMatch(plusOrMinus: number) {
     if (this.messageMatches.length > 0) {
+      debugger
       this.currentMatchIndex = this.currentMatchIndex + plusOrMinus
       this.currentMatchIndex = (this.currentMatchIndex) % this.messageMatches.length;
       this.currentMatchId = this.messageMatches[this.currentMatchIndex].messageId;

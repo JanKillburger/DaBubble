@@ -10,6 +10,7 @@ import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { getAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { informationAnimation } from '../../../models/userInformation.class';
+import { confirmPasswordReset } from '@firebase/auth';
 
 @Component({
   selector: 'app-reset-password',
@@ -63,14 +64,17 @@ export class ResetPasswordComponent {
   }
 
   resetPassword() {
-    let auth = getAuth();
-    let userControl = auth.currentUser;
+    let urlParams = new URLSearchParams(window.location.search);
+    let userControl = urlParams.get('oobCode');
     if (userControl && this.password) {
       let passwordValue = this.password.value;
-      this.resetNotification = this.authService.updateNewPasswordWithEmail(
-        userControl,
-        passwordValue
-      );
+      const auth = getAuth();
+      confirmPasswordReset(auth, userControl, passwordValue).then(() => {
+        this.resetNotification = true;
+      })
+      .catch((error) => {
+        console.error('Error resetting password', error);
+      });
       setTimeout(() => {
         this.resetNotification = false;
         this.router.navigate(['/']);
