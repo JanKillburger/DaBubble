@@ -56,7 +56,7 @@ export class MessagesInputComponent {
     private messageService: FirebaseMessageService
   ) {}
 
-  ngAfterViewChecked() {
+  ngAfterViewInit() {
     this.messageEl.nativeElement.focus();
   }
 
