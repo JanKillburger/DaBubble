@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -37,6 +37,7 @@ import { FirebaseMessageService } from '../../services/firebase-messages.service
 export class MessagesInputComponent {
   @Input() pathForMessage: string = '';
   @Input() channelOrChat: string | undefined = '';
+  @ViewChild("messageEl") messageEl!: ElementRef;
 
   showEmojiPicker = false;
   message = '';
@@ -54,6 +55,10 @@ export class MessagesInputComponent {
     private users: FirebaseUserService,
     private messageService: FirebaseMessageService
   ) {}
+
+  ngAfterViewChecked() {
+    this.messageEl.nativeElement.focus();
+  }
 
   toggleEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
