@@ -9,6 +9,7 @@ import { FirebaseUserService } from '../../../services/firebase-user.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { Channel } from '../../../models/channel.class';
+import { HomeService } from '../../../services/home.service';
 
 @Component({
   selector: 'app-users-to-channel',
@@ -35,6 +36,7 @@ export class UsersToChannelComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public channelId: any,
     private channelService: FirebaseChannelService,
+    private homeService: HomeService,
     public userService: FirebaseUserService
   ) {
     this.userService.getUserData();
@@ -62,6 +64,8 @@ export class UsersToChannelComponent {
     if (this.userToPick) {
       this.appendUserIds(this.userPicker.value)
     } else {this.appendUserIds(this.userService.allUsers)}
-    this.channelService.updateChannel(this.channelService.currentChannel , this.channelId)
+    this.channelService.updateChannel(this.channelService.currentChannel , this.channelId);
+    this.homeService.setChannel(this.channelService.currentChannel!);
+    this.homeService.openChannel();
   }
 }
