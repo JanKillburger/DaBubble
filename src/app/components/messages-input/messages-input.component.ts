@@ -35,6 +35,7 @@ import { FirebaseMessageService } from '../../services/firebase-messages.service
   styleUrl: './messages-input.component.scss',
 })
 export class MessagesInputComponent {
+  @Input() container!: "channel" | "chat" | "thread";
   @Input() pathForMessage: string = '';
   @Input() channelOrChat: string | undefined = '';
   @ViewChild("messageEl") messageEl!: ElementRef;
@@ -54,7 +55,16 @@ export class MessagesInputComponent {
     private channels: FirebaseChannelService,
     private users: FirebaseUserService,
     private messageService: FirebaseMessageService
-  ) {}
+  ) { }
+
+  ngOnInit() {
+    this.homeService.contentChange.subscribe((type: string) => {
+      if (this.container === type) {
+        this.messageEl.nativeElement.focus();
+      }
+    }
+    )
+  }
 
   ngAfterViewInit() {
     this.messageEl.nativeElement.focus();

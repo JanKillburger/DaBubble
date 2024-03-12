@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MessageComponent } from '../message/message.component';
@@ -16,7 +16,6 @@ import { HomeService } from '../../services/home.service';
   styleUrl: './thread.component.scss'
 })
 export class ThreadComponent {
-
   @Output() closeThreadEv = new EventEmitter<void>;
 
   constructor(private channelService: FirebaseChannelService, private homeService: HomeService) { }
@@ -29,10 +28,10 @@ export class ThreadComponent {
     const message = this.homeService.getThreadMessage();
     if (message?.id) {
       if (this.homeService.mainContent === "channel") {
-      return this.channelService.replies.get(message.id);
-    } else if (this.homeService.mainContent === "direct-message") {
-      return this.channelService.userChatReplies.get(message.id);
-    } else { return }
+        return this.channelService.replies.get(message.id);
+      } else if (this.homeService.mainContent === "direct-message") {
+        return this.channelService.userChatReplies.get(message.id);
+      } else { return }
     } else {
       return undefined;
     }
@@ -50,13 +49,13 @@ export class ThreadComponent {
     return this.homeService.mainContent === "channel"
   }
 
-  getContext(){
+  getContext() {
     if (this.homeService.mainContent === 'direct-message') {
       return 'user'
-    } else if (this.homeService.mainContent === 'channel'){
+    } else if (this.homeService.mainContent === 'channel') {
       return 'channel'
-    } else{
+    } else {
       return
-    }  
+    }
   }
 }

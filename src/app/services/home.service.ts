@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { ChannelData, Chat, FirebaseChannelService, Message } from './firebase-channel.service';
 import { Subscription } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -21,7 +21,8 @@ export class HomeService {
   threadVisibleMq!: boolean;
   channelVisible!: boolean;
   private breakpointSubscription!: Subscription;
-  mainContent: "channel" | "new-message" | "direct-message" = "channel"
+  mainContent: "channel" | "new-message" | "direct-message" = "channel";
+  contentChange: EventEmitter<string> = new EventEmitter();
 
   constructor(
     private responsive: BreakpointObserver,
@@ -88,6 +89,7 @@ export class HomeService {
     setTimeout(() => {
       document.body.removeAttribute("style");
     }, 500);
+    this.contentChange.emit("thread");
   }
 
   openChannel() {
@@ -96,6 +98,7 @@ export class HomeService {
     }
     this.channelVisible = true;
     this.mainContent = "channel";
+    this.contentChange.emit("channel");
   }
 
   openChat(chat: Chat) {
@@ -105,6 +108,7 @@ export class HomeService {
     this.channelVisible = true;
     this.mainContent = "direct-message";
     this.selectedChat = chat;
+    this.contentChange.emit("chat");
   }
 
   getScreenMode() {
