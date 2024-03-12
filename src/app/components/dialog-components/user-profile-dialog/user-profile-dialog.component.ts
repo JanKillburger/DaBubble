@@ -57,7 +57,7 @@ export class UserProfileDialogComponent {
   }
 
   async createChat() {
-    const userId = this.user.id;
+    const userId = this.user.id || this.user.authId || this.user.userId;
     let currentChat = this.channelService.userChats.find((chat) => chat.users.includes(userId!))
     if (currentChat) {
       this.homeService.openChat(currentChat)
