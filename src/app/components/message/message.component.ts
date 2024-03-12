@@ -9,7 +9,6 @@ import {
 import {
   Component,
   EventEmitter,
-  Inject,
   Input,
   NgModule,
   Output,
@@ -156,7 +155,7 @@ export class MessageComponent {
   }
 
   // isMessageMatched(message: any): boolean {
-  //   if (this.messageService.searchTerm.trim().length > 0) {
+  //   if (this.messageService.searchTerm.length > 0) {
   //     return (
   //       this.messageService.messageMatches?.some(
   //         (match: any) => match.messageId === message.id

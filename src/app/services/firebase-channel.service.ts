@@ -21,6 +21,7 @@ import { HomeService } from './home.service';
 import { FirebaseAuthService } from './firebase-auth.service';
 import { Router } from '@angular/router';
 import { getAuth } from 'firebase/auth';
+import { FirebaseMessageService } from './firebase-messages.service';
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +46,7 @@ export class FirebaseChannelService {
   unsubReplies: any[] = [];
   unsubUserChannels: any[] = [];
   unsubUserChannelsMessages: any[] = [];
-  currentChannelForMessages: string = '';
+  currentChannelForMessages: string = 'grDvJ7eyWqziuvoDsr41';
   currentThreadForMessage: string | undefined = '';
   messagesToSeach: searchData[] = [];
   chatMessagesToSeach: searchData[] = [];
@@ -59,8 +60,7 @@ export class FirebaseChannelService {
   constructor(
     private homeService: HomeService,
     private router: Router,
-    public authService: FirebaseAuthService,
-
+    public authService: FirebaseAuthService
   ) {
     this.unsubChannels = this.subChannelsList();
     this.controlCurrentUser()
@@ -122,13 +122,11 @@ export class FirebaseChannelService {
       this.userChats = [];
       chats.forEach((chat) => {
         let rawData = chat.data();
-        rawData["id"] = chat.id;
+        rawData['id'] = chat.id;
         this.userChats.push(rawData as Chat);
         if (!this.userChatMessages.has(chat.id)) {
           this.userChatMessages.set(chat.id, {});
-          this.unsubUserChatMessages.push(
-            this.getChatMessages(chat.id)
-          );
+          this.unsubUserChatMessages.push(this.getChatMessages(chat.id));
         }
       });
     });
@@ -145,7 +143,11 @@ export class FirebaseChannelService {
       messages.forEach((message) => {
         let rawData = message.data();
         rawData['id'] = message.id;
-        this.saveChatMessageForSearchingFiel(chatId, rawData.message, message.id)
+        this.saveChatMessageForSearchingFiel(
+          chatId,
+          rawData.message,
+          message.id
+        );
         if (message.data()['date'] === dayKey) {
           messagesObj[dayKey].push(rawData);
         } else {
@@ -177,7 +179,7 @@ export class FirebaseChannelService {
           const value: Message[] = [];
           replies.forEach((reply) => {
             let rawData = reply.data();
-            rawData["id"] = reply.id;
+            rawData['id'] = reply.id;
             const replyData = rawData as Message;
             replyData.id = reply.id;
             value.push(replyData);
@@ -197,7 +199,7 @@ export class FirebaseChannelService {
       this.userChannels = [];
       channels.forEach((channel) => {
         let rawData = channel.data();
-        rawData["id"] = channel.id;
+        rawData['id'] = channel.id;
         if (
           !this.homeService.getActiveChannel() &&
           this.homeService.getScreenMode() !== 'small'
@@ -248,7 +250,11 @@ export class FirebaseChannelService {
       messages.forEach((message) => {
         let rawData = message.data();
         rawData['id'] = message.id;
-        this.saveMessageForSearchingFiel(channelId, rawData.message, message.id)
+        this.saveMessageForSearchingFiel(
+          channelId,
+          rawData.message,
+          message.id
+        );
         if (message.data()['date'] === dayKey) {
           messagesObj[dayKey].push(rawData);
         } else {
@@ -262,12 +268,23 @@ export class FirebaseChannelService {
   }
 
   editChannel(channel: ChannelData) {
-    const docRef = doc(this.firestore, "channels/" + channel.id).withConverter(this.converterChannel);
+    const docRef = doc(this.firestore, 'channels/' + channel.id).withConverter(
+      this.converterChannel
+    );
     updateDoc(docRef, channel);
   }
 
-  saveMessageForSearchingFiel(channelId: string, message: string, messageId: string) {
-    let searchData: searchData = { channelId: '', channelName: '', messageId: '', message: '' };
+  saveMessageForSearchingFiel(
+    channelId: string,
+    message: string,
+    messageId: string
+  ) {
+    let searchData: searchData = {
+      channelId: '',
+      channelName: '',
+      messageId: '',
+      message: '',
+    };
     searchData.channelId = channelId;
     searchData.channelName = this.getChannelName(channelId);
     searchData.messageId = messageId;
@@ -275,8 +292,17 @@ export class FirebaseChannelService {
     this.messagesToSeach.push(searchData);
   }
 
-  saveChatMessageForSearchingFiel(chatId:string, message:string, messageId:string){
-    let searchData: searchData = { channelId: '', channelName: '', messageId: '', message: '' };
+  saveChatMessageForSearchingFiel(
+    chatId: string,
+    message: string,
+    messageId: string
+  ) {
+    let searchData: searchData = {
+      channelId: '',
+      channelName: '',
+      messageId: '',
+      message: '',
+    };
     searchData.channelId = chatId;
     searchData.channelName = this.getChatPartner(chatId);
     searchData.messageId = messageId;
@@ -284,18 +310,24 @@ export class FirebaseChannelService {
     this.chatMessagesToSeach.push(searchData);
   }
 
-  getChannelName(channelId: string){
-    let currentChannel = this.userChannels.filter((channels) => channels.id!.includes(channelId))
-    return currentChannel[0].channelName
+  getChannelName(channelId: string) {
+    let currentChannel = this.userChannels.filter((channels) =>
+      channels.id!.includes(channelId)
+    );
+    return currentChannel[0].channelName;
   }
 
   getChatPartner(chatId: string): string {
-    let currentChat = this.userChats.filter((chat) => chat.id!.includes(chatId));
-  
+    let currentChat = this.userChats.filter((chat) =>
+      chat.id!.includes(chatId)
+    );
+
     for (let userArray of currentChat) {
       for (let user of userArray.users) {
         if (user !== this.authService.loggedInUser) {
-          let chatUser = this.authService.allUsers.filter((u) => u.userId.includes(user));
+          let chatUser = this.authService.allUsers.filter((u) =>
+            u.userId.includes(user)
+          );
           return chatUser.length > 0 ? chatUser[0].name : '';
         }
       }
@@ -322,7 +354,7 @@ export class FirebaseChannelService {
           const value: Message[] = [];
           replies.forEach((reply) => {
             let rawData = reply.data();
-            rawData["id"] = reply.id;
+            rawData['id'] = reply.id;
             const replyData = rawData as Message;
             replyData.id = reply.id;
             value.push(replyData);
@@ -434,23 +466,21 @@ export class FirebaseChannelService {
   }
 
   async addDirectChat(recipient: string) {
-    const docRef = await addDoc(
-      collection(this.firestore, 'chats'),
-      { users: [this.authService.loggedInUser, recipient] }
-    );
+    const docRef = await addDoc(collection(this.firestore, 'chats'), {
+      users: [this.authService.loggedInUser, recipient],
+    });
     let chatId = docRef.id;
     return chatId;
   }
 
   async addPersonalChat(Userid: any) {
-    const docRef = await addDoc(
-      collection(this.firestore, 'chats'),
-      { users: [Userid] }
-    );
+    const docRef = await addDoc(collection(this.firestore, 'chats'), {
+      users: [Userid],
+    });
   }
 
   getDirectChat(chatId: string) {
-    return this.userChats.find(chat => chat.id === chatId)
+    return this.userChats.find((chat) => chat.id === chatId);
   }
 }
 export interface ChannelData {

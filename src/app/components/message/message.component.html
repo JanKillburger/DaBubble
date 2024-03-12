@@ -34,7 +34,7 @@
             <span class="reactedSpan" *ngIf="getReactionsPeople(reactions).length > 1">
               und {{(getReactionsPeople(reactions).length) - 1}} weitere haben reagiert
             </span>
-            <span class="reactedSpan" *ngIf="name === 'Du' && getReactionsPeople(reactions).length < 1">
+            <span class="reactedSpan" *ngIf="name === 'Du' && getReactionsPeople(reactions).length === 1">
               hast reagiert
             </span>
             <span class="reactedSpan" *ngIf="name !== 'Du' && getReactionsPeople(reactions).length === 1">

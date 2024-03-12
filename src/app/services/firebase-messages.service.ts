@@ -183,22 +183,6 @@ export class FirebaseMessageService {
       chats.message.toLowerCase().includes(searchTerm.toLowerCase()))
   }
 
-  // goToNextMatch(plusOrMinus: number) {
-  //   if (this.messageMatches.length > 0) {
-  //     this.currentMatchIndex = this.currentMatchIndex + plusOrMinus
-  //     this.currentMatchIndex = (this.currentMatchIndex) % this.messageMatches.length;
-  //     this.currentMatchId = this.messageMatches[this.currentMatchIndex].messageId;
-  //     this.scrollToElement(this.currentMatchId);
-  //   } 
-  // }
-
-  // scrollToElement(id: string) {
-  //   const element = document.getElementById(id);
-  //   if (element) {
-  //     element.scrollIntoView({ behavior: 'smooth' });
-  //   }
-  // }
-
   messageToJson(message: Message) {
     return {
       message: message.message,
