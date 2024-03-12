@@ -1,4 +1,10 @@
 <form >
+  <div *ngIf="imageIsUploaded">
+    <button mat-icon-button (click)="deleteImg()">
+      <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
+    </button>
+    <img class="messageImg" src="{{ imagePath }}" alt="Das ist ein Test">
+  </div>
   <textarea
     #messageEl
     placeholder="Type your message"
@@ -59,4 +65,18 @@
       </mat-icon>
     </button>
   </div>
+  <div
+      *ngIf="wrongFileType"
+      [@slideInOutAnimation]="'in'"
+      class="error-notification"
+    >
+      Falscher Datentyp! (Nur .jpg & .png)
+    </div>
+    <div
+      *ngIf="fileToBig"
+      [@slideInOutAnimation]="'in'"
+      class="error-notification"
+    >
+      Datei ist zu groß! (max. 20MB)
+    </div>
 </form>

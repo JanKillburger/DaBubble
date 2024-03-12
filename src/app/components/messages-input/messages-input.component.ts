@@ -48,10 +48,14 @@ export class MessagesInputComponent {
   userList: string[] = [];
   currentUserList: string[] = [];
   currentUserString: string = '';
+  fileToBig:boolean = false; 
+  wrongFileType: boolean = false;
+  imageIsUploaded: boolean = false;
+  imagePath:string = ''
 
   constructor(
     private homeService: HomeService,
-    private storage: FirebaseStorageService,
+    public storage: FirebaseStorageService,
     private channels: FirebaseChannelService,
     private users: FirebaseUserService,
     private messageService: FirebaseMessageService
@@ -64,6 +68,10 @@ export class MessagesInputComponent {
       }
     }
     )
+  }
+
+  deleteImg(){
+    this.imageIsUploaded = false;
   }
 
   ngAfterViewInit() {
@@ -91,14 +99,37 @@ export class MessagesInputComponent {
     const input = event.target as HTMLInputElement;
     if (!input.files?.length) return;
     const file = input.files[0];
-    this.handleFile(file);
+    if (file.size < 2000000) {
+      this.handleFile(file) 
+    } else{
+      this.fileToBig = true;
+      setTimeout(() => {
+        this.fileToBig = false;
+      }, 3000);
+    }
   }
 
   async handleFile(file: File) {
-    await this.storage.uploadImageInStorage(file.name, file);
-    await this.storage.getFileFromStorage(file.name);
-    const text = `${this.storage.fileUrl} ${this.message}`;
-    this.message = text;
+    let fileType = this.checkFileType(file.name);
+    if (fileType === 'jpg' || fileType === 'png') {
+      await this.storage.uploadImageInStorage(file.name, file);
+      await this.storage.getFileFromStorage(file.name);
+      if (this.storage.fileUrl) {
+        this.imageIsUploaded = true;
+        this.imagePath = this.storage.fileUrl;
+        console.log(this.imageIsUploaded, this.imagePath)
+      }
+    } else {
+      this.wrongFileType = true
+      setTimeout(() => {
+        this.wrongFileType = false;
+      }, 3000);
+    }
+  }
+
+  checkFileType(fileName: string) {
+    const parts = fileName.split('.');
+    return parts.length > 1 ? parts[parts.length - 1] : '';
   }
 
   async getUsersOfChannel() {
@@ -165,6 +196,10 @@ export class MessagesInputComponent {
   }
 
   sendMessageToFirebase() {
+    if (this.imageIsUploaded) {
+      const text = `${this.imagePath} ${this.message}`;
+      this.message = text;
+    }
     this.channels.currentChannelForMessages;
     let currentUser = this.channels.getCurrentUser();
     this.messageService.updateMessage(
@@ -174,5 +209,6 @@ export class MessagesInputComponent {
       this.channelOrChat
     );
     this.message = '';
+    this.imageIsUploaded = false;
   }
 }

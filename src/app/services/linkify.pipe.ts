@@ -7,7 +7,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class LinkifyPipe implements PipeTransform {
     transform(text: string): string {
         return text.replace(/(\bhttps?:\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/ig, (url: string) => {
-            return `<a href="${url}" target="_blank" class="link-to-doc">Link zum Dokument!</a>`;
+            return `<a href="${url}" target="_blank" class="imgLink"><img class="imgInMessage" src="${url}" alt=""></a>`;
         });
     }
 }

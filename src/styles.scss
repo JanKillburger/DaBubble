@@ -337,11 +337,17 @@ a {
   display: none;
 }
 
-.link-to-doc{
-  color: red;
+.imgLink{
   padding: 0;
-  padding-right: 8px;
+  border: none;
   &:hover{
+    padding: 0;
+    text-decoration: none; 
+    border-radius: 0;
     border: none;
   }
+}
+
+.imgInMessage{
+  max-width: 200px;
 }

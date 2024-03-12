@@ -47,7 +47,6 @@ export class FirebaseStorageService {
     const starsRef = ref(storage, filename);
     await getDownloadURL(starsRef).then((url) => {
       this.fileUrl = url;
-      console.log(this.fileUrl);
     });
   }
 }
