@@ -1,4 +1,4 @@
-@import '../../../variables.scss';
+@import "../../../variables.scss";
 
 :host {
   display: flex;
@@ -55,7 +55,6 @@ header .search-wrapper {
 
 .primary-nav {
   position: relative;
-
 
   @media (min-width: $small-medium-width) {
     margin-right: 1rem;
@@ -140,7 +139,7 @@ header .search-wrapper {
   }
 }
 
-.toggle-user-menu>*:not(.current-user) {
+.toggle-user-menu > *:not(.current-user) {
   flex: 0 0 auto;
 }
 
@@ -172,7 +171,7 @@ header .search-wrapper {
     display: flex;
   }
 
-  .searchingButtons{
+  .searchingButtons {
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -188,7 +187,7 @@ header .search-wrapper {
     border-radius: 100%;
     cursor: pointer;
 
-    &:hover{
+    &:hover {
       background-color: rgba(0 0 0 / 0.2);
     }
   }
@@ -199,5 +198,85 @@ header .search-wrapper {
     outline: none;
     border: none;
     border-radius: 1.6em;
+  }
+}
+
+.search-result-container {
+  position: absolute;
+  top: 53px;
+  left: 50px;
+  width: calc(100% - 100px);
+  max-height: 80vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 25px 0 25px 0;
+  border-radius: 0 0 35px 35px;
+  background-color: white;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    > span {
+      color: gray;
+      padding: 0 8px 0 8px;
+    }
+  }
+
+  .user-result {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 0 8px 0;
+
+    > img {
+      width: 3em;
+      height: 3em;
+      object-fit: cover;
+      border-radius: 100%;
+      margin-left: 16px;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  .channel{
+    padding: 16px 0 16px 0;
+    cursor: pointer;
+
+    >div{
+      margin-left: 16px;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  .message{
+    padding: 16px 0 16px 0;
+    cursor: pointer;
+
+    .channelMessageText{
+      margin-left: 16px;     
+    }
+
+    .channelInformation{
+      text-decoration: underline;
+      .channelName{
+        color: blue
+      }
+    } 
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
   }
 }

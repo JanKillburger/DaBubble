@@ -143,6 +143,11 @@ export class FirebaseAuthService {
   //   }
   // }
 
+  searchingUser(searchTerm: any){
+    return this.allUsers.filter((users) =>
+      users.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  }
+
   async googleAuth() {
     return signInWithPopup(this.auth, this.provider).then((result) => {
       let createdAt = result.user.metadata.creationTime ?? '';

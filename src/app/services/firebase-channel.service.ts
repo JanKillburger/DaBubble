@@ -48,6 +48,7 @@ export class FirebaseChannelService {
   currentChannelForMessages: string = '';
   currentThreadForMessage: string | undefined = '';
   messagesToSeach: searchData[] = [];
+  chatMessagesToSeach: searchData[] = [];
   unsubUserChats: Unsubscribe | undefined;
   unsubUserChatMessages: Unsubscribe[] = [];
   unsubUserChatReplies: Unsubscribe[] = [];
@@ -144,7 +145,7 @@ export class FirebaseChannelService {
       messages.forEach((message) => {
         let rawData = message.data();
         rawData['id'] = message.id;
-        // this.saveMessageForSearchingFiel(channelId, rawData.message, message.id)
+        this.saveChatMessageForSearchingFiel(chatId, rawData.message, message.id)
         if (message.data()['date'] === dayKey) {
           messagesObj[dayKey].push(rawData);
         } else {
@@ -266,11 +267,40 @@ export class FirebaseChannelService {
   }
 
   saveMessageForSearchingFiel(channelId: string, message: string, messageId: string) {
-    let searchData: searchData = { channelId: '', messageId: '', message: '' };
+    let searchData: searchData = { channelId: '', channelName: '', messageId: '', message: '' };
     searchData.channelId = channelId;
+    searchData.channelName = this.getChannelName(channelId);
     searchData.messageId = messageId;
     searchData.message = message;
     this.messagesToSeach.push(searchData);
+  }
+
+  saveChatMessageForSearchingFiel(chatId:string, message:string, messageId:string){
+    let searchData: searchData = { channelId: '', channelName: '', messageId: '', message: '' };
+    searchData.channelId = chatId;
+    searchData.channelName = this.getChatPartner(chatId);
+    searchData.messageId = messageId;
+    searchData.message = message;
+    this.chatMessagesToSeach.push(searchData);
+  }
+
+  getChannelName(channelId: string){
+    let currentChannel = this.userChannels.filter((channels) => channels.id!.includes(channelId))
+    return currentChannel[0].channelName
+  }
+
+  getChatPartner(chatId: string): string {
+    let currentChat = this.userChats.filter((chat) => chat.id!.includes(chatId));
+  
+    for (let userArray of currentChat) {
+      for (let user of userArray.users) {
+        if (user !== this.authService.loggedInUser) {
+          let chatUser = this.authService.allUsers.filter((u) => u.userId.includes(user));
+          return chatUser.length > 0 ? chatUser[0].name : '';
+        }
+      }
+    }
+    return '';
   }
 
   private getMessageReplies(channelId: string, messageId: string) {
@@ -447,7 +477,8 @@ export interface Message {
 }
 
 export interface searchData {
-  channelId: string
+  channelId: string;
+  channelName: string;
   messageId: string;
   message: string;
 }

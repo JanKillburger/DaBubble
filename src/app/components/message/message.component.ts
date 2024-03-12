@@ -155,17 +155,17 @@ export class MessageComponent {
     this.addEmojiToFirebase(emoji);
   }
 
-  isMessageMatched(message: any): boolean {
-    if (this.messageService.searchTerm.trim().length > 0) {
-      return (
-        this.messageService.messageMatches?.some(
-          (match: any) => match.messageId === message.id
-        ) ?? false
-      );
-    } else {
-      return false;
-    }
-  }
+  // isMessageMatched(message: any): boolean {
+  //   if (this.messageService.searchTerm.trim().length > 0) {
+  //     return (
+  //       this.messageService.messageMatches?.some(
+  //         (match: any) => match.messageId === message.id
+  //       ) ?? false
+  //     );
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   isMessageFound(message: any): boolean {
     if (this.messageService.currentMatchId != "") {

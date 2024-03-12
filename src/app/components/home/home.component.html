@@ -13,8 +13,9 @@
   />
   <div class="search-wrapper">
     <div class="searchingButtons">
-      <mat-icon (click)="clickBack()" fontSet="material-symbols-outlined">expand_less</mat-icon>
-      <mat-icon (click)="clickNext()" fontSet="material-symbols-outlined">expand_more</mat-icon>
+      <mat-icon fontSet="material-symbols-outlined">search</mat-icon>
+      <!-- <mat-icon (click)="clickBack()" fontSet="material-symbols-outlined">expand_less</mat-icon>
+      <mat-icon (click)="clickNext()" fontSet="material-symbols-outlined">expand_more</mat-icon> -->
     </div>
     <input
       type="text"
@@ -23,6 +24,58 @@
       [(ngModel)]="searchTerm"
       (keyup)="search()"
     />
+
+    <div
+      *ngIf="
+        filterdChannelsData.length > 0 && searchTerm.length > 0 ||
+        filterdUserData.length > 0 && searchTerm.length > 0 ||
+        filterdChannelMessageData.length > 0 && searchTerm.length > 0 ||
+        filterdPrivateMessageData.length > 0 && searchTerm.length > 0
+      "
+      class="search-result-container">
+      <div *ngIf="filterdUserData.length > 0" class="user-results-container">
+        <span>#Users</span>
+        <div class="user-result" *ngFor="let user of filterdUserData" (click)="openUserChat(user.userId)">
+          <img class="avatar-img" src="{{ user.avatar }}" alt="profile.img" />
+          <span>{{ user.name }}</span>
+        </div>
+      </div>
+
+      <div *ngIf="filterdChannelsData.length > 0" class="channel-result-container" >
+        <span>#Channels</span>
+        <div class="channel" *ngFor="let channel of filterdChannelsData">
+          <div (click)="openUserChannel(channel.id!)">
+            <span>{{ channel.channelName }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        *ngIf="filterdChannelMessageData.length > 0"
+        class="pms-result-container"
+      >
+        <span>#Channel Nachrichten</span>
+        <div class="message" *ngFor="let message of filterdChannelMessageData">
+          <div (click)="openMessageInChannel(message.channelId, message.messageId)">
+            <span class="channelMessageText">{{ message.message.length > 30 ? (message.message | slice:0:30) + '...' : message.message }}</span>
+            <span class="channelInformation"> || from Channel: <span class="channelName">{{ message.channelName }}</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        *ngIf="filterdPrivateMessageData.length > 0"
+        class="pms-result-container"
+      >
+        <span>#Direktnachrichten</span>
+        <div class="message" *ngFor="let message of filterdPrivateMessageData">
+          <div (click)="openMessageInChat(message.channelId, message.messageId)"> 
+            <span class="channelMessageText">{{ message.message.length > 20 ? (message.message | slice:0:20) + '...' : message.message }}</span>
+            <span class="channelInformation"> || Nachricht mit: <span class="channelName">{{ message.channelName }}</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <button
     #triggerUserDialog
@@ -32,7 +85,10 @@
     <span class="current-user">{{ getCurrentUser()?.name }}</span>
     <div class="img-wrapper">
       <img class="avatar" [src]="getCurrentUser()?.avatar" alt="User avatar" />
-      <div class="status-indicator" [ngClass]="{'status-indicator--online': getCurrentUser()?.online}"></div>
+      <div
+        class="status-indicator"
+        [ngClass]="{ 'status-indicator--online': getCurrentUser()?.online }"
+      ></div>
     </div>
     <mat-icon fontSet="material-symbols-outlined">keyboard_arrow_down</mat-icon>
   </button>
@@ -45,9 +101,13 @@
     <app-nav-menu></app-nav-menu>
   </nav>
   <section class="channel-container main-item" *ngIf="isChannelVisible()">
-    <app-channel *ngIf="getMainContent()==='channel'"></app-channel>
-    <app-new-message *ngIf="getMainContent()==='new-message'"></app-new-message>
-    <app-direct-messages *ngIf="getMainContent()==='direct-message'"></app-direct-messages>
+    <app-channel *ngIf="getMainContent() === 'channel'"></app-channel>
+    <app-new-message
+      *ngIf="getMainContent() === 'new-message'"
+    ></app-new-message>
+    <app-direct-messages
+      *ngIf="getMainContent() === 'direct-message'"
+    ></app-direct-messages>
   </section>
   <aside
     class="thread-container main-item"

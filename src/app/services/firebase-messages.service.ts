@@ -19,8 +19,6 @@ import { HomeService } from './home.service';
 @Injectable({ providedIn: 'root' })
 export class FirebaseMessageService {
   firestore: Firestore = inject(Firestore);
-  messageMatches: any;
-  searchTerm: any = '';
   currentMatchId: string = '';
   currentMatchIndex: number = -1;
   channelOrChatValue: string = ''
@@ -122,21 +120,9 @@ export class FirebaseMessageService {
     MessagePath: string | undefined
   ) {
     if (path === 'channel') {
-      return (
-        'channels/' +
-        this.channel.currentChannelForMessages +
-        '/messages/' +
-        MessagePath
-      );
+      return ('channels/' + this.channel.currentChannelForMessages + '/messages/' + MessagePath);
     } else {
-      return (
-        'channels/' +
-        this.channel.currentChannelForMessages +
-        '/messages/' +
-        this.channel.currentThreadForMessage +
-        '/replies/' +
-        MessagePath
-      );
+      return ('channels/' + this.channel.currentChannelForMessages + '/messages/' + this.channel.currentThreadForMessage + '/replies/' + MessagePath);
     }
   }
 
@@ -183,34 +169,35 @@ export class FirebaseMessageService {
   }
 
   searchingMessages(searchTerm: string) {
-    this.searchTerm = searchTerm;
-    let currentMessages = this.channel.messagesToSeach.filter((channel) =>
-      channel.channelId.includes(this.channel.currentChannelForMessages)
-    );
-    this.messageMatches = currentMessages.filter((message) =>
-      message.message.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    this.goToNextMatch(0)
-    if (this.searchTerm == "") {
-      this.currentMatchId = ""
-    }
+    return this.channel.messagesToSeach.filter((channelMessages) =>
+    channelMessages.message.toLowerCase().includes(searchTerm.toLowerCase()));
   }
 
-  goToNextMatch(plusOrMinus: number) {
-    if (this.messageMatches.length > 0) {
-      this.currentMatchIndex = this.currentMatchIndex + plusOrMinus
-      this.currentMatchIndex = (this.currentMatchIndex) % this.messageMatches.length;
-      this.currentMatchId = this.messageMatches[this.currentMatchIndex].messageId;
-      this.scrollToElement(this.currentMatchId);
-    } 
+  searchingChannel(searchTerm: string) {
+    return this.channel.userChannels.filter((channel) =>
+      channel.channelName.toLowerCase().includes(searchTerm.toLowerCase()));
   }
 
-  scrollToElement(id: string) {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  searchingPrivateMessages(searchTerm: string){
+    return this.channel.chatMessagesToSeach.filter((chats) => 
+      chats.message.toLowerCase().includes(searchTerm.toLowerCase()))
   }
+
+  // goToNextMatch(plusOrMinus: number) {
+  //   if (this.messageMatches.length > 0) {
+  //     this.currentMatchIndex = this.currentMatchIndex + plusOrMinus
+  //     this.currentMatchIndex = (this.currentMatchIndex) % this.messageMatches.length;
+  //     this.currentMatchId = this.messageMatches[this.currentMatchIndex].messageId;
+  //     this.scrollToElement(this.currentMatchId);
+  //   } 
+  // }
+
+  // scrollToElement(id: string) {
+  //   const element = document.getElementById(id);
+  //   if (element) {
+  //     element.scrollIntoView({ behavior: 'smooth' });
+  //   }
+  // }
 
   messageToJson(message: Message) {
     return {
