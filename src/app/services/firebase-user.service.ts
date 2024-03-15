@@ -20,7 +20,7 @@ export class FirebaseUserService {
 
    async updateUserProfile(user: UserData) {
     const docRef = doc(this.firestore, "users", user.authId);
-    const res = await updateDoc(docRef, {"name": user.name, "email": user.email});
+    const res = await updateDoc(docRef, {"name": user.name, "email": user.email, "avatar": user.avatar});
    }
 }
 

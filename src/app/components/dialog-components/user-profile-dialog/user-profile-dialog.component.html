@@ -7,11 +7,24 @@
   </button>
 </div>
 <form [formGroup]="userProfileForm">
-  <img
-    class="avatar"
-    [src]="user.avatar"
-    alt="Your avatar"
-  />
+  <button
+    (click)="showAvatars = true"
+    [disabled]="formMode === 'view'"
+    class="img-btn"
+  >
+    <img class="avatar-xlarge" [src]="userAvatar" alt="Your avatar" />
+  </button>
+  <div *ngIf="showAvatars">
+    <p>Wähle einen neuen Avatar:</p>
+    <div class="avatars flex">
+      <button *ngFor="let avatar of avatars; let i = index" class="img-btn" (click)="setAvatar(i)">
+        <img
+          [src]="avatar"
+          class="avatar avatar--medium"
+        />
+      </button>
+    </div>
+  </div>
   <label
     for="name"
     class="form-label flex ai-c"
@@ -32,12 +45,14 @@
       mat-icon-button
       (click)="editUserProfile()"
       type="button"
-      *ngIf="formMode === 'view' && user===getCurrentUser()"
+      *ngIf="formMode === 'view' && user === getCurrentUser()"
     >
       <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
     </button>
   </div>
-  <div *ngIf="name?.errors?.['required']" class="error-message">Dies ist ein Pflichtfeld.</div>
+  <div *ngIf="name?.errors?.['required']" class="error-message">
+    Dies ist ein Pflichtfeld.
+  </div>
   <label for="email" class="form-label flex ai-c icon-text">
     <mat-icon fontSet="material-symbols-outlined">mail</mat-icon>
     E-Mail-Adresse
@@ -51,14 +66,31 @@
     id="email"
     [readOnly]="formMode === 'view'"
   />
-  <div *ngIf="email?.errors?.['required']" class="error-message">Dies ist ein Pflichtfeld.</div>
-  <div *ngIf="email?.errors?.['email']" class="error-message">Bitte eine gültige Email-Adresse eingeben.</div>
+  <div *ngIf="email?.errors?.['required']" class="error-message">
+    Dies ist ein Pflichtfeld.
+  </div>
+  <div *ngIf="email?.errors?.['email']" class="error-message">
+    Bitte eine gültige Email-Adresse eingeben.
+  </div>
   <div class="actions flex" *ngIf="formMode === 'edit'">
-    <button class="btn btn--secondary" (click)="closeDialog()">Abbrechen</button>
-    <button class="btn" (click)="saveUserProfileEdits()" [disabled]="userProfileForm.invalid" [ngClass]="{'btn-disabled': userProfileForm.invalid}">Speichern</button>
+    <button class="btn btn--secondary" (click)="closeDialog()">
+      Abbrechen
+    </button>
+    <button
+      class="btn"
+      (click)="saveUserProfileEdits()"
+      [disabled]="userProfileForm.invalid"
+      [ngClass]="{ 'btn-disabled': userProfileForm.invalid }"
+    >
+      Speichern
+    </button>
   </div>
 </form>
-<button class="btn flex ai-c" *ngIf="user!.authId!==getCurrentUser()?.authId" (click)="createChat()">
+<button
+  class="btn flex ai-c"
+  *ngIf="user!.authId !== getCurrentUser()?.authId"
+  (click)="createChat()"
+>
   <mat-icon fontSet="material-symbols-outlined">mode_comment</mat-icon>
   Nachricht
 </button>

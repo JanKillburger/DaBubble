@@ -6,6 +6,7 @@ import { UserProfileDialogComponent } from '../user-profile-dialog/user-profile-
 import { NgIf } from '@angular/common';
 import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
+import { HomeService } from '../../../services/home.service';
 
 
 @Component({
@@ -21,10 +22,15 @@ export class UserDialogComponent {
     public dialog: MatDialog,
     private channelService: FirebaseChannelService,
     private athService: FirebaseAuthService,
-    @Inject(MAT_DIALOG_DATA) public positionDetails:  PositionDetails ) { }
+    private homeService: HomeService,
+    @Inject(MAT_DIALOG_DATA) public positionDetails: PositionDetails) { }
 
   showUserProfile() {
-    this.dialog.open(UserProfileDialogComponent, { panelClass: 'custom-container', position: this.positionDetails, data: this.channelService.getCurrentUser() });
+    if (this.homeService.getScreenMode() === "small") {
+      this.dialog.open(UserProfileDialogComponent, { panelClass: 'fullscreen-container', data: this.channelService.getCurrentUser() });
+    } else {
+      this.dialog.open(UserProfileDialogComponent, { panelClass: 'custom-container', position: this.positionDetails, data: this.channelService.getCurrentUser() });
+    }
     this.dialogRef.close();
   }
 

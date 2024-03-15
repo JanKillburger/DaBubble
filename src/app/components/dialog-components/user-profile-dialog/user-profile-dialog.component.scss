@@ -9,11 +9,17 @@
   font-weight: 700;
 }
 
-.avatar {
+.avatar-xlarge {
   height: 10em;
   width: auto;
   margin-inline: auto;
   margin-block: 1em;
+  border-radius: 50%;
+}
+
+.avatars {
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .user-name {
@@ -54,6 +60,18 @@
   &:hover {
     background-color: hsl(var(--accent-color));
     color: white;
+  }
+}
+
+.img-btn {
+  border: none;
+  outline: none;
+  background-color: white;
+  display: block;
+  margin-inline: auto;
+
+  &:not([disabled]) {
+    cursor: pointer;
   }
 }
 

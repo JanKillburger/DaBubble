@@ -2,16 +2,17 @@ import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FirebaseUserService, UserData } from '../../../services/firebase-user.service';
 import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { HomeService } from '../../../services/home.service';
+import { FirebaseStorageService } from '../../../services/firebase-storage.service';
 
 @Component({
   selector: 'app-user-profile-dialog',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, NgIf, ReactiveFormsModule, NgClass],
+  imports: [MatIconModule, MatButtonModule, NgIf, ReactiveFormsModule, NgClass, NgFor],
   templateUrl: './user-profile-dialog.component.html',
   styleUrl: './user-profile-dialog.component.scss',
 })
@@ -21,6 +22,7 @@ export class UserProfileDialogComponent {
     private channelService: FirebaseChannelService,
     private homeService: HomeService,
     private userService: FirebaseUserService,
+    public storageService: FirebaseStorageService,
     @Inject(MAT_DIALOG_DATA) public user: UserData
   ) {}
 
@@ -29,6 +31,16 @@ export class UserProfileDialogComponent {
     name: new FormControl(this.user.name, Validators.required),
     email: new FormControl(this.user.email, [Validators.required, Validators.email]),
   });
+  userAvatar = this.user.avatar;
+  showAvatars = false;
+  avatars = [
+    'assets/img/login/SingIn/avatar1.png',
+    'assets/img/login/SingIn/avatar2.png',
+    'assets/img/login/SingIn/avatar3.png',
+    'assets/img/login/SingIn/avatar4.png',
+    'assets/img/login/SingIn/avatar5.png',
+    'assets/img/login/SingIn/avatar6.png',
+  ]
 
   get name() {
     return this.userProfileForm.get('name');
@@ -53,6 +65,7 @@ export class UserProfileDialogComponent {
   saveUserProfileEdits() {
     this.user.name = this.userProfileForm.value.name!;
     this.user.email = this.userProfileForm.value.email!;
+    this.user.avatar = this.userAvatar;
     this.userService.updateUserProfile(this.user);
     this.dialogRef.close();
   }
@@ -69,5 +82,9 @@ export class UserProfileDialogComponent {
       this.homeService.openChat(currentChat!)
       this.closeDialog()
     }
+  }
+
+  setAvatar(index: number) {
+    this.userAvatar = this.avatars[index];
   }
 }
