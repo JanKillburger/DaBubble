@@ -54,6 +54,7 @@ export class UserProfileDialogComponent {
     this.user.name = this.userProfileForm.value.name!;
     this.user.email = this.userProfileForm.value.email!;
     this.userService.updateUserProfile(this.user);
+    this.dialogRef.close();
   }
 
   async createChat() {
