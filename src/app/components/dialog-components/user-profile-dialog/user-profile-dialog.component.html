@@ -24,6 +24,10 @@
         />
       </button>
     </div>
+    <label for="custom-avatar">Oder lade ein eigenes Bild hoch:</label>
+    <input id="custom-avatar" type="file" class="file-input" accept="image/png, image/jpeg, image/jpg" (change)="validateImage($event)" (cancel)="onCancel()">
+    <p *ngIf="wrongFileFormat" class="error-message">Bitte jpg oder png auswählen!</p>
+    <p *ngIf="fileTooLarge" class="error-message">Maximale Dateigröße ist 2MB!</p>
   </div>
   <label
     for="name"
@@ -78,9 +82,9 @@
     </button>
     <button
       class="btn"
-      (click)="saveUserProfileEdits()"
-      [disabled]="userProfileForm.invalid"
-      [ngClass]="{ 'btn-disabled': userProfileForm.invalid }"
+      (click)="saveEdits()"
+      [disabled]="userProfileForm.invalid || fileTooLarge || wrongFileFormat"
+      [ngClass]="{ 'btn-disabled': userProfileForm.invalid || fileTooLarge || wrongFileFormat }"
     >
       Speichern
     </button>

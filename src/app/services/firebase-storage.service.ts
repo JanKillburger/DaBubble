@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { getApp } from 'firebase/app';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL, StorageReference } from 'firebase/storage';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -36,6 +36,17 @@ export class FirebaseStorageService {
         console.log('error');
         return 'error';
       });
+  }
+
+  getImgLink(ref: StorageReference) {
+    return getDownloadURL(ref);
+  }
+
+  saveUserAvatar(fileName: string, file: File) {
+    const firebaseApp = getApp();
+    const storage = getStorage(firebaseApp, 'gs://dabubble-ea6d8.appspot.com');
+    const storageRef = ref(storage, fileName);
+    return uploadBytes(storageRef, file);
   }
 
   updateUserImgUrl(newUrl: string) {
