@@ -33,7 +33,8 @@ export class LoginDialogComponent {
     email: new FormControl('', [
       Validators.required,
       Validators.email,
-      this.emailDomainValidator()
+      Validators.pattern(/\S+@\S+\.(\S){2,4}/),
+      // this.emailDomainValidator()
     ]),
     password: new FormControl('', [
       Validators.required,

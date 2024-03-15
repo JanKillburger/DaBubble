@@ -73,7 +73,7 @@
   <div *ngIf="email?.errors?.['required']" class="error-message">
     Dies ist ein Pflichtfeld.
   </div>
-  <div *ngIf="email?.errors?.['email']" class="error-message">
+  <div *ngIf="email?.errors?.['pattern'] || email?.errors?.['email']" class="error-message">
     Bitte eine gültige Email-Adresse eingeben.
   </div>
   <div class="actions flex" *ngIf="formMode === 'edit'">

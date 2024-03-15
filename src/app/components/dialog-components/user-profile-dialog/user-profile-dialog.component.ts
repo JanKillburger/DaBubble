@@ -30,7 +30,7 @@ export class UserProfileDialogComponent {
   formMode: 'view' | 'edit' = 'view';
   userProfileForm = new FormGroup({
     name: new FormControl(this.user.name, Validators.required),
-    email: new FormControl(this.user.email, [Validators.required, Validators.email]),
+    email: new FormControl(this.user.email, [Validators.required, Validators.pattern(/\S+@\S+\.(\S){2,4}/), Validators.email]),
   });
   customAvatar: null | File = null;
   userAvatar = this.user.avatar;
