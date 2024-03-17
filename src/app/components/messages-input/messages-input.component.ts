@@ -117,7 +117,6 @@ export class MessagesInputComponent {
       if (this.storage.fileUrl) {
         this.imageIsUploaded = true;
         this.imagePath = this.storage.fileUrl;
-        console.log(this.imageIsUploaded, this.imagePath)
       }
     } else {
       this.wrongFileType = true
