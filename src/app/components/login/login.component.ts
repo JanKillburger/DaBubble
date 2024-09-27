@@ -40,14 +40,14 @@ export class LoginComponent {
 
   createContact() {
     let contactButton = document.getElementById('create-contact-button');
-    let SingUp = document.getElementById('create-contact-dialog');
+    let signUp = document.getElementById('create-contact-dialog');
     let loginDialog = document.getElementById('login-dialog');
-    let SingUpFooter = document.getElementById('create-contact-footer');
+    let signUpFooter = document.getElementById('create-contact-footer');
 
-    SingUp?.classList.remove('display_none');
+    signUp?.classList.remove('display_none');
     contactButton?.classList.add('display_none');
     loginDialog?.classList.add('display_none');
-    SingUpFooter?.classList.add('display_none');
+    signUpFooter?.classList.add('display_none');
     this.toggleLoginFooter();
   }
 

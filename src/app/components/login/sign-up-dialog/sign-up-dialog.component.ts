@@ -86,6 +86,7 @@ export class SignUpDialogComponent {
 
   async onSubmit() {
     this.createUser();
+    //adds user to Firebase Authentication module
     this.userId = await this.userFirebaseService.registerWithEmailAndPassword(
       this.user.email,
       this.password?.value
@@ -116,6 +117,7 @@ export class SignUpDialogComponent {
 
   async goOnToSelectAvatar() {
     this.user.authId = this.userId;
+    //adds user to Firebase users collection
     let docIdPromise = this.userFirebaseService.saveUserService(this.user);
     this.addUserToOpenChannels(this.userId)
     this.createdPersonalChat(this.userId)

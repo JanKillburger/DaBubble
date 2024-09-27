@@ -41,7 +41,7 @@ export class SelectAvatarComponent {
     private activeRoute: ActivatedRoute
   ) {
     this.userId = this.activeRoute.snapshot.paramMap.get('id');
-    this.getDataFromSingUp();
+    this.getDataFromSignUp();
     this.subscribeToImageChanges();
   }
 
@@ -57,7 +57,7 @@ export class SelectAvatarComponent {
     });
   }
 
-  async getDataFromSingUp() {
+  async getDataFromSignUp() {
     this.signUpData = await this.userFirebaseService.getUserData(this.userId);
     this.Username = this.signUpData.name;
   }
