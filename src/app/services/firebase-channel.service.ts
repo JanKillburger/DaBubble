@@ -12,7 +12,6 @@ import {
   updateDoc,
   where,
   arrayUnion,
-  setDoc,
   Unsubscribe,
 } from '@angular/fire/firestore';
 import { Channel } from '../models/channel.class';
@@ -20,57 +19,48 @@ import { UserData } from './firebase-user.service';
 import { HomeService } from './home.service';
 import { FirebaseAuthService } from './firebase-auth.service';
 import { Router } from '@angular/router';
-import { getAuth } from 'firebase/auth';
-import { FirebaseMessageService } from './firebase-messages.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirebaseChannelService {
-  //https://medium.com/swlh/using-firestore-with-typescript-65bd2a602945
-  //https://www.typescriptlang.org/docs/handbook/2/generics.html
-
+  firestore: Firestore = inject(Firestore)
+  
   channels: ChannelData[] = [];
-  unsubChannels;
-  firestore: Firestore = inject(Firestore);
   channelId: string = '';
   currentUser: string = '';
-  auth = getAuth();
   allChannels: Channel[] = [];
   currentChannel?: Channel;
   users: Map<string, UserData> = new Map();
   userChannels: ChannelData[] = [];
   userChannelsMessages: Map<string, messages> = new Map();
   replies: Map<string, Message[]> = new Map();
-  unsubUsers: any[] = [];
-  unsubReplies: any[] = [];
-  unsubUserChannels: any[] = [];
-  unsubUserChannelsMessages: any[] = [];
   currentChannelForMessages: string = 'grDvJ7eyWqziuvoDsr41';
   currentThreadForMessage: string | undefined = '';
   messagesToSeach: searchData[] = [];
   chatMessagesToSeach: searchData[] = [];
-  unsubUserChats: Unsubscribe | undefined;
-  unsubUserChatMessages: Unsubscribe[] = [];
-  unsubUserChatReplies: Unsubscribe[] = [];
   userChats: Chat[] = [];
   userChatMessages: Map<string, messages> = new Map();
   userChatReplies: Map<string, Message[]> = new Map();
+  unsub: Unsubscribe[] = []
 
   constructor(
     private homeService: HomeService,
     private router: Router,
     public authService: FirebaseAuthService
   ) {
-    this.unsubChannels = this.subChannelsList();
-    this.controlCurrentUser()
-      .then(() => {
+    this.subChannelsList();
+    this.authService.user$.subscribe(user => {
+      if (user) {
+        this.authService.loggedInUser = user.uid;
         this.getUserChats(this.authService.loggedInUser);
-        return this.getUserChannels(this.authService.loggedInUser);
-      })
-      .then((unsubUserChannels) => {
-        this.unsubUserChannels.push(unsubUserChannels);
-      });
+        this.getUserChannels(this.authService.loggedInUser);
+        this.router.navigate(['/home']);
+      } else {
+        this.authService.loggedInUser = '';
+        this.unsub.forEach((unsub) => unsub());
+      }
+    })
   }
 
   converterMessage = {
@@ -98,38 +88,24 @@ export class FirebaseChannelService {
     },
   };
 
-  async controlCurrentUser() {
-    return new Promise((resolve, reject) => {
-      this.auth.onAuthStateChanged((user) => {
-        if (user) {
-          this.authService.loggedInUser = user.uid;
-          this.router.navigate(['/home']);
-          resolve(user.uid);
-        } else {
-          this.router.navigate(['/']);
-          reject('error');
-        }
-      });
-    });
-  }
-
   getUserChats(userId: string) {
     const q = query(
       collection(this.firestore, 'chats'),
       where('users', 'array-contains', userId)
     );
-    this.unsubUserChats = onSnapshot(q, (chats) => {
-      this.userChats = [];
-      chats.forEach((chat) => {
-        let rawData = chat.data();
-        rawData['id'] = chat.id;
-        this.userChats.push(rawData as Chat);
-        if (!this.userChatMessages.has(chat.id)) {
-          this.userChatMessages.set(chat.id, {});
-          this.unsubUserChatMessages.push(this.getChatMessages(chat.id));
-        }
-      });
-    });
+    this.unsub.push(
+      onSnapshot(q, (chats) => {
+        this.userChats = [];
+        chats.forEach((chat) => {
+          let rawData = chat.data();
+          rawData['id'] = chat.id;
+          this.userChats.push(rawData as Chat);
+          if (!this.userChatMessages.has(chat.id)) {
+            this.userChatMessages.set(chat.id, {});
+            this.getChatMessages(chat.id)
+          }
+        });
+      }));
   }
 
   private getChatMessages(chatId: string) {
@@ -137,27 +113,28 @@ export class FirebaseChannelService {
       collection(this.firestore, 'chats', chatId, 'messages'),
       orderBy('timestamp')
     ).withConverter(this.converterMessage);
-    return onSnapshot(messagesRef, (messages) => {
-      const messagesObj: messages = {};
-      let dayKey = '';
-      messages.forEach((message) => {
-        let rawData = message.data();
-        rawData['id'] = message.id;
-        this.saveChatMessageForSearchingFiel(
-          chatId,
-          rawData.message,
-          message.id
-        );
-        if (message.data()['date'] === dayKey) {
-          messagesObj[dayKey].push(rawData);
-        } else {
-          dayKey = message.data()['date']!;
-          messagesObj[dayKey] = [rawData];
-        }
-        this.getChatReplies(chatId, message.id);
-      });
-      this.userChatMessages.set(chatId, messagesObj);
-    });
+    this.unsub.push(
+      onSnapshot(messagesRef, (messages) => {
+        const messagesObj: messages = {};
+        let dayKey = '';
+        messages.forEach((message) => {
+          let rawData = message.data();
+          rawData['id'] = message.id;
+          this.saveChatMessageForSearchingFiel(
+            chatId,
+            rawData.message,
+            message.id
+          );
+          if (message.data()['date'] === dayKey) {
+            messagesObj[dayKey].push(rawData);
+          } else {
+            dayKey = message.data()['date']!;
+            messagesObj[dayKey] = [rawData];
+          }
+          this.getChatReplies(chatId, message.id);
+        });
+        this.userChatMessages.set(chatId, messagesObj);
+      }));
   }
 
   private getChatReplies(chatId: string, messageId: string) {
@@ -174,7 +151,7 @@ export class FirebaseChannelService {
     ).withConverter(this.converterMessage);
 
     if (!this.userChatReplies.has(messageId)) {
-      this.unsubUserChatReplies.push(
+      this.unsub.push(
         onSnapshot(repliesRef, (replies) => {
           const value: Message[] = [];
           replies.forEach((reply) => {
@@ -195,33 +172,32 @@ export class FirebaseChannelService {
       collection(this.firestore, 'channels'),
       where('users', 'array-contains', userId)
     );
-    return onSnapshot(q, (channels) => {
-      this.userChannels = [];
-      channels.forEach((channel) => {
-        let rawData = channel.data();
-        rawData['id'] = channel.id;
-        if (
-          !this.homeService.getActiveChannel() &&
-          this.homeService.getScreenMode() !== 'small'
-        )
-          this.homeService.setChannel(rawData as ChannelData);
-        this.userChannels.push(rawData as ChannelData);
-        this.userChannels.at(-1)!.id = channel.id;
-        this.getChannelUsers(rawData as ChannelData);
-        if (!this.userChannelsMessages.has(channel.id)) {
-          this.userChannelsMessages.set(channel.id, {});
-          this.unsubUserChannelsMessages.push(
-            this.getChannelMessages(channel.id)
-          );
-        }
-      });
-    });
+    this.unsub.push(
+      onSnapshot(q, (channels) => {
+        this.userChannels = [];
+        channels.forEach((channel) => {
+          let rawData = channel.data();
+          rawData['id'] = channel.id;
+          if (
+            !this.homeService.getActiveChannel() &&
+            this.homeService.getScreenMode() !== 'small'
+          )
+            this.homeService.setChannel(rawData as ChannelData);
+          this.userChannels.push(rawData as ChannelData);
+          this.userChannels.at(-1)!.id = channel.id;
+          this.getChannelUsers(rawData as ChannelData);
+          if (!this.userChannelsMessages.has(channel.id)) {
+            this.userChannelsMessages.set(channel.id, {});
+            this.getChannelMessages(channel.id);
+          }
+        });
+      }));
   }
 
   private getChannelUsers(channel: ChannelData) {
     for (let user of channel.users) {
       if (!this.users.has(user)) {
-        this.unsubUsers.push(
+        this.unsub.push(
           onSnapshot(
             doc(this.firestore, 'users', user).withConverter(
               this.converterUser
@@ -244,27 +220,28 @@ export class FirebaseChannelService {
       collection(this.firestore, 'channels', channelId, 'messages'),
       orderBy('timestamp')
     ).withConverter(this.converterMessage);
-    return onSnapshot(messagesRef, (messages) => {
-      const messagesObj: messages = {};
-      let dayKey = '';
-      messages.forEach((message) => {
-        let rawData = message.data();
-        rawData['id'] = message.id;
-        this.saveMessageForSearchingFiel(
-          channelId,
-          rawData.message,
-          message.id
-        );
-        if (message.data()['date'] === dayKey) {
-          messagesObj[dayKey].push(rawData);
-        } else {
-          dayKey = message.data()['date']!;
-          messagesObj[dayKey] = [rawData];
-        }
-        this.getMessageReplies(channelId, message.id);
-      });
-      this.userChannelsMessages.set(channelId, messagesObj);
-    });
+    this.unsub.push(
+      onSnapshot(messagesRef, (messages) => {
+        const messagesObj: messages = {};
+        let dayKey = '';
+        messages.forEach((message) => {
+          let rawData = message.data();
+          rawData['id'] = message.id;
+          this.saveMessageForSearchingFiel(
+            channelId,
+            rawData.message,
+            message.id
+          );
+          if (message.data()['date'] === dayKey) {
+            messagesObj[dayKey].push(rawData);
+          } else {
+            dayKey = message.data()['date']!;
+            messagesObj[dayKey] = [rawData];
+          }
+          this.getMessageReplies(channelId, message.id);
+        });
+        this.userChannelsMessages.set(channelId, messagesObj);
+      }));
   }
 
   editChannel(channel: ChannelData) {
@@ -347,9 +324,8 @@ export class FirebaseChannelService {
       ),
       orderBy('timestamp')
     ).withConverter(this.converterMessage);
-
     if (!this.replies.has(messageId)) {
-      this.unsubReplies.push(
+      this.unsub.push(
         onSnapshot(repliesRef, (replies) => {
           const value: Message[] = [];
           replies.forEach((reply) => {
@@ -374,20 +350,18 @@ export class FirebaseChannelService {
   }
 
   ngOnDestroy() {
-    this.unsubChannels();
-    this.unsubUserChannels.forEach((unsub) => unsub());
-    this.unsubUserChannelsMessages.forEach((unsub) => unsub());
-    this.unsubUsers.forEach((unsub) => unsub());
+    this.unsub.forEach((unsub) => unsub());
   }
 
   subChannelsList() {
     const q = query(this.getChannelsRef());
-    return onSnapshot(q, (list) => {
-      this.channels = [];
-      list.forEach((element) => {
-        this.channels.push(this.setChannelObject(element.data(), element.id));
-      });
-    });
+    this.unsub.push(
+      onSnapshot(q, (list) => {
+        this.channels = [];
+        list.forEach((element) => {
+          this.channels.push(this.setChannelObject(element.data(), element.id));
+        });
+      }));
   }
 
   getChannelsRef() {
@@ -424,7 +398,6 @@ export class FirebaseChannelService {
       );
       return true;
     } catch (error) {
-      console.error(error);
       return false;
     }
   }

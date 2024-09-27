@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import {
   FormControl,
@@ -7,10 +7,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule, NgClass, NgIf } from '@angular/common';
-import { getAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { informationAnimation } from '../../../models/userInformation.class';
-import { confirmPasswordReset } from '@firebase/auth';
+import { Auth, confirmPasswordReset } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-reset-password',
@@ -24,6 +23,7 @@ import { confirmPasswordReset } from '@firebase/auth';
   animations: [informationAnimation.userInformation]
 })
 export class ResetPasswordComponent {
+  auth = inject(Auth)
   resetPasswordForm: FormGroup;
   resetNotification: boolean = false;
 
@@ -68,8 +68,7 @@ export class ResetPasswordComponent {
     let userControl = urlParams.get('oobCode');
     if (userControl && this.password) {
       let passwordValue = this.password.value;
-      const auth = getAuth();
-      confirmPasswordReset(auth, userControl, passwordValue).then(() => {
+      confirmPasswordReset(this.auth, userControl, passwordValue).then(() => {
         this.resetNotification = true;
       })
       .catch((error) => {

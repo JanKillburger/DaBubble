@@ -1,14 +1,4 @@
-import { Injectable, inject } from '@angular/core';
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  sendPasswordResetEmail,
-  updatePassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from 'firebase/auth';
+import { Injectable, OnInit, inject } from '@angular/core';
 import {
   Firestore,
   arrayUnion,
@@ -21,40 +11,47 @@ import {
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { User } from '../models/user.class';
-import { FirebaseChannelService } from './firebase-channel.service';
+import {
+  Auth,
+  user,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  sendPasswordResetEmail
+} from '@angular/fire/auth';
+import { shareReplay, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirebaseAuthService {
-  firestore: Firestore = inject(Firestore);
-  auth = getAuth();
+  firestore = inject(Firestore);
+  auth = inject(Auth);
+
   loading: boolean = false;
   allUsers: UserData[] = [];
   querySnapshot: any;
   user: User = new User();
   provider = new GoogleAuthProvider();
   loggedInUserAuth = '';
-  loggedInUser:string = '';
-  authUserId:string = ''
+  loggedInUser: string = '';
+  authUserId: string = ''
+  user$ = user(this.auth).pipe(tap(console.log), shareReplay())
 
   constructor(private router: Router) {
     this.getData();
   }
 
   async registerWithEmailAndPassword(email: string, password: string) {
-    try {
-      let userCredential = await createUserWithEmailAndPassword(
-        this.auth,
-        email,
-        password
-      );
-      this.authUserId = userCredential.user.uid
-      return userCredential.user.uid
-    } catch (err) {
-      console.error("Register ERROR", err);
-      return 'Test - error'
-    }
+    let userCredential = await createUserWithEmailAndPassword(
+      this.auth,
+      email,
+      password
+    );
+    this.authUserId = userCredential.user.uid
+    return userCredential.user.uid
   }
 
   async loginWithEmailAndPassword(email: string, password: string) {
@@ -68,7 +65,6 @@ export class FirebaseAuthService {
         }
       );
     } catch (err) {
-      console.log('that user does not exist', err);
       return true;
     }
   }
@@ -77,9 +73,9 @@ export class FirebaseAuthService {
     this.loading = true;
     const userRef = doc(this.firestore, 'users', this.authUserId);
     return setDoc(userRef, userData.toJson()).then(() => {
-        this.loading = false;
-        return this.authUserId;
-      }
+      this.loading = false;
+      return this.authUserId;
+    }
     );
   }
 
@@ -143,7 +139,7 @@ export class FirebaseAuthService {
   //   }
   // }
 
-  searchingUser(searchTerm: any){
+  searchingUser(searchTerm: any) {
     return this.allUsers.filter((users) =>
       users.name.toLowerCase().includes(searchTerm.toLowerCase()));
   }
@@ -183,9 +179,9 @@ export class FirebaseAuthService {
 
   googleAddUserInOfficeChannel(userId: any) {
     const channelDocRef = doc(this.firestore, 'channels', 'grDvJ7eyWqziuvoDsr41');
-    updateDoc(channelDocRef, {users: arrayUnion(userId)})
-      .then(() => {console.log("Neuer Benutzer wurde zum 'users'-Array hinzugefügt");})
-      .catch((error) => {console.error('Fehler beim Hinzufügen eines neuen Benutzers:', error);});
+    updateDoc(channelDocRef, { users: arrayUnion(userId) })
+      .then(() => { console.log("Neuer Benutzer wurde zum 'users'-Array hinzugefügt"); })
+      .catch((error) => { console.error('Fehler beim Hinzufügen eines neuen Benutzers:', error); });
   }
 
   userSingOut() {
