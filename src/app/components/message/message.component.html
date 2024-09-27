@@ -1,13 +1,13 @@
 <div class="inner-container">
   <div
     class="message-wrapper"
-    [class.aligned-right]="getCurrentUser() === getUser()"
+    [class.aligned-right]="currentUser() === getUser()"
   >
     <img class="avatar" [src]="getUser()?.avatar" alt="Profilbild" />
     <div class="message">
       <p
         class="message-meta-data flex ai-c"
-        [class.aligned-right]="getCurrentUser() === getUser()"
+        [class.aligned-right]="currentUser() === getUser()"
       >
         <button class="btn btn--text user-name" (click)="showUserProfile()">
           {{ getUser()?.name }}
@@ -20,7 +20,7 @@
         id="{{ message?.id }}"
         class="message-content"
         [innerHTML]="message?.message! | linkify"
-        [class.message-content--aligned-right]="getCurrentUser() === getUser()"
+        [class.message-content--aligned-right]="currentUser() === getUser()"
       >
         {{ message?.message }}
       </p>

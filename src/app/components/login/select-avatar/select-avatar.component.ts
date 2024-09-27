@@ -26,12 +26,12 @@ export class SelectAvatarComponent {
   dataIsAlreadyLoaded: boolean = false;
   loginSuccessful: boolean = false;
   avatarImgs = [
-    './assets/img/login/SingIn/avatar1.png',
-    './assets/img/login/SingIn/avatar2.png',
-    './assets/img/login/SingIn/avatar3.png',
-    './assets/img/login/SingIn/avatar4.png',
-    './assets/img/login/SingIn/avatar5.png',
-    './assets/img/login/SingIn/avatar6.png',
+    './assets/img/login/SignIn/avatar1.png',
+    './assets/img/login/SignIn/avatar2.png',
+    './assets/img/login/SignIn/avatar3.png',
+    './assets/img/login/SignIn/avatar4.png',
+    './assets/img/login/SignIn/avatar5.png',
+    './assets/img/login/SignIn/avatar6.png',
   ];
 
   constructor(
@@ -48,7 +48,7 @@ export class SelectAvatarComponent {
   subscribeToImageChanges() {
     this.storage.userImgUrl.subscribe((url) => {
       if (url === '') {
-        this.avatarSelectedImg = './assets/img/login/SingIn/emptyProfile.png';
+        this.avatarSelectedImg = './assets/img/login/SignIn/emptyProfile.png';
       } else {
         this.avatarSelectedImg = url;
         this.signUpData.avatar = this.avatarSelectedImg;
@@ -67,7 +67,7 @@ export class SelectAvatarComponent {
     updloadDialog?.classList.remove('display_none');
   }
 
-  backToSingIn() {
+  backToSignIn() {
     this.router.navigate(['/']);
   }
 

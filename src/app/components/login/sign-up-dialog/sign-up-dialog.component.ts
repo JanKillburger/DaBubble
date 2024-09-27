@@ -41,7 +41,7 @@ export class SignUpDialogComponent {
     private router: Router
   ) {}
 
-  singInForm: FormGroup = new FormGroup({
+  signInForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     email: new FormControl('', [
       Validators.required,
@@ -72,16 +72,16 @@ export class SignUpDialogComponent {
   }
 
   get name() {
-    return this.singInForm.get('name');
+    return this.signInForm.get('name');
   }
   get email() {
-    return this.singInForm.get('email');
+    return this.signInForm.get('email');
   }
   get password() {
-    return this.singInForm.get('password');
+    return this.signInForm.get('password');
   }
   get privacy() {
-    return this.singInForm.get('privacy');
+    return this.signInForm.get('privacy');
   }
 
   async onSubmit() {
@@ -106,10 +106,10 @@ export class SignUpDialogComponent {
 
   backToLogIn() {
     let contactButton = document.getElementById('create-contact-button');
-    let SingIn = document.getElementById('create-contact-dialog');
+    let SignIn = document.getElementById('create-contact-dialog');
     let loginDialog = document.getElementById('login-dialog');
 
-    SingIn?.classList.add('display_none');
+    SignIn?.classList.add('display_none');
     contactButton?.classList.remove('display_none');
     loginDialog?.classList.remove('display_none');
   }

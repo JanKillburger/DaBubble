@@ -36,7 +36,7 @@
         DABubble-Konto.
       </span>
     </div>
-    <form [formGroup]="singInForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
       <div class="inputField-container">
         <div class="inputFields">
           <img src="./assets/img/login/person.png" alt="" />
@@ -84,12 +84,12 @@
           >Bitte stimme der Datenschutzerklärung zu</span
         >
       </div>
-      <div class="singIn-buttons">
+      <div class="signIn-buttons">
         <button
           class="button-filled"
           type="submit"
-          [disabled]="!singInForm.valid"
-          [ngClass]="{ 'button-filled-not-valid': !singInForm.valid }"
+          [disabled]="!signInForm.valid"
+          [ngClass]="{ 'button-filled-not-valid': !signInForm.valid }"
         >
           Weiter
         </button>

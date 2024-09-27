@@ -1,7 +1,7 @@
 import { Component, Input, inject } from '@angular/core';
 import { UserData } from '../../services/firebase-user.service';
 import { NgClass } from '@angular/common';
-import { Chat, FirebaseChannelService } from '../../services/firebase-channel.service';
+import { FirebaseAuthService } from '../../services/firebase-auth.service';
 
 @Component({
   selector: 'app-contact-button',
@@ -12,5 +12,7 @@ import { Chat, FirebaseChannelService } from '../../services/firebase-channel.se
 })
 export class ContactButtonComponent {
   @Input() user: UserData | undefined;
-  channelService = inject(FirebaseChannelService);
+  authService = inject(FirebaseAuthService);
+
+  currentUser = this.authService.userProfile
 }

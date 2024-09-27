@@ -10,10 +10,7 @@
 <div class="messages-wrapper">
 <div>
   <div class="conversation-intro inner-container">
-    @if (homeService.getCurrentUser() !== user.user) {
-
-    <!-- <img [src]="user.user?.avatar" class="avatar">
-      <span>{{user.user?.name}}</span> -->
+    @if (authService.userProfile() !== user.user) {
     <p>
       Diese Unterhaltung findet nur zwischen
       <span class="at-link">&#64;{{ user.user?.name }}</span> und dir statt.

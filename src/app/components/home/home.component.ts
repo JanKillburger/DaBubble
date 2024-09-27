@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, signal, ViewChild } from '@angular/core';
 import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UserDialogComponent } from '../dialog-components/user-dialog/user-dialog.component';
@@ -21,6 +21,7 @@ import { NewMessageComponent } from '../new-message/new-message.component';
 import { DirectMessagesComponent } from '../direct-messages/direct-messages.component';
 import { FirebaseAuthService } from '../../services/firebase-auth.service';
 import { UserData } from '../../services/firebase-user.service';
+import { User } from '../../models/user.class';
 
 @Component({
   selector: 'app-home',
@@ -60,7 +61,9 @@ export class HomeComponent {
     private authService: FirebaseAuthService,
     private messageService: FirebaseMessageService,
     private channelService: FirebaseChannelService
-  ) {}
+  ) { }
+
+  user = this.authService.userProfile
 
   openDialog() {
     const positionDetails = this.viewport.getPositionRelativeTo(
@@ -124,10 +127,6 @@ export class HomeComponent {
     this.homeService.goToMenu();
   }
 
-  getCurrentUser() {
-    return this.channelService.getCurrentUser();
-  }
-
   search() {
     this.filterdChannelsData = this.messageService.searchingChannel(this.searchTerm);
     this.filterdChannelMessageData = this.messageService.searchingMessages(this.searchTerm);
@@ -135,7 +134,7 @@ export class HomeComponent {
     this.filterdPrivateMessageData = this.messageService.searchingPrivateMessages(this.searchTerm);
   }
 
-  async openUserChat(userId:string){
+  async openUserChat(userId: string) {
     let currentChat = this.channelService.userChats.find((chat) => chat.users.includes(userId))
     if (currentChat) {
       this.homeService.selectedChat = currentChat
@@ -149,21 +148,21 @@ export class HomeComponent {
     this.messageService.getMessagesFromChannel(userId);
   }
 
-  openUserChannel(channelId:string){
+  openUserChannel(channelId: string) {
     let currentChannel = this.channelService.userChannels.find((channel) => channel.id!.includes(channelId))
     this.homeService.setChannel(currentChannel!);
     this.messageService.getMessagesFromChannel(channelId);
     this.searchTerm = ''
   }
 
-  openMessageInChannel(channelId:string, messageId:string){
+  openMessageInChannel(channelId: string, messageId: string) {
     this.openUserChannel(channelId);
     setTimeout(() => {
       this.scrollToElement(messageId);
     }, 500);
   }
 
-  openMessageInChat(chatlId:string, messageId:string){
+  openMessageInChat(chatlId: string, messageId: string) {
     this.openUserChat(chatlId);
     setTimeout(() => {
       this.scrollToElement(messageId);

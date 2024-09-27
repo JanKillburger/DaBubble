@@ -7,6 +7,6 @@
     ></div>
   </div>
   <span class="user-name"
-    >{{ user?.name }}@if(user?.authId === channelService.getCurrentUser()?.authId){ (Du)}</span
+    >{{ user?.name }}@if(user?.authId === currentUser()?.authId){ (Du)}</span
   >
 </button>

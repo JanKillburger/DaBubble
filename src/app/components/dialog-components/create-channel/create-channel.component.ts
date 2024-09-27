@@ -71,7 +71,7 @@ export class CreateChannelComponent {
   }
 
   async addToChannel() {
-    this.currentUser = this.channelService.getCurrentUser();
+    this.currentUser = this.authService.userProfile();
     this.channel.channelName = this.channelName?.value;
     this.channel.channelDescription = this.channelDescription?.value;
     this.channel.users.push(this.currentUser.authId);

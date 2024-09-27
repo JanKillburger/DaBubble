@@ -8,6 +8,7 @@ import { FirebaseUserService, UserData } from '../../../services/firebase-user.s
 import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { HomeService } from '../../../services/home.service';
 import { FirebaseStorageService } from '../../../services/firebase-storage.service';
+import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class UserProfileDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<UserProfileDialogComponent>,
     private channelService: FirebaseChannelService,
+    private authService: FirebaseAuthService,
     private homeService: HomeService,
     private userService: FirebaseUserService,
     public storageService: FirebaseStorageService,
@@ -38,12 +40,12 @@ export class UserProfileDialogComponent {
   wrongFileFormat = false;
   fileTooLarge = false;
   avatars = [
-    'assets/img/login/SingIn/avatar1.png',
-    'assets/img/login/SingIn/avatar2.png',
-    'assets/img/login/SingIn/avatar3.png',
-    'assets/img/login/SingIn/avatar4.png',
-    'assets/img/login/SingIn/avatar5.png',
-    'assets/img/login/SingIn/avatar6.png',
+    'assets/img/login/SignIn/avatar1.png',
+    'assets/img/login/SignIn/avatar2.png',
+    'assets/img/login/SignIn/avatar3.png',
+    'assets/img/login/SignIn/avatar4.png',
+    'assets/img/login/SignIn/avatar5.png',
+    'assets/img/login/SignIn/avatar6.png',
   ]
 
   get name() {
@@ -62,9 +64,7 @@ export class UserProfileDialogComponent {
     this.formMode = 'edit';
   }
 
-  getCurrentUser() {
-    return this.channelService.getCurrentUser();
-  }
+  currentUser = this.authService.userProfile
 
   saveEdits() {
     if (this.customAvatar) {

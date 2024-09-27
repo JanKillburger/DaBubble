@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { PositionDetails } from '../../../models/position-details.model';
 import { UserProfileDialogComponent } from '../user-profile-dialog/user-profile-dialog.component';
 import { NgIf } from '@angular/common';
-import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { HomeService } from '../../../services/home.service';
 
@@ -20,22 +19,21 @@ export class UserDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<UserDialogComponent>,
     public dialog: MatDialog,
-    private channelService: FirebaseChannelService,
-    private athService: FirebaseAuthService,
+    private authService: FirebaseAuthService,
     private homeService: HomeService,
     @Inject(MAT_DIALOG_DATA) public positionDetails: PositionDetails) { }
 
   showUserProfile() {
     if (this.homeService.getScreenMode() === "small") {
-      this.dialog.open(UserProfileDialogComponent, { panelClass: 'fullscreen-container', data: this.channelService.getCurrentUser() });
+      this.dialog.open(UserProfileDialogComponent, { panelClass: 'fullscreen-container', data: this.authService.userProfile() });
     } else {
-      this.dialog.open(UserProfileDialogComponent, { panelClass: 'custom-container', position: this.positionDetails, data: this.channelService.getCurrentUser() });
+      this.dialog.open(UserProfileDialogComponent, { panelClass: 'custom-container', position: this.positionDetails, data: this.authService.userProfile() });
     }
     this.dialogRef.close();
   }
 
   onLogOut() {
-    this.athService.userSingOut();
+    this.authService.userSingOut();
     this.dialogRef.close();
   }
 }

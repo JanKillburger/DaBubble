@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import {
   Firestore,
-  QueryDocumentSnapshot,
   addDoc,
   collection,
   doc,
@@ -19,13 +18,14 @@ import { UserData } from './firebase-user.service';
 import { HomeService } from './home.service';
 import { FirebaseAuthService } from './firebase-auth.service';
 import { Router } from '@angular/router';
+import converters from './firestore-converters';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirebaseChannelService {
   firestore: Firestore = inject(Firestore)
-  
+
   channels: ChannelData[] = [];
   channelId: string = '';
   currentUser: string = '';
@@ -63,31 +63,6 @@ export class FirebaseChannelService {
     })
   }
 
-  converterMessage = {
-    toFirestore: (data: Message) => {
-      delete data.created;
-      return data;
-    },
-    fromFirestore: (snap: QueryDocumentSnapshot) => {
-      const rawData = snap.data();
-      rawData['created'] = new Date(snap.data()['timestamp']);
-      return rawData as Message;
-    },
-  };
-  converterUser = {
-    toFirestore: (data: UserData) => data,
-    fromFirestore: (snap: QueryDocumentSnapshot) => {
-      return snap.data() as UserData;
-    },
-  };
-  converterChannel = {
-    toFirestore: (data: ChannelData) => data,
-    fromFirestore: (snap: QueryDocumentSnapshot) => {
-      snap.data()['id'] = snap.id;
-      return snap.data() as ChannelData;
-    },
-  };
-
   getUserChats(userId: string) {
     const q = query(
       collection(this.firestore, 'chats'),
@@ -112,7 +87,7 @@ export class FirebaseChannelService {
     const messagesRef = query(
       collection(this.firestore, 'chats', chatId, 'messages'),
       orderBy('timestamp')
-    ).withConverter(this.converterMessage);
+    ).withConverter(converters.message);
     this.unsub.push(
       onSnapshot(messagesRef, (messages) => {
         const messagesObj: messages = {};
@@ -148,7 +123,7 @@ export class FirebaseChannelService {
         'replies'
       ),
       orderBy('timestamp')
-    ).withConverter(this.converterMessage);
+    ).withConverter(converters.message);
 
     if (!this.userChatReplies.has(messageId)) {
       this.unsub.push(
@@ -200,7 +175,7 @@ export class FirebaseChannelService {
         this.unsub.push(
           onSnapshot(
             doc(this.firestore, 'users', user).withConverter(
-              this.converterUser
+              converters.user
             ),
             (user) => {
               let rawData = user.data();
@@ -219,7 +194,7 @@ export class FirebaseChannelService {
     const messagesRef = query(
       collection(this.firestore, 'channels', channelId, 'messages'),
       orderBy('timestamp')
-    ).withConverter(this.converterMessage);
+    ).withConverter(converters.message);
     this.unsub.push(
       onSnapshot(messagesRef, (messages) => {
         const messagesObj: messages = {};
@@ -246,7 +221,7 @@ export class FirebaseChannelService {
 
   editChannel(channel: ChannelData) {
     const docRef = doc(this.firestore, 'channels/' + channel.id).withConverter(
-      this.converterChannel
+      converters.channel
     );
     updateDoc(docRef, channel);
   }
@@ -323,7 +298,7 @@ export class FirebaseChannelService {
         'replies'
       ),
       orderBy('timestamp')
-    ).withConverter(this.converterMessage);
+    ).withConverter(converters.message);
     if (!this.replies.has(messageId)) {
       this.unsub.push(
         onSnapshot(repliesRef, (replies) => {
@@ -339,10 +314,6 @@ export class FirebaseChannelService {
         })
       );
     }
-  }
-
-  getCurrentUser() {
-    return this.users.get(this.authService.loggedInUser);
   }
 
   getReplies(messageId: string) {

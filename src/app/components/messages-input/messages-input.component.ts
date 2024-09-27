@@ -17,6 +17,7 @@ import { FirebaseChannelService } from '../../services/firebase-channel.service'
 import { FirebaseUserService } from '../../services/firebase-user.service';
 import { HomeService } from '../../services/home.service';
 import { FirebaseMessageService } from '../../services/firebase-messages.service';
+import { FirebaseAuthService } from '../../services/firebase-auth.service';
 
 @Component({
   selector: 'app-messages-input',
@@ -58,7 +59,8 @@ export class MessagesInputComponent {
     public storage: FirebaseStorageService,
     private channels: FirebaseChannelService,
     private users: FirebaseUserService,
-    private messageService: FirebaseMessageService
+    private messageService: FirebaseMessageService,
+    private authService: FirebaseAuthService
   ) { }
 
   ngOnInit() {
@@ -200,7 +202,7 @@ export class MessagesInputComponent {
       this.message = text;
     }
     this.channels.currentChannelForMessages;
-    let currentUser = this.channels.getCurrentUser();
+    let currentUser = this.authService.userProfile();
     this.messageService.updateMessage(
       this.message,
       currentUser?.authId,

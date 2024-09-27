@@ -1,13 +1,16 @@
-import { Injectable, OnInit, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   Firestore,
   arrayUnion,
   collection,
+  collectionData,
   doc,
   getDoc,
   getDocs,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { User } from '../models/user.class';
@@ -21,7 +24,9 @@ import {
   signOut,
   sendPasswordResetEmail
 } from '@angular/fire/auth';
-import { shareReplay, tap } from 'rxjs';
+import { EMPTY, filter, first, map, shareReplay, switchMap, tap } from 'rxjs';
+import converters from './firestore-converters';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root',
@@ -34,11 +39,24 @@ export class FirebaseAuthService {
   allUsers: UserData[] = [];
   querySnapshot: any;
   user: User = new User();
-  provider = new GoogleAuthProvider();
+  private provider = new GoogleAuthProvider();
   loggedInUserAuth = '';
   loggedInUser: string = '';
   authUserId: string = ''
-  user$ = user(this.auth).pipe(tap(console.log), shareReplay())
+  readonly user$ = user(this.auth).pipe(shareReplay())
+  readonly userProfile = toSignal(this.user$.pipe(
+    filter(users => users !== null),
+    switchMap(
+      user => collectionData(
+        query(
+          collection(this.firestore, 'users'),
+          where('authId', '==', user!.uid)
+        ).withConverter(converters.user)
+      ).pipe(
+        map(users => users[0])
+      )
+    )
+  ), { initialValue: undefined })
 
   constructor(private router: Router) {
     this.getData();
@@ -145,7 +163,8 @@ export class FirebaseAuthService {
   }
 
   async googleAuth() {
-    return signInWithPopup(this.auth, this.provider).then((result) => {
+    return signInWithPopup(this.auth, this.provider)
+    .then((result) => {
       let createdAt = result.user.metadata.creationTime ?? '';
       this.user.name = result.user.displayName ?? '';
       this.user.email = result.user.email ?? '';

@@ -82,12 +82,12 @@
     class="btn flex ai-c toggle-user-menu"
     (click)="openUserDialog()"
   >
-    <span class="current-user">{{ getCurrentUser()?.name }}</span>
+    <span class="current-user">{{ user()?.name }}</span>
     <div class="img-wrapper">
-      <img class="avatar" [src]="getCurrentUser()?.avatar" alt="User avatar" />
+      <img class="avatar" [src]="user()?.avatar" alt="User avatar" />
       <div
         class="status-indicator"
-        [ngClass]="{ 'status-indicator--online': getCurrentUser()?.online }"
+        [ngClass]="{ 'status-indicator--online': user()?.online }"
       ></div>
     </div>
     <mat-icon fontSet="material-symbols-outlined">keyboard_arrow_down</mat-icon>

@@ -53,6 +53,7 @@ export class MessageComponent {
   @Output() openThreadEv = new EventEmitter<Message>();
   showEmojiPicker = false;
   emoji = '';
+  currentUser = this.authService.userProfile
 
   constructor(
     public dialog: MatDialog,
@@ -144,10 +145,6 @@ export class MessageComponent {
     } else {
       return false;
     }
-  }
-
-  getCurrentUser() {
-    return this.channelService.getCurrentUser();
   }
 
   addOrDeleteEmoji(emoji: any) {
