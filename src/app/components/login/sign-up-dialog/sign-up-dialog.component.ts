@@ -91,8 +91,6 @@ export class SignUpDialogComponent {
     );
     if (this.userId != 'error') {
       this.router.navigate(['avatarPicker', this.userId]);
-    } else {
-      console.log('user already exists');
     }
   }
 

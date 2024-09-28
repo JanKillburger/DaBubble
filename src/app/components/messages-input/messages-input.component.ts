@@ -147,8 +147,6 @@ export class MessagesInputComponent {
     );
     if (searchedUser) {
       this.userList.push(searchedUser.name);
-    } else {
-      console.log('Benutzer nicht gefunden');
     }
   }
 

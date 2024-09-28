@@ -78,8 +78,6 @@ export class ResetPasswordComponent {
         this.resetNotification = false;
         this.router.navigate(['/']);
       }, 5000);
-    } else {
-      console.log('Error');
     }
   }
 }

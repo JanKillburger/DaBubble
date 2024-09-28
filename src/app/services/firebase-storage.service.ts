@@ -33,7 +33,6 @@ export class FirebaseStorageService {
         this.updateUserImgUrl(url);
       })
       .catch((error) => {
-        console.log('error');
         return 'error';
       });
   }

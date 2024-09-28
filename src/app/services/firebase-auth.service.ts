@@ -161,7 +161,6 @@ export class FirebaseAuthService {
     if (docSnap.exists()) {
       return docSnap.data();
     } else {
-      console.log('Kein solches Dokument!');
       return null;
     }
   }
@@ -213,12 +212,6 @@ export class FirebaseAuthService {
     updateDoc(channelDocRef, {
       users: arrayUnion(userId),
     })
-      .then(() => {
-        console.log("Neuer Benutzer wurde zum 'users'-Array hinzugefügt");
-      })
-      .catch((error) => {
-        console.error('Fehler beim Hinzufügen eines neuen Benutzers:', error);
-      });
   }
 
   async addPersonalChat(Userid: any) {

@@ -51,8 +51,6 @@ export class ForgotPasswordComponent {
       setTimeout(() => {
         this.backToLogIn()
       }, 2000);
-    } else {
-      console.log('Error');
     }
   }
 }
