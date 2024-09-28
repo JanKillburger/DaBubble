@@ -165,6 +165,6 @@ export class HomeService {
   }
 
   getChatContact(chat: Chat) {
-    return this.authService.allUsers.find(user => chat.users.includes(user.userId) && user.userId !== this.authService.loggedInUser) ?? this.authService.userProfile();
+    return this.authService.allUsers.find(user => chat.users.includes(user.userId) && user.userId !== this.authService.loggedInUser()) ?? this.authService.userProfile();
   }
 }

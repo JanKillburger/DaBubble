@@ -178,7 +178,7 @@ export class MessageComponent {
     emoji.userId.forEach((id:any) => {
       let index = this.authService.allUsers.findIndex((user) => user.userId === id);
       if (index !== -1) {
-        if (id === this.authService.loggedInUser) {
+        if (id === this.authService.loggedInUser()) {
           names.push('Du');
         } else { names.push(this.authService.allUsers[index].name) }
       }

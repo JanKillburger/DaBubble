@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import {
   Firestore,
   addDoc,
@@ -14,7 +14,6 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { User } from '../models/user.class';
 import {
   Auth,
   user,
@@ -25,10 +24,9 @@ import {
   signOut,
   sendPasswordResetEmail
 } from '@angular/fire/auth';
-import { EMPTY, filter, first, map, shareReplay, switchMap, tap } from 'rxjs';
+import { filter, map, shareReplay, switchMap } from 'rxjs';
 import converters from './firestore-converters';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FirebaseChannelService } from './firebase-channel.service';
 
 @Injectable({
   providedIn: 'root',
@@ -40,11 +38,6 @@ export class FirebaseAuthService {
   //TODO remove or replace
   loading: boolean = false;
   allUsers: UserData[] = [];
-  querySnapshot: any;
-  user: User = new User();
-  loggedInUserAuth = '';
-  loggedInUser: string = '';
-  authUserId: string = ''
 
   private provider = new GoogleAuthProvider();
 
@@ -62,6 +55,7 @@ export class FirebaseAuthService {
       )
     )
   ), { initialValue: undefined })
+  loggedInUser = computed(() => this.userProfile()?.userId || '')
 
   constructor(private router: Router) {
     //TODO move to other service for generally fetching data
@@ -75,7 +69,6 @@ export class FirebaseAuthService {
         email,
         password
       );
-      this.authUserId = userCredential.user.uid;
       this.createUserProfile({ uid: userCredential.user.uid, email, displayName: name });
       this.addUserInOfficeChannel(userCredential.user.uid);
       this.addPersonalChat(userCredential.user.uid);
@@ -103,9 +96,8 @@ export class FirebaseAuthService {
     try {
       return await signInWithEmailAndPassword(this.auth, email, password).then(
         (userCredential) => {
-          this.loggedInUser = userCredential.user.uid;
           this.router.navigate(['/home']);
-          window.location.reload();
+          //window.location.reload();
           return false;
         }
       );
@@ -114,20 +106,11 @@ export class FirebaseAuthService {
     }
   }
 
-  async saveUserService(userData: User): Promise<string> {
-    this.loading = true;
-    const userRef = doc(this.firestore, 'users', this.authUserId);
-    return setDoc(userRef, userData.toJson()).then(() => {
-      this.loading = false;
-      return this.authUserId;
-    }
-    );
-  }
-
+  //TODO remove or replace
   async getData() {
     this.allUsers = [];
-    this.querySnapshot = await getDocs(collection(this.firestore, 'users'));
-    this.querySnapshot.forEach((user: any) => {
+    const usersRef = await getDocs(collection(this.firestore, 'users'));
+    usersRef.forEach((user: any) => {
       let userData: UserData = user.data();
       userData.userId = user.id;
       this.allUsers.push(userData as UserData);
@@ -174,15 +157,7 @@ export class FirebaseAuthService {
     }
   }
 
-  // updateNewPasswordWithEmail(user: any, newPassword: string) {
-  //   try {
-  //     updatePassword(user, newPassword);
-  //     return true;
-  //   } catch {
-  //     return false;
-  //   }
-  // }
-
+  //TODO remove or replace
   searchingUser(searchTerm: any) {
     return this.allUsers.filter((users) =>
       users.name.toLowerCase().includes(searchTerm.toLowerCase()));

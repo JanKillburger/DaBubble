@@ -103,7 +103,7 @@ export class FirebaseMessageService {
     );
     if (emojiIsInDB) {
       let iUseTheEmojiBefore = emojiIsInDB.userId.find((user: any) =>
-      user.includes(this.authService.loggedInUser)
+      user.includes(this.authService.loggedInUser())
       );
       if (iUseTheEmojiBefore) {
         this.deleteUserForEmoji(emoji, reactions, emojiPath);
@@ -130,8 +130,8 @@ export class FirebaseMessageService {
     const reactionToUpdate = reactions.find(
       (reaction: any) => reaction.emoji === emoji.emoji
     );
-    if (!reactionToUpdate.userId.includes(this.authService.loggedInUser)) {
-      reactionToUpdate.userId.push(this.authService.loggedInUser);
+    if (!reactionToUpdate.userId.includes(this.authService.loggedInUser())) {
+      reactionToUpdate.userId.push(this.authService.loggedInUser());
       const messageRef = doc(this.firestore, emojiPath);
       updateDoc(messageRef, { reactions: reactions });
     }
@@ -143,7 +143,7 @@ export class FirebaseMessageService {
     );
     const reactionToUpdate = reactions[reactionIndex];
     const userIndex = reactionToUpdate.userId.indexOf(
-      this.authService.loggedInUser
+      this.authService.loggedInUser()
     );
     if (userIndex > -1) {
       reactionToUpdate.userId.splice(userIndex, 1);
@@ -158,7 +158,7 @@ export class FirebaseMessageService {
   addEmojiinDB(emoji: any, emojiPath: string) {
     const newReaction = {
       emoji: emoji,
-      userId: [this.authService.loggedInUser],
+      userId: [this.authService.loggedInUser()],
     };
     const messageRef = doc(this.firestore, emojiPath);
     updateDoc(messageRef, { reactions: arrayUnion(newReaction) });

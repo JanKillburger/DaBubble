@@ -52,12 +52,10 @@ export class FirebaseChannelService {
     this.subChannelsList();
     this.authService.user$.subscribe(user => {
       if (user) {
-        this.authService.loggedInUser = user.uid;
-        this.getUserChats(this.authService.loggedInUser);
-        this.getUserChannels(this.authService.loggedInUser);
+        this.getUserChats(this.authService.loggedInUser());
+        this.getUserChannels(this.authService.loggedInUser());
         this.router.navigate(['/home']);
       } else {
-        this.authService.loggedInUser = '';
         this.unsub.forEach((unsub) => unsub());
       }
     })
@@ -276,7 +274,7 @@ export class FirebaseChannelService {
 
     for (let userArray of currentChat) {
       for (let user of userArray.users) {
-        if (user !== this.authService.loggedInUser) {
+        if (user !== this.authService.loggedInUser()) {
           let chatUser = this.authService.allUsers.filter((u) =>
             u.userId.includes(user)
           );
@@ -396,7 +394,7 @@ export class FirebaseChannelService {
 
   async addDirectChat(recipient: string) {
     const docRef = await addDoc(collection(this.firestore, 'chats'), {
-      users: [this.authService.loggedInUser, recipient],
+      users: [this.authService.loggedInUser(), recipient],
     });
     let chatId = docRef.id;
     return chatId;
