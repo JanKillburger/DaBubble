@@ -4,14 +4,12 @@ import {
   addDoc,
   arrayUnion,
   collection,
-  collectionData,
   doc,
+  docData,
   getDoc,
   getDocs,
-  query,
   setDoc,
-  updateDoc,
-  where,
+  updateDoc
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import {
@@ -24,7 +22,7 @@ import {
   signOut,
   sendPasswordResetEmail
 } from '@angular/fire/auth';
-import { filter, map, shareReplay, switchMap } from 'rxjs';
+import { filter, shareReplay, switchMap } from 'rxjs';
 import converters from './firestore-converters';
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -41,17 +39,13 @@ export class FirebaseAuthService {
 
   private provider = new GoogleAuthProvider();
 
-  readonly user$ = user(this.auth).pipe(shareReplay())
+  readonly user$ = user(this.auth).pipe(shareReplay());
   readonly userProfile = toSignal(this.user$.pipe(
     filter(user => user !== null),
     switchMap(
-      user => collectionData(
-        query(
-          collection(this.firestore, 'users'),
-          where('authId', '==', user!.uid)
-        ).withConverter(converters.user)
-      ).pipe(
-        map(users => users[0])
+      user => docData(
+        doc(this.firestore, 'users', user!.uid)
+        .withConverter(converters.user)
       )
     )
   ), { initialValue: undefined })
