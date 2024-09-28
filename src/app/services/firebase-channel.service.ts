@@ -382,22 +382,7 @@ export class FirebaseChannelService {
     });
   }
 
-  addUserInOfficeChannel(userId: any) {
-    const channelDocRef = doc(
-      this.firestore,
-      'channels',
-      'grDvJ7eyWqziuvoDsr41'
-    );
-    updateDoc(channelDocRef, {
-      users: arrayUnion(userId),
-    })
-      .then(() => {
-        console.log("Neuer Benutzer wurde zum 'users'-Array hinzugefügt");
-      })
-      .catch((error) => {
-        console.error('Fehler beim Hinzufügen eines neuen Benutzers:', error);
-      });
-  }
+  
 
   setChannelObject(obj: any, id: string): ChannelData {
     return {
@@ -415,12 +400,6 @@ export class FirebaseChannelService {
     });
     let chatId = docRef.id;
     return chatId;
-  }
-
-  async addPersonalChat(Userid: any) {
-    const docRef = await addDoc(collection(this.firestore, 'chats'), {
-      users: [Userid],
-    });
   }
 
   getDirectChat(chatId: string) {

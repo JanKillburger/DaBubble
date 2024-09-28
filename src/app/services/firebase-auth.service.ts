@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import {
   Firestore,
+  addDoc,
   arrayUnion,
   collection,
   collectionData,
@@ -27,6 +28,7 @@ import {
 import { EMPTY, filter, first, map, shareReplay, switchMap, tap } from 'rxjs';
 import converters from './firestore-converters';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { FirebaseChannelService } from './firebase-channel.service';
 
 @Injectable({
   providedIn: 'root',
@@ -35,17 +37,20 @@ export class FirebaseAuthService {
   firestore = inject(Firestore);
   auth = inject(Auth);
 
+  //TODO remove or replace
   loading: boolean = false;
   allUsers: UserData[] = [];
   querySnapshot: any;
   user: User = new User();
-  private provider = new GoogleAuthProvider();
   loggedInUserAuth = '';
   loggedInUser: string = '';
   authUserId: string = ''
+
+  private provider = new GoogleAuthProvider();
+
   readonly user$ = user(this.auth).pipe(shareReplay())
   readonly userProfile = toSignal(this.user$.pipe(
-    filter(users => users !== null),
+    filter(user => user !== null),
     switchMap(
       user => collectionData(
         query(
@@ -59,17 +64,39 @@ export class FirebaseAuthService {
   ), { initialValue: undefined })
 
   constructor(private router: Router) {
+    //TODO move to other service for generally fetching data
     this.getData();
   }
 
-  async registerWithEmailAndPassword(email: string, password: string) {
-    let userCredential = await createUserWithEmailAndPassword(
-      this.auth,
-      email,
-      password
-    );
-    this.authUserId = userCredential.user.uid
-    return userCredential.user.uid
+  async registerWithEmailAndPassword(email: string, password: string, name: string) {
+    try {
+      let userCredential = await createUserWithEmailAndPassword(
+        this.auth,
+        email,
+        password
+      );
+      this.authUserId = userCredential.user.uid;
+      this.createUserProfile({ uid: userCredential.user.uid, email, displayName: name });
+      this.addUserInOfficeChannel(userCredential.user.uid);
+      this.addPersonalChat(userCredential.user.uid);
+      return userCredential.user.uid
+    } catch (error) {
+      return 'error';
+    }
+  }
+
+  createUserProfile(user: { uid: string, email: string | null, displayName: string | null, avatar?: string }) {
+    const userRef = doc(this.firestore, 'users', user.uid);
+    return setDoc(
+      userRef,
+      {
+        authId: user.uid,
+        userId: user.uid,
+        online: true,
+        email: user.email,
+        name: user.displayName,
+        avatar: user.avatar ?? './assets/img/login/SignIn/emptyProfile.png'
+      })
   }
 
   async loginWithEmailAndPassword(email: string, password: string) {
@@ -163,54 +190,45 @@ export class FirebaseAuthService {
   }
 
   async googleAuth() {
-    return signInWithPopup(this.auth, this.provider)
-    .then((result) => {
-      let createdAt = result.user.metadata.creationTime ?? '';
-      this.user.name = result.user.displayName ?? '';
-      this.user.email = result.user.email ?? '';
-      this.user.authId = result.user.uid ?? '';
-      this.user.userId = result.user.uid ?? '';
-      this.authUserId = result.user.uid
-      if (this.googleUserCheck(createdAt)) {
-        this.saveUserService(this.user);
-        this.googleAddUserInOfficeChannel(this.authUserId)
-        this.router.navigate([`avatarPicker/${this.authUserId}`]);
-      } else {
-        this.loggedInUser = this.authUserId;
-        this.router.navigate(['home']);
-        window.location.reload();
-      }
+    signInWithPopup(this.auth, this.provider)
+      .then(async (result) => {
+        const userRef = await getDoc(doc(this.firestore, 'users', result.user.uid));
+        if (userRef.exists()) {
+          this.router.navigate(['home']);
+        } else {
+          this.createUserProfile({ uid: result.user.uid, email: result.user.email, displayName: result.user.displayName });
+          this.addUserInOfficeChannel(result.user.uid);
+          this.addPersonalChat(result.user.uid);
+          this.router.navigate(['avatarPicker', result.user.uid]);
+        }
+      });
+  }
+
+  addUserInOfficeChannel(userId: any) {
+    const channelDocRef = doc(
+      this.firestore,
+      'channels',
+      'grDvJ7eyWqziuvoDsr41'
+    );
+    updateDoc(channelDocRef, {
+      users: arrayUnion(userId),
+    })
+      .then(() => {
+        console.log("Neuer Benutzer wurde zum 'users'-Array hinzugefügt");
+      })
+      .catch((error) => {
+        console.error('Fehler beim Hinzufügen eines neuen Benutzers:', error);
+      });
+  }
+
+  async addPersonalChat(Userid: any) {
+    const docRef = await addDoc(collection(this.firestore, 'chats'), {
+      users: [Userid],
     });
   }
 
-  googleUserCheck(createdAt: string) {
-    let newUser = false;
-    let dateToCheck = new Date(createdAt);
-    let now = new Date();
-    let differenceInMilliseconds = now.getTime() - dateToCheck.getTime();
-    let differenceInMinutes = differenceInMilliseconds / 1000 / 15;
-    if (differenceInMinutes < 1) {
-      return (newUser = true);
-    } else {
-      return (newUser = false);
-    }
-  }
-
-  googleAddUserInOfficeChannel(userId: any) {
-    const channelDocRef = doc(this.firestore, 'channels', 'grDvJ7eyWqziuvoDsr41');
-    updateDoc(channelDocRef, { users: arrayUnion(userId) })
-      .then(() => { console.log("Neuer Benutzer wurde zum 'users'-Array hinzugefügt"); })
-      .catch((error) => { console.error('Fehler beim Hinzufügen eines neuen Benutzers:', error); });
-  }
-
-  userSingOut() {
+  signOut() {
     signOut(this.auth)
-      .then(() => {
-        console.log('Sign-out successful');
-      })
-      .catch((error) => {
-        console.log('An error happened');
-      });
   }
 }
 

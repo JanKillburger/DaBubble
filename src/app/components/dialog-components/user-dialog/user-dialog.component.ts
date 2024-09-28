@@ -33,7 +33,7 @@ export class UserDialogComponent {
   }
 
   onLogOut() {
-    this.authService.userSingOut();
+    this.authService.signOut();
     this.dialogRef.close();
   }
 }

@@ -12,7 +12,6 @@ import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { User } from '../../../models/user.class';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
-import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 
 @Component({
   selector: 'app-sign-up-dialog',
@@ -37,9 +36,8 @@ export class SignUpDialogComponent {
 
   constructor(
     public userFirebaseService: FirebaseAuthService,
-    private channelService: FirebaseChannelService,
     private router: Router
-  ) {}
+  ) { }
 
   signInForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -63,7 +61,7 @@ export class SignUpDialogComponent {
   }
 
   emailDomainValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       const email: string = control.value || '';
       const domainPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
       const isValid = domainPattern.test(email);
@@ -86,13 +84,13 @@ export class SignUpDialogComponent {
 
   async onSubmit() {
     this.createUser();
-    //adds user to Firebase Authentication module
     this.userId = await this.userFirebaseService.registerWithEmailAndPassword(
       this.user.email,
-      this.password?.value
+      this.password?.value,
+      this.user.name
     );
     if (this.userId != 'error') {
-      this.goOnToSelectAvatar();
+      this.router.navigate(['avatarPicker', this.userId]);
     } else {
       console.log('user already exists');
     }
@@ -113,28 +111,5 @@ export class SignUpDialogComponent {
     SignIn?.classList.add('display_none');
     contactButton?.classList.remove('display_none');
     loginDialog?.classList.remove('display_none');
-  }
-
-  async goOnToSelectAvatar() {
-    this.user.authId = this.userId;
-    //adds user to Firebase users collection
-    let docIdPromise = this.userFirebaseService.saveUserService(this.user);
-    this.addUserToOpenChannels(this.userId)
-    this.createdPersonalChat(this.userId)
-    docIdPromise
-      .then((docId) => {
-        this.router.navigate([`avatarPicker/${docId}`]);
-      })
-      .catch((error) => {
-        console.error('Fehler beim Erhalten der Dokumenten-ID:', error.message);
-      });
-  }
-
-  addUserToOpenChannels(userId:any){
-    this.channelService.addUserInOfficeChannel(userId)
-  }
-
-  createdPersonalChat(userId:any){
-    this.channelService.addPersonalChat(userId)
   }
 }
