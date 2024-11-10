@@ -2,7 +2,7 @@
   <div class="inner-container">
     <app-contact-button
       #user
-      [user]="getContact()"
+      [user]="hs.selectedChat()?.recipient"
       (click)="openUserProfile()"
     ></app-contact-button>
   </div>
@@ -10,7 +10,7 @@
 <div class="messages-wrapper">
 <div>
   <div class="conversation-intro inner-container">
-    @if (authService.userProfile() !== user.user) {
+    @if (authService.userProfile()?.id !== user.user?.id) {
     <p>
       Diese Unterhaltung findet nur zwischen
       <span class="at-link">&#64;{{ user.user?.name }}</span> und dir statt.
@@ -26,7 +26,7 @@
 </div>
 
   <app-messages-container
-    *ngFor="let messagesByDay of getMessages() | keyvalue"
+    *ngFor="let messagesByDay of messages$ | async | keyvalue"
     [messages]="messagesByDay.value"
     [date]="messagesByDay.key"
   ></app-messages-container>

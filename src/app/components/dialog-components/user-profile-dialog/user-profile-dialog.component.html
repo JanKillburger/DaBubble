@@ -49,7 +49,7 @@
       mat-icon-button
       (click)="editUserProfile()"
       type="button"
-      *ngIf="formMode === 'view' && user === currentUser()"
+      *ngIf="formMode === 'view' && user?.id === currentUser()?.id"
     >
       <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
     </button>
@@ -92,7 +92,7 @@
 </form>
 <button
   class="btn flex ai-c"
-  *ngIf="user!.authId !== currentUser()?.authId"
+  *ngIf="user?.authId !== currentUser()?.authId"
   (click)="createChat()"
 >
   <mat-icon fontSet="material-symbols-outlined">mode_comment</mat-icon>

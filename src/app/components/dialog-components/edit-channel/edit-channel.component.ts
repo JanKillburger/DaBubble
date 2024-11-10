@@ -3,10 +3,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { UserProfileDialogComponent } from '../user-profile-dialog/user-profile-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ChannelData, FirebaseChannelService } from '../../../services/firebase-channel.service';
+import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { FormsModule } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
-import { UserData } from '../../../services/firebase-user.service';
+import { ChannelData, UserData } from '../../../models/app.model';
 import { ChannelMembersListComponent } from '../../shared/channel-members-list/channel-members-list.component';
 import { HomeService } from '../../../services/home.service';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
@@ -57,12 +57,12 @@ export class EditChannelComponent {
   leaveChannel() {
     this.data[0].users = this.data[0].users.filter(el => el !== this.authService.loggedInUser());
     this.channelService.editChannel(this.data[0]);
-    const newChannel = this.channelService.userChannels.find(channel => this.homeService.getActiveChannel()?.id !== channel.id);
+    const newChannel = this.channelService.userChannels.find(channel => this.homeService.selectedChannel()?.id !== channel.id);
     if (newChannel) this.homeService.setChannel(newChannel);
     this.dialogRef.close();
   }
 
   showMembers() {
-    return this.homeService.getScreenMode() === "small";
+    return this.homeService.screenMode() === "small";
   }
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UserDialogComponent } from '../dialog-components/user-dialog/user-dialog.component';
@@ -10,18 +10,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { UsersToChannelComponent } from '../dialog-components/users-to-channel/users-to-channel.component';
 import { HomeService } from '../../services/home.service';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  ChannelData,
-  FirebaseChannelService,
-  searchData,
-} from '../../services/firebase-channel.service';
 import { FormsModule } from '@angular/forms';
-import { FirebaseMessageService } from '../../services/firebase-messages.service';
 import { NewMessageComponent } from '../new-message/new-message.component';
 import { DirectMessagesComponent } from '../direct-messages/direct-messages.component';
 import { FirebaseAuthService } from '../../services/firebase-auth.service';
-import { UserData } from '../../services/firebase-user.service';
-import { User } from '../../models/user.class';
+import { ChannelData, SearchData, UserData } from '../../models/app.model';
+import { SearchService } from '../../search.service';
+import { DataService } from '../../services/data.service';
+import converters from '../../services/firestore-converters';
 
 @Component({
   selector: 'app-home',
@@ -50,17 +46,17 @@ export class HomeComponent {
   channels: any[] = [];
   searchTerm: string = '';
   filterdUserData: UserData[] = [];
-  filterdPrivateMessageData: searchData[] = [];
+  filterdPrivateMessageData: SearchData[] = [];
   filterdChannelsData: ChannelData[] = [];
-  filterdChannelMessageData: searchData[] = [];
+  filterdChannelMessageData: SearchData[] = [];
 
   constructor(
     public dialog: MatDialog,
     public viewport: ViewportService,
-    private homeService: HomeService,
+    public hs: HomeService,
     private authService: FirebaseAuthService,
-    private messageService: FirebaseMessageService,
-    private channelService: FirebaseChannelService
+    private searchService: SearchService,
+    private ds: DataService
   ) { }
 
   user = this.authService.userProfile
@@ -87,71 +83,69 @@ export class HomeComponent {
     });
   }
 
-  getSelectedChannel() {
-    return this.homeService.getActiveChannel();
-  }
-
-  getThreadMessage() {
-    return this.homeService.getThreadMessage();
-  }
-
   closeThread() {
-    this.homeService.closeThread();
+    this.hs.closeThread();
   }
 
   toggleNav() {
-    this.homeService.toggleNav();
-  }
-
-  getScreenMode() {
-    return this.homeService.getScreenMode();
-  }
-
-  isNavVisible() {
-    return this.homeService.isNavVisible();
-  }
-
-  isThreadVisible() {
-    return this.homeService.isThreadVisible();
-  }
-
-  hasThreadSpace() {
-    return this.homeService.hasThreadSpace();
-  }
-
-  isChannelVisible() {
-    return this.homeService.isChannelVisible();
-  }
-
-  goToMenu() {
-    this.homeService.goToMenu();
+    this.hs.toggleNav();
   }
 
   search() {
-    this.filterdChannelsData = this.messageService.searchingChannel(this.searchTerm);
-    this.filterdChannelMessageData = this.messageService.searchingMessages(this.searchTerm);
-    this.filterdUserData = this.authService.searchingUser(this.searchTerm);
-    this.filterdPrivateMessageData = this.messageService.searchingPrivateMessages(this.searchTerm);
+    this.filterdChannelsData = this.ds.userChannels().filter(channel => channel.channelName.toLowerCase().includes(this.searchTerm.toLowerCase()));
+    this.filterdChannelMessageData = this.searchService.messages()!
+      .filter(message =>
+        message.path.includes('channels') &&
+        message.message.toLowerCase().includes(this.searchTerm.toLowerCase()))
+      .map(message => ({
+        channelId: message.path[1],
+        channelName: this.ds.userChannels().find(channel => channel.id === message.path[1])!.channelName,
+        messageId: message.id,
+        message: message.message
+      }));
+    this.filterdUserData = this.searchService.users()!.filter(user => user.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
+    this.filterdPrivateMessageData = this.searchService.messages()!
+      .filter(message =>
+        message.path.includes('chats') &&
+        message.message.toLowerCase().includes(this.searchTerm.toLowerCase()))
+      .map(message => ({
+        channelId: message.id,
+        channelName: this.ds.userChats().find(chat => chat.id === message.path[1])!.recipient.name!,
+        messageId: message.id,
+        message: message.message
+      }));
   }
 
   async openUserChat(userId: string) {
-    let currentChat = this.channelService.userChats.find((chat) => chat.users.includes(userId))
-    if (currentChat) {
-      this.homeService.selectedChat = currentChat
-      this.searchTerm = ''
+    let chat = this.ds.userChats().find((chat) => chat.users.includes(userId));
+    if (chat) {
+      this.hs.selectedChat.set(chat);
     } else {
-      let chatId = await this.channelService.addDirectChat(userId);
-      this.homeService.selectedChat = this.channelService.getDirectChat(chatId)
-      this.searchTerm = ''
+      let chatId = (await this.ds.saveDoc({
+        kind: 'chat',
+        path: ['chats'],
+        converter: converters.chat,
+        users: [this.authService.userProfile()!.id, userId],
+        participants: {
+          [this.authService.userProfile()!.id]: {
+            id: this.authService.userProfile()!.id,
+            name: this.authService.userProfile()!.name
+          },
+          [userId]: {
+            id: userId,
+            name: this.searchService.users()!.find(user => user.id === userId)!.name
+          }
+        }
+      }))?.id;
+      chat = this.ds.userChats().find(chat => chat.id == chatId);
     }
-    this.homeService.openChat(currentChat!);
-    this.messageService.getMessagesFromChannel(userId);
+    this.searchTerm = '';
+    this.hs.openChat(chat!);
   }
 
   openUserChannel(channelId: string) {
-    let currentChannel = this.channelService.userChannels.find((channel) => channel.id!.includes(channelId))
-    this.homeService.setChannel(currentChannel!);
-    this.messageService.getMessagesFromChannel(channelId);
+    let channel = this.ds.userChannels().find((channel) => channel.id!.includes(channelId))
+    this.hs.setChannel(channel!);
     this.searchTerm = ''
   }
 
@@ -174,9 +168,5 @@ export class HomeComponent {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-  }
-
-  getMainContent() {
-    return this.homeService.mainContent;
   }
 }

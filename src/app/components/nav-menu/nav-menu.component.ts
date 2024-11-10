@@ -1,19 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateChannelComponent } from '../dialog-components/create-channel/create-channel.component';
-import {
-  ChannelData,
-  Chat,
-  FirebaseChannelService,
-  Message,
-} from '../../services/firebase-channel.service';
+import { FirebaseChannelService } from '../../services/firebase-channel.service';
 import { HomeService } from '../../services/home.service';
 import { ContactButtonComponent } from '../contact-button/contact-button.component';
 import { FirebaseAuthService } from '../../services/firebase-auth.service';
 import { FirebaseMessageService } from '../../services/firebase-messages.service';
+import { DataService } from '../../services/data.service';
+import { FormControl, FormControlDirective, ReactiveFormsModule } from '@angular/forms';
+import { combineLatest, debounceTime, distinctUntilChanged, map } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ChannelData, Chat, ChatUser } from '../../models/app.model';
 
 @Component({
   selector: 'app-nav-menu',
@@ -24,6 +24,8 @@ import { FirebaseMessageService } from '../../services/firebase-messages.service
     NgIf,
     NgFor,
     ContactButtonComponent,
+    AsyncPipe,
+    ReactiveFormsModule
   ],
   templateUrl: './nav-menu.component.html',
   styleUrl: './nav-menu.component.scss',
@@ -31,14 +33,25 @@ import { FirebaseMessageService } from '../../services/firebase-messages.service
 export class NavMenuComponent {
   messagesExpanded = true;
   channelsExpanded = true;
-
   constructor(
     public dialog: MatDialog,
     public channelService: FirebaseChannelService,
-    private homeService: HomeService,
+    public hs: HomeService,
     private authService: FirebaseAuthService,
-    private messageService: FirebaseMessageService
+    private messageService: FirebaseMessageService,
+    public ds: DataService
   ) { }
+
+  searchInput = new FormControl('')
+  search = toSignal(this.searchInput.valueChanges.pipe(debounceTime(400), distinctUntilChanged(), map(s => s ? s.toLowerCase() : s)), { initialValue: '' })
+
+  filteredChannels = computed(() => this.ds.userChannels().filter(
+    ch => ch.channelName.toLowerCase().includes(this.search()!)
+  ))
+
+  filteredChats = computed(() => this.ds.userChats().filter(
+    ch => ch.participants && ch.recipient.name.toLowerCase().includes(this.search()!))
+  )
 
   toggleMessages() {
     this.messagesExpanded = !this.messagesExpanded;
@@ -56,44 +69,25 @@ export class NavMenuComponent {
 
   openChannel(channel: ChannelData) {
     if (channel.id) {
-      this.homeService.setChannel(channel);
+      this.hs.setChannel(channel);
       this.messageService.getMessagesFromChannel(channel.id);
     }
   }
 
-  getScreenMode() {
-    return this.homeService.getScreenMode();
-  }
-
   openChat(chat: Chat) {
-    this.homeService.openChat(chat);
+    this.hs.openChat(chat);
     this.messageService.getMessagesFromChannel(chat.id);
   }
 
   newMessage() {
-    this.homeService.mainContent = "new-message";
+    this.hs.mainContent.set("new-message");
   }
 
   getChats() {
     return this.channelService.userChats;
   }
 
-  getContact(chat: Chat) {
-    return this.homeService.getChatContact(chat);
-  }
-
   filterChannels(query: string) {
     return this.channelService.userChannels.filter(channel => channel.channelName.toLowerCase().includes(query.toLowerCase()));
   }
-
-  filterContacts(query: string) {
-    const userIds = this.authService.allUsers.filter(user => user.name.toLowerCase().includes(query.toLowerCase())).map(user => user.userId);
-    return this.channelService.userChats.filter(chat => userIds.includes(chat.users.find(user => user !== this.authService.loggedInUser())!)
-      || chat.users.length === 1 && this.authService.userProfile()?.name.toLowerCase().includes(query.toLowerCase()));
-  }
-
-  filterLists(query: string) {
-
-  }
-
 }

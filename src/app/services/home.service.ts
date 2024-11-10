@@ -1,10 +1,9 @@
-import { EventEmitter, Injectable } from '@angular/core';
-import { ChannelData, Chat, FirebaseChannelService, Message } from './firebase-channel.service';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { MAX_INLINE_WIDTH, LARGE_WIDTH, MEDIUM_WIDTH, SMALL_WIDTH } from '../../global-constants';
+import { LARGE_WIDTH, MEDIUM_WIDTH, SMALL_WIDTH } from '../../global-constants';
 import { FirebaseAuthService } from './firebase-auth.service';
-import { UserData } from './firebase-user.service';
+import { ChannelData, Chat, Message } from '../models/app.model';
 import { MatDialog } from '@angular/material/dialog';
 import { UserProfileDialogComponent } from '../components/dialog-components/user-profile-dialog/user-profile-dialog.component';
 
@@ -12,17 +11,16 @@ import { UserProfileDialogComponent } from '../components/dialog-components/user
   providedIn: 'root'
 })
 export class HomeService {
-  selectedChannel: ChannelData | undefined;
-  selectedMessage: Message | undefined;
-  selectedChat: Chat | undefined;
-  screenMode: "small" | "medium" | "large" = "large";
-  navVisible = true;
-  threadVisible = true;
-  threadVisibleMq!: boolean;
-  channelVisible!: boolean;
+  readonly selectedChannel: WritableSignal<ChannelData | null> = signal(null)
+  readonly selectedMessage: WritableSignal<Message | null> = signal(null)
+  readonly selectedChat: WritableSignal<Chat | null> = signal(null)
+  readonly screenMode: WritableSignal<"small" | "medium" | "large"> = signal("large");
+  readonly navVisible = signal(true);
+  readonly threadVisible = signal(true);
+  readonly channelVisible = signal(true);
   private breakpointSubscription!: Subscription;
-  mainContent: "channel" | "new-message" | "direct-message" = "channel";
-  contentChange: EventEmitter<string> = new EventEmitter();
+  readonly mainContent: WritableSignal<"channel" | "new-message" | "direct-message"> = signal("channel");
+  readonly activeMessageInput: WritableSignal<'channel' | 'chat' | 'thread'> = signal('channel')
 
   constructor(
     private responsive: BreakpointObserver,
@@ -36,27 +34,20 @@ export class HomeService {
       .subscribe(() => {
 
         if (this.responsive.isMatched(SMALL_WIDTH)) {
-          this.screenMode = "small";
-          if (this.navVisible) {
-            this.channelVisible = false;
-            this.threadVisibleMq = false;
+          this.screenMode.set("small");
+          if (this.navVisible()) {
+            this.channelVisible.set(false);
           }
         } else if (this.responsive.isMatched(MEDIUM_WIDTH)) {
-          this.screenMode = "medium";
-          if (this.navVisible) {
-            this.channelVisible = true;
-            this.threadVisibleMq = false;
+          this.screenMode.set("medium");
+          if (this.navVisible()) {
+            this.channelVisible.set(true);
           }
         } else if (this.responsive.isMatched(LARGE_WIDTH)) {
-          this.screenMode = "large";
-          this.threadVisibleMq = true;
-          this.channelVisible = true;
+          this.screenMode.set("large");
+          this.channelVisible.set(true);
         }
       });
-  }
-
-  ngOnInit() {
-
   }
 
   ngOnDestroy() {
@@ -64,107 +55,70 @@ export class HomeService {
   }
 
   toggleNav() {
-    if (this.screenMode == "small") {
-      this.channelVisible = false;
-      this.threadVisibleMq = false;
+    if (this.screenMode() == "small") {
+      this.channelVisible.set(false);
     }
-    this.navVisible = !this.navVisible;
+    this.navVisible.set(!this.navVisible());
   }
 
   closeThread() {
-    if (this.screenMode != "large") {
-      this.threadVisibleMq = false;
-    }
-    this.threadVisible = false;
-    this.channelVisible = true;
+    this.threadVisible.set(false);
+    this.channelVisible.set(true);
   }
 
   openThread() {
-    this.threadVisibleMq = true;
-    this.threadVisible = true;
-    if (this.screenMode != "large") {
-      this.channelVisible = false;
+    this.threadVisible.set(true);
+    if (this.screenMode() != "large") {
+      this.channelVisible.set(false);
     }
     document.body.style.overflow = "hidden";
     setTimeout(() => {
       document.body.removeAttribute("style");
     }, 500);
-    this.contentChange.emit("thread");
+    this.activeMessageInput.set("thread");
   }
 
   openChannel() {
-    if (this.screenMode === 'small') {
-      this.navVisible = false;
+    if (this.screenMode() === 'small') {
+      this.navVisible.set(false);
     }
-    this.channelVisible = true;
-    this.mainContent = "channel";
-    this.contentChange.emit("channel");
+    this.channelVisible.set(true);
+    this.mainContent.set("channel");
+    this.activeMessageInput.set("channel");
   }
 
   openChat(chat: Chat) {
-    if (this.screenMode === 'small') {
-      this.navVisible = false;
+    if (this.screenMode() === 'small') {
+      this.navVisible.set(false);
     }
-    this.channelVisible = true;
-    this.mainContent = "direct-message";
-    this.selectedChat = chat;
-    this.contentChange.emit("chat");
-  }
-
-  getScreenMode() {
-    return this.screenMode;
-  }
-
-  isNavVisible() {
-    return this.navVisible;
-  }
-
-  isThreadVisible() {
-    return this.threadVisible;
-  }
-
-  hasThreadSpace() {
-    return this.threadVisibleMq;
-  }
-
-  isChannelVisible() {
-    return this.channelVisible;
+    this.channelVisible.set(true);
+    this.mainContent.set("direct-message");
+    this.selectedChat.set(chat);
+    this.activeMessageInput.set("chat");
   }
 
   setChannel(channel: ChannelData) {
-    if (channel !== this.selectedChannel) this.closeThread();
-    this.selectedChannel = channel;
+    if (channel !== this.selectedChannel()) this.closeThread();
+    this.selectedChannel.set(channel);
     this.openChannel();
   }
 
   setThreadMessage(message: Message) {
-    this.selectedMessage = message;
+    this.selectedMessage.set(message);
     this.openThread();
   }
 
-  getActiveChannel() {
-    return this.selectedChannel;
-  }
-
-  getThreadMessage() {
-    return this.selectedMessage;
-  }
-
   goToMenu() {
-    this.channelVisible = false;
-    this.threadVisible = false;
-    this.navVisible = true;
+    this.channelVisible.set(false);
+    this.threadVisible.set(false);
+    this.navVisible.set(true);
   }
 
-  openUserProfile(user: UserData) {
-    this.dialog.open(UserProfileDialogComponent, { panelClass: 'default-container', data: user });
+  openUserProfile(userId: string) {
+    this.dialog.open(UserProfileDialogComponent, { panelClass: 'default-container', data: userId });
   }
 
   setChat(chat: Chat) {
-    this.selectedChat = chat;
-  }
-
-  getChatContact(chat: Chat) {
-    return this.authService.allUsers.find(user => chat.users.includes(user.userId) && user.userId !== this.authService.loggedInUser()) ?? this.authService.userProfile();
+    this.selectedChat.set(chat);
   }
 }

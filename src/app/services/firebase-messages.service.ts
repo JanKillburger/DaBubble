@@ -11,10 +11,12 @@ import {
   updateDoc,
   where,
 } from '@angular/fire/firestore';
-import { FirebaseChannelService, Message, messages } from './firebase-channel.service';
+import { FirebaseChannelService } from './firebase-channel.service';
 import { FirebaseAuthService } from './firebase-auth.service';
 import { Unsubscribe } from '@angular/fire/auth';
 import { HomeService } from './home.service';
+import { DocPath, Message, messages, NewDocData } from '../models/app.model';
+import converters from './firestore-converters';
 
 @Injectable({ providedIn: 'root' })
 export class FirebaseMessageService {
@@ -40,21 +42,23 @@ export class FirebaseMessageService {
     this.channel.currentThreadForMessage = threadId;
   }
 
-  updateMessage(message: string, currentUser: any, path: string, type: string | undefined) {
+  updateMessage(message: string, currentUser: string, path: string, type: string | undefined) {
     let now = new Date(Date.now());
     let formattedDate = this.formatDate(now);
     this.checkItIsChannelORChat(type)
     let currentPath = this.checkItIsMessageOrThread(path);
-    let newMessage: Message = {
+    let newMessage: NewDocData = {
+      kind: 'message',
+      converter: converters.message,
+      path: path.split('/') as Message['path'],
       date: formattedDate,
-      from: currentUser,
       message: message,
       reactions: [],
       timestamp: Date.now(),
+      from: currentUser,
     };
-    const messagesRef = collection(this.firestore, currentPath);
-    const messageJson = this.messageToJson(newMessage);
-    addDoc(messagesRef, messageJson).then(() => {});
+    const messagesRef = collection(this.firestore, currentPath).withConverter(converters.message);
+    addDoc(messagesRef, newMessage);
   }
 
   checkItIsMessageOrThread(path: string) {
@@ -65,7 +69,7 @@ export class FirebaseMessageService {
         this.channelOrChatValue +
         this.channelOrChatId +
         '/messages/' +
-        this.homeService.selectedMessage?.id +
+        this.homeService.selectedMessage()?.id +
         '/replies'
       );
     }
@@ -74,10 +78,10 @@ export class FirebaseMessageService {
   checkItIsChannelORChat(type: string | undefined){
     if (type === 'user') {
       this.channelOrChatValue =  'chats/'
-      this.channelOrChatId = this.homeService.selectedChat?.id!
+      this.channelOrChatId = this.homeService.selectedChat()?.id!
     } else if (type === 'channel'){
       this.channelOrChatValue = 'channels/'
-      this.channelOrChatId = this.homeService.selectedChannel?.id!
+      this.channelOrChatId = this.homeService.selectedChannel()?.id!
     } else {
       console.error('No Channel or Chat is defined')
     }

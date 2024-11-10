@@ -1,5 +1,5 @@
 import { CommonModule, NgClass, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -12,6 +12,7 @@ import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { User } from '../../../models/user.class';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
+import { DataService } from '../../../services/data.service';
 
 @Component({
   selector: 'app-sign-up-dialog',
@@ -31,6 +32,7 @@ import { RouterLink } from '@angular/router';
   ],
 })
 export class SignUpDialogComponent {
+  ds = inject(DataService)
   user = new User();
   userId: string = '';
 
@@ -45,7 +47,6 @@ export class SignUpDialogComponent {
       Validators.required,
       Validators.email,
       Validators.pattern(/\S+@\S+\.(\S){2,4}/)
-      // this.emailDomainValidator()
     ]),
     password: new FormControl('', [
       Validators.required,
@@ -57,15 +58,6 @@ export class SignUpDialogComponent {
   requiredTrueValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       return control.value === true ? null : { required: true };
-    };
-  }
-
-  emailDomainValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const email: string = control.value || '';
-      const domainPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-      const isValid = domainPattern.test(email);
-      return isValid ? null : { 'invalidDomain': true };
     };
   }
 

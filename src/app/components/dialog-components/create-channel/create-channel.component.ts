@@ -15,8 +15,8 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { UsersToChannelComponent } from '../users-to-channel/users-to-channel.component';
-import { Channel } from '../../../models/channel.class';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
+import { ChannelData } from '../../../models/app.model';
 
 @Component({
   selector: 'app-create-channel',
@@ -38,7 +38,7 @@ export class CreateChannelComponent {
     private channelService: FirebaseChannelService,
     private authService: FirebaseAuthService
   ) {}
-  channel = new Channel();
+  channel!: ChannelData;
   nameExists = false;
   showCreateChannelDialog = false;
   channelId: string = '';

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, input } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HomeService } from '../../../services/home.service';
-import { UserData } from '../../../services/firebase-user.service';
+import { UserData } from '../../../models/app.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ContactButtonComponent } from '../../contact-button/contact-button.component';
@@ -31,7 +31,7 @@ export class ChannelMembersListComponent {
   }
 
   openUserProfile(user: UserData) {
-    this.homeService.openUserProfile(user);
+    this.homeService.openUserProfile(user.id);
     this.closeDialog();
   }
 

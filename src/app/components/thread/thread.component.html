@@ -2,7 +2,7 @@
   <div class="inner-container flex ai-c jc-sb">
     <div class="flex ai-c">
       <span class="title-text">Thread</span
-      ><span class="channel">@if (isChannelMessage()) {# {{getChannel()?.channelName}}}</span>
+      ><span class="channel">@if (isChannelMessage()) {# {{hs.selectedChannel()?.channelName}}}</span>
     </div>
     <button (click)="closeThread()" mat-icon-button>
       <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
@@ -10,7 +10,7 @@
   </div>
 </header>
 <div class="messages-wrapper">
-  <app-message container="thread" [message]="getMessage()" [showReplies]="false"></app-message>
+  <app-message container="thread" [message]="hs.selectedMessage()" [showReplies]="false"></app-message>
   <div class="replies-header flex ai-c inner-container" *ngIf="getReplies()?.length">
     <span>{{getReplies()?.length}} @if(getReplies()!.length > 1) {Antworten} @else {Antwort} </span>
     <div class="separator"></div>

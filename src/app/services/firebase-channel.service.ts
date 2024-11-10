@@ -12,9 +12,9 @@ import {
   where,
   arrayUnion,
   Unsubscribe,
+  setDoc,
 } from '@angular/fire/firestore';
-import { Channel } from '../models/channel.class';
-import { UserData } from './firebase-user.service';
+import { ChannelData, Chat, Message, messages, SearchData, UserData } from '../models/app.model';
 import { HomeService } from './home.service';
 import { FirebaseAuthService } from './firebase-auth.service';
 import { Router } from '@angular/router';
@@ -26,19 +26,19 @@ import converters from './firestore-converters';
 export class FirebaseChannelService {
   firestore: Firestore = inject(Firestore)
 
-  channels: ChannelData[] = [];
+  // channels: ChannelData[] = [];
   channelId: string = '';
   currentUser: string = '';
-  allChannels: Channel[] = [];
-  currentChannel?: Channel;
+  // allChannels: ChannelData[] = [];
+  currentChannel?: ChannelData;
   users: Map<string, UserData> = new Map();
   userChannels: ChannelData[] = [];
   userChannelsMessages: Map<string, messages> = new Map();
   replies: Map<string, Message[]> = new Map();
   currentChannelForMessages: string = 'grDvJ7eyWqziuvoDsr41';
   currentThreadForMessage: string | undefined = '';
-  messagesToSeach: searchData[] = [];
-  chatMessagesToSeach: searchData[] = [];
+  messagesToSeach: SearchData[] = [];
+  chatMessagesToSeach: SearchData[] = [];
   userChats: Chat[] = [];
   userChatMessages: Map<string, messages> = new Map();
   userChatReplies: Map<string, Message[]> = new Map();
@@ -49,7 +49,7 @@ export class FirebaseChannelService {
     private router: Router,
     public authService: FirebaseAuthService
   ) {
-    this.subChannelsList();
+    // this.subChannelsList();
     this.authService.user$.subscribe(user => {
       if (user) {
         this.getUserChats(this.authService.loggedInUser());
@@ -93,11 +93,11 @@ export class FirebaseChannelService {
         messages.forEach((message) => {
           let rawData = message.data();
           rawData['id'] = message.id;
-          this.saveChatMessageForSearchingFiel(
-            chatId,
-            rawData.message,
-            message.id
-          );
+          // this.saveChatMessageForSearchingFiel(
+          //   chatId,
+          //   rawData.message,
+          //   message.id
+          // );
           if (message.data()['date'] === dayKey) {
             messagesObj[dayKey].push(rawData);
           } else {
@@ -152,13 +152,13 @@ export class FirebaseChannelService {
           let rawData = channel.data();
           rawData['id'] = channel.id;
           if (
-            !this.homeService.getActiveChannel() &&
-            this.homeService.getScreenMode() !== 'small'
+            !this.homeService.selectedChannel() &&
+            this.homeService.screenMode() !== 'small'
           )
             this.homeService.setChannel(rawData as ChannelData);
           this.userChannels.push(rawData as ChannelData);
           this.userChannels.at(-1)!.id = channel.id;
-          this.getChannelUsers(rawData as ChannelData);
+          // this.getChannelUsers(rawData as ChannelData);
           if (!this.userChannelsMessages.has(channel.id)) {
             this.userChannelsMessages.set(channel.id, {});
             this.getChannelMessages(channel.id);
@@ -167,26 +167,26 @@ export class FirebaseChannelService {
       }));
   }
 
-  private getChannelUsers(channel: ChannelData) {
-    for (let user of channel.users) {
-      if (!this.users.has(user)) {
-        this.unsub.push(
-          onSnapshot(
-            doc(this.firestore, 'users', user).withConverter(
-              converters.user
-            ),
-            (user) => {
-              let rawData = user.data();
-              if (rawData) {
-                rawData['id'] = user.id;
-                this.users.set(user.id, rawData as UserData);
-              }
-            }
-          )
-        );
-      }
-    }
-  }
+  // private getChannelUsers(channel: ChannelData) {
+  //   for (let user of channel.users) {
+  //     if (!this.users.has(user)) {
+  //       this.unsub.push(
+  //         onSnapshot(
+  //           doc(this.firestore, 'users', user).withConverter(
+  //             converters.user
+  //           ),
+  //           (user) => {
+  //             let rawData = user.data();
+  //             if (rawData) {
+  //               rawData['id'] = user.id;
+  //               this.users.set(user.id, rawData as UserData);
+  //             }
+  //           }
+  //         )
+  //       );
+  //     }
+  //   }
+  // }
 
   private getChannelMessages(channelId: string) {
     const messagesRef = query(
@@ -221,7 +221,7 @@ export class FirebaseChannelService {
     const docRef = doc(this.firestore, 'channels/' + channel.id).withConverter(
       converters.channel
     );
-    updateDoc(docRef, channel);
+    setDoc(docRef, channel);
   }
 
   saveMessageForSearchingFiel(
@@ -229,7 +229,7 @@ export class FirebaseChannelService {
     message: string,
     messageId: string
   ) {
-    let searchData: searchData = {
+    let searchData: SearchData = {
       channelId: '',
       channelName: '',
       messageId: '',
@@ -242,23 +242,23 @@ export class FirebaseChannelService {
     this.messagesToSeach.push(searchData);
   }
 
-  saveChatMessageForSearchingFiel(
-    chatId: string,
-    message: string,
-    messageId: string
-  ) {
-    let searchData: searchData = {
-      channelId: '',
-      channelName: '',
-      messageId: '',
-      message: '',
-    };
-    searchData.channelId = chatId;
-    searchData.channelName = this.getChatPartner(chatId);
-    searchData.messageId = messageId;
-    searchData.message = message;
-    this.chatMessagesToSeach.push(searchData);
-  }
+  // saveChatMessageForSearchingFiel(
+  //   chatId: string,
+  //   message: string,
+  //   messageId: string
+  // ) {
+  //   let searchData: SearchData = {
+  //     channelId: '',
+  //     channelName: '',
+  //     messageId: '',
+  //     message: '',
+  //   };
+  //   searchData.channelId = chatId;
+  //   searchData.channelName = this.getChatPartner(chatId);
+  //   searchData.messageId = messageId;
+  //   searchData.message = message;
+  //   this.chatMessagesToSeach.push(searchData);
+  // }
 
   getChannelName(channelId: string) {
     let currentChannel = this.userChannels.filter((channels) =>
@@ -267,23 +267,23 @@ export class FirebaseChannelService {
     return currentChannel[0].channelName;
   }
 
-  getChatPartner(chatId: string): string {
-    let currentChat = this.userChats.filter((chat) =>
-      chat.id!.includes(chatId)
-    );
+  // getChatPartner(chatId: string): string {
+  //   let currentChat = this.userChats.filter((chat) =>
+  //     chat.id!.includes(chatId)
+  //   );
 
-    for (let userArray of currentChat) {
-      for (let user of userArray.users) {
-        if (user !== this.authService.loggedInUser()) {
-          let chatUser = this.authService.allUsers.filter((u) =>
-            u.userId.includes(user)
-          );
-          return chatUser.length > 0 ? chatUser[0].name : '';
-        }
-      }
-    }
-    return '';
-  }
+  //   for (let userArray of currentChat) {
+  //     for (let user of userArray.users) {
+  //       if (user !== this.authService.loggedInUser()) {
+  //         let chatUser = this.authService.allUsers.filter((u) =>
+  //           u.userId.includes(user)
+  //         );
+  //         return chatUser.length > 0 ? chatUser[0].name : '';
+  //       }
+  //     }
+  //   }
+  //   return '';
+  // }
 
   private getMessageReplies(channelId: string, messageId: string) {
     const repliesRef = query(
@@ -322,28 +322,28 @@ export class FirebaseChannelService {
     this.unsub.forEach((unsub) => unsub());
   }
 
-  subChannelsList() {
-    const q = query(this.getChannelsRef());
-    this.unsub.push(
-      onSnapshot(q, (list) => {
-        this.channels = [];
-        list.forEach((element) => {
-          this.channels.push(this.setChannelObject(element.data(), element.id));
-        });
-      }));
-  }
+  // subChannelsList() {
+  //   const q = query(this.getChannelsRef());
+  //   this.unsub.push(
+  //     onSnapshot(q, (list) => {
+  //       this.channels = [];
+  //       list.forEach((element) => {
+  //         this.channels.push(this.setChannelObject(element.data(), element.id));
+  //       });
+  //     }));
+  // }
 
   getChannelsRef() {
     return collection(this.firestore, 'channels');
   }
 
   getSingleChannelRef(ChannelId: string) {
-    return doc(collection(this.firestore, 'channels'), ChannelId);
+    return doc(collection(this.firestore, 'channels'), ChannelId).withConverter(converters.channel);
   }
 
   async getCurrentChannel(ChannelId: string) {
     await onSnapshot(this.getSingleChannelRef(ChannelId), (element) => {
-      this.currentChannel = new Channel(element.data());
+      this.currentChannel = element.data();
     });
   }
 
@@ -371,20 +371,22 @@ export class FirebaseChannelService {
     }
   }
 
-  async getChannelData() {
-    this.allChannels = [];
-    let querySnapshot = await getDocs(collection(this.firestore, 'channels'));
-    querySnapshot.forEach((channel: any) => {
-      let channelData: Channel = channel.data();
-      this.allChannels.push(channelData);
-    });
-  }
+  // async getChannelData() {
+  //   this.allChannels = [];
+  //   let querySnapshot = await getDocs(collection(this.firestore, 'channels').withConverter(converters.channel));
+  //   querySnapshot.forEach((channel: any) => {
+  //     this.allChannels.push(channel.data());
+  //   });
+  // }
 
   
 
   setChannelObject(obj: any, id: string): ChannelData {
     return {
       id: id,
+      kind: 'channel',
+      path: ['channels'],
+      converter: converters.channel,
       channelName: obj.channelsName || 'unknown',
       channelDescription: obj.channelsDescription || '',
       users: obj.users || [],
@@ -401,41 +403,7 @@ export class FirebaseChannelService {
   }
 
   getDirectChat(chatId: string) {
-    return this.userChats.find((chat) => chat.id === chatId);
+    return this.userChats.find((chat) => chat.id === chatId) || null;
   }
 }
-export interface ChannelData {
-  id?: string;
-  createdBy?: string;
-  channelName: string;
-  channelDescription: string;
-  users: string[];
-  channelCreator: string;
-}
 
-export interface messages {
-  [key: string]: Message[];
-}
-
-export interface Message {
-  id?: string;
-  message: string;
-  from?: string;
-  timestamp?: number;
-  date?: string;
-  reactions?: any[];
-  created?: Date;
-}
-
-export interface searchData {
-  channelId: string;
-  channelName: string;
-  messageId: string;
-  message: string;
-}
-
-export interface Chat {
-  users: string[];
-  recipient?: UserData;
-  id: string;
-}

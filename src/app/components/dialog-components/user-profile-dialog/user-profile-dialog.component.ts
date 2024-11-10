@@ -4,11 +4,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FirebaseUserService, UserData } from '../../../services/firebase-user.service';
+import { FirebaseUserService } from '../../../services/firebase-user.service';
 import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { HomeService } from '../../../services/home.service';
 import { FirebaseStorageService } from '../../../services/firebase-storage.service';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
+import { UserData } from '../../../models/app.model';
+import { DataService } from '../../../services/data.service';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
@@ -19,33 +22,49 @@ import { FirebaseAuthService } from '../../../services/firebase-auth.service';
   styleUrl: './user-profile-dialog.component.scss',
 })
 export class UserProfileDialogComponent {
+
+  user: UserData | null = null
+
   constructor(
     public dialogRef: MatDialogRef<UserProfileDialogComponent>,
     private channelService: FirebaseChannelService,
     private authService: FirebaseAuthService,
     private homeService: HomeService,
     private userService: FirebaseUserService,
+    private ds: DataService,
     public storageService: FirebaseStorageService,
-    @Inject(MAT_DIALOG_DATA) public user: UserData
+    @Inject(MAT_DIALOG_DATA) private userId: string
   ) { }
+
+  ngOnInit() {
+    firstValueFrom(this.ds.getUser(this.userId)).then(
+      user => {
+        if (user) {
+          this.user = user;
+          this.userAvatar = this.user.avatar;
+          this.userProfileForm.setValue({name: user.name, email: user.email});
+        }
+      }
+    )
+  }
 
   formMode: 'view' | 'edit' = 'view';
   userProfileForm = new FormGroup({
-    name: new FormControl(this.user.name, Validators.required),
-    email: new FormControl(this.user.email, [Validators.required, Validators.pattern(/\S+@\S+\.(\S){2,4}/), Validators.email]),
+    name: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.pattern(/\S+@\S+\.(\S){2,4}/), Validators.email]),
   });
   customAvatar: null | File = null;
-  userAvatar = this.user.avatar;
+  userAvatar = '';
   showAvatars = false;
   wrongFileFormat = false;
   fileTooLarge = false;
   avatars = [
-    'assets/img/login/SignIn/avatar1.png',
-    'assets/img/login/SignIn/avatar2.png',
-    'assets/img/login/SignIn/avatar3.png',
-    'assets/img/login/SignIn/avatar4.png',
-    'assets/img/login/SignIn/avatar5.png',
-    'assets/img/login/SignIn/avatar6.png',
+    'assets/img/login/signin/avatar1.png',
+    'assets/img/login/signin/avatar2.png',
+    'assets/img/login/signin/avatar3.png',
+    'assets/img/login/signin/avatar4.png',
+    'assets/img/login/signin/avatar5.png',
+    'assets/img/login/signin/avatar6.png',
   ]
 
   get name() {
@@ -67,7 +86,7 @@ export class UserProfileDialogComponent {
   currentUser = this.authService.userProfile
 
   saveEdits() {
-    if (this.customAvatar) {
+    if (this.user && this.customAvatar) {
       this.storageService.saveUserAvatar(this.user.userId || this.user.id || this.user.authId, this.customAvatar!)
         .then(response => this.storageService.getImgLink(response.ref))
         .then(url => this.userAvatar = url)
@@ -78,17 +97,19 @@ export class UserProfileDialogComponent {
   }
 
   saveUserProfileEdits() {
-    this.user.name = this.userProfileForm.value.name!;
-    this.user.email = this.userProfileForm.value.email!;
-    this.user.avatar = this.userAvatar;
-    this.userService.updateUserProfile(this.user);
-    this.dialogRef.close();
+    if (this.user) {
+      this.authService.updateUserSettings({
+        ...this.user,
+        name: this.userProfileForm.value.name || '',
+        email: this.userProfileForm.value.email || '',
+        avatar: this.userAvatar
+      });
+      this.dialogRef.close();
+    }
   }
 
-
-
   async createChat() {
-    const userId = this.user.id || this.user.authId || this.user.userId;
+    const userId = this.user?.id || this.user?.authId || this.user?.userId;
     let currentChat = this.channelService.userChats.find((chat) => chat.users.includes(userId!))
     if (currentChat) {
       this.homeService.openChat(currentChat)

@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { MessagesInputComponent } from '../messages-input/messages-input.component';
 import { NgFor, NgIf } from '@angular/common';
-import { UserData } from '../../services/firebase-user.service';
-import { ChannelData, FirebaseChannelService } from '../../services/firebase-channel.service';
+import { ChannelData, UserData } from '../../models/app.model';
+import { FirebaseChannelService } from '../../services/firebase-channel.service';
 import { FirebaseAuthService } from '../../services/firebase-auth.service';
 import { FormsModule } from '@angular/forms';
 import { HomeService } from '../../services/home.service';
+import { SearchService } from '../../search.service';
 
 @Component({
   selector: 'app-new-message',
@@ -17,7 +18,8 @@ import { HomeService } from '../../services/home.service';
 export class NewMessageComponent {
   channelService = inject(FirebaseChannelService);
   authService = inject(FirebaseAuthService);
-  homeService = inject(HomeService)
+  homeService = inject(HomeService);
+  searchService = inject(SearchService);
   channelSearchResults: ChannelData[] = [];
   userSearchResults: UserData[] = [];
   userId: string = ''
@@ -35,10 +37,10 @@ export class NewMessageComponent {
       this.channelSearchResults = this.getFirstN(this.channelService.userChannels.filter(channel => channel.channelName.toLowerCase().includes(this.query.replace('#', '').toLowerCase())), 5);
     } else if (this.query.startsWith("@")) {
       this.channelSearchResults = [];
-      this.userSearchResults = this.getFirstN(this.authService.allUsers.filter(user => user.name.toLowerCase().includes(this.query.replace('@', '').toLowerCase())), 5);
+      this.userSearchResults = this.getFirstN(this.searchService.users()!.filter(user => user.name.toLowerCase().includes(this.query.replace('@', '').toLowerCase())), 5);
     } else {
       this.channelSearchResults = [];
-      this.userSearchResults = this.getFirstN(this.authService.allUsers.filter(user => user.email.toLowerCase().includes(this.query.toLowerCase())), 5);
+      this.userSearchResults = this.getFirstN(this.searchService.users()!.filter(user => user.email.toLowerCase().includes(this.query.toLowerCase())), 5);
     }
   }
 
@@ -53,7 +55,7 @@ export class NewMessageComponent {
     this.query = "#" + channel.channelName;
     this.channelSearchResults = [];
     this.recipient = {type: "channel", target: channel};
-    this.homeService.selectedChannel = channel
+    this.homeService.setChannel(channel)
   }
 
   getFirstN(arr: any[], n: number) {
@@ -67,10 +69,10 @@ export class NewMessageComponent {
   async createChat(userId:string) {    
     let currentChat = this.channelService.userChats.find((chat) => chat.users.includes(userId))
     if (currentChat) {
-      this.homeService.selectedChat = currentChat
+      this.homeService.selectedChat.set(currentChat)
     } else {
       let chatId = await this.channelService.addDirectChat(userId);
-      this.homeService.selectedChat = this.channelService.getDirectChat(chatId)
+      this.homeService.selectedChat.set(this.channelService.getDirectChat(chatId))
     }
   }
 

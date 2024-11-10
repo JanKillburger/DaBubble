@@ -1,10 +1,13 @@
 import { CommonModule, NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ImgUploadComponent } from './img-upload/img-upload.component';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { FirebaseStorageService } from '../../../services/firebase-storage.service';
 import { informationAnimation } from '../../../models/userInformation.class';
+import { DataService } from '../../../services/data.service';
+import { filter, firstValueFrom, lastValueFrom, tap } from 'rxjs';
+import { UserData } from '../../../models/app.model';
 
 @Component({
   selector: 'app-select-avatar',
@@ -18,7 +21,9 @@ import { informationAnimation } from '../../../models/userInformation.class';
   animations: [informationAnimation.userInformation]
 })
 export class SelectAvatarComponent {
-  signUpData: any;
+  ds = inject(DataService);
+  as = inject(FirebaseAuthService);
+  signUpData!: UserData | undefined;
   userId: any;
   avatarSelectedImg: string = '';
   avatarSelected: boolean = false;
@@ -26,12 +31,12 @@ export class SelectAvatarComponent {
   dataIsAlreadyLoaded: boolean = false;
   loginSuccessful: boolean = false;
   avatarImgs = [
-    './assets/img/login/SignIn/avatar1.png',
-    './assets/img/login/SignIn/avatar2.png',
-    './assets/img/login/SignIn/avatar3.png',
-    './assets/img/login/SignIn/avatar4.png',
-    './assets/img/login/SignIn/avatar5.png',
-    './assets/img/login/SignIn/avatar6.png',
+    './assets/img/login/signin/avatar1.png',
+    './assets/img/login/signin/avatar2.png',
+    './assets/img/login/signin/avatar3.png',
+    './assets/img/login/signin/avatar4.png',
+    './assets/img/login/signin/avatar5.png',
+    './assets/img/login/signin/avatar6.png',
   ];
 
   constructor(
@@ -48,18 +53,18 @@ export class SelectAvatarComponent {
   subscribeToImageChanges() {
     this.storage.userImgUrl.subscribe((url) => {
       if (url === '') {
-        this.avatarSelectedImg = './assets/img/login/SignIn/emptyProfile.png';
+        this.avatarSelectedImg = './assets/img/login/signin/emptyProfile.png';
       } else {
         this.avatarSelectedImg = url;
-        this.signUpData.avatar = this.avatarSelectedImg;
+        this.signUpData!.avatar = this.avatarSelectedImg;
         this.avatarSelected = true;
       }
     });
   }
 
   async getDataFromSignUp() {
-    this.signUpData = await this.userFirebaseService.getUserData(this.userId);
-    this.Username = this.signUpData.name;
+    this.signUpData = await firstValueFrom(this.ds.getUser(this.userId).pipe(filter(doc => doc !== undefined)));
+    this.Username = this.signUpData!.name;
   }
 
   addImgDialog() {
@@ -73,19 +78,15 @@ export class SelectAvatarComponent {
 
   activateAvatar(index: number) {
     this.avatarSelectedImg = this.avatarImgs[index];
-    this.signUpData.avatar = this.avatarSelectedImg;
+    this.signUpData!.avatar = this.avatarSelectedImg;
     this.avatarSelected = true;
   }
 
   async saveUser() {
     if (this.avatarSelected) {
-      this.loginSuccessful = await this.userFirebaseService.updateUserService(
-        this.signUpData,
-        this.userId
-      );
-      setTimeout(() => {
-        this.router.navigate(['/']);
-      }, 3000);
+      await this.as.updateUserSettings(
+        this.signUpData!
+      ).then(() => this.router.navigate(['/']));
     }
   }
 }

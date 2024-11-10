@@ -1,6 +1,6 @@
 import { Component, Inject, Input } from '@angular/core';
 import { ContactButtonComponent } from '../../contact-button/contact-button.component';
-import { UserData } from '../../../services/firebase-user.service';
+import { UserData } from '../../../models/app.model';
 import { NgFor } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';

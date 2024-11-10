@@ -8,7 +8,6 @@ import { FirebaseChannelService } from '../../../services/firebase-channel.servi
 import { FirebaseUserService } from '../../../services/firebase-user.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { Channel } from '../../../models/channel.class';
 import { HomeService } from '../../../services/home.service';
 
 @Component({

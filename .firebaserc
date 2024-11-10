@@ -1,14 +1,9 @@
 {
-  "targets": {
-    "dabubble-ea6d8": {
-      "hosting": {
-        "dabubble": [
-          "dabubble-ea6d8"
-        ]
-      }
-    }
-  },
   "projects": {
-    "default": "dabubble-ea6d8"
-  }
+    "default": "da-bubble-1ecc6"
+  },
+  "targets": {
+    "da-bubble-1ecc6": {}
+  },
+  "etags": {}
 }

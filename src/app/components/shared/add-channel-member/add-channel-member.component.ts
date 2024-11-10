@@ -3,12 +3,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ContactButtonComponent } from '../../contact-button/contact-button.component';
 import { NgFor, NgIf } from '@angular/common';
-import { UserData } from '../../../services/firebase-user.service';
+import { UserData } from '../../../models/app.model';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { SelectedUserTagComponent } from '../../selected-user-tag/selected-user-tag.component';
 import { FormsModule } from '@angular/forms';
 import { HomeService } from '../../../services/home.service';
 import { FirebaseChannelService } from '../../../services/firebase-channel.service';
+import { SearchService } from '../../../search.service';
 
 @Component({
   selector: 'app-add-channel-member',
@@ -21,6 +22,7 @@ export class AddChannelMemberComponent {
   authService = inject(FirebaseAuthService);
   homeService = inject(HomeService);
   channelService = inject(FirebaseChannelService);
+  searchService = inject(SearchService);
   selectedUser: UserData | null = null;
   results: UserData[] | undefined;
   query = '';
@@ -30,9 +32,9 @@ export class AddChannelMemberComponent {
     if (this.query === "") {
       this.results = [];
     } else {
-      let results = this.authService.allUsers.filter(user =>
+      let results = this.searchService.users()!.filter(user =>
         user.name.toLowerCase().includes(this.query.toLowerCase()) &&
-        !this.homeService.getActiveChannel()?.users.includes(user.userId));
+        !this.homeService.selectedChannel()?.users.includes(user.userId));
       if (results.length > 5) results = results.slice(0, 5);
       this.results = results;
     }
@@ -47,7 +49,7 @@ export class AddChannelMemberComponent {
   }
 
   addUser() {
-    let channel = this.homeService.getActiveChannel()!;
+    let channel = this.homeService.selectedChannel()!;
     channel.users.push(this.selectedUser?.userId!);
     this.channelService.editChannel(channel);
     this.selectedUser = null;

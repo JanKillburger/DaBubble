@@ -33,8 +33,7 @@ export class LoginDialogComponent {
     email: new FormControl('', [
       Validators.required,
       Validators.email,
-      Validators.pattern(/\S+@\S+\.(\S){2,4}/),
-      // this.emailDomainValidator()
+      Validators.pattern(/\S+@\S+\.(\S){2,4}/)
     ]),
     password: new FormControl('', [
       Validators.required,
@@ -47,15 +46,6 @@ export class LoginDialogComponent {
   }
   get password() {
     return this.logInForm.get('password');
-  }
-
-  emailDomainValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
-      const email: string = control.value || '';
-      const domainPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-      const isValid = domainPattern.test(email);
-      return isValid ? null : { 'invalidDomain': true };
-    };
   }
 
   async loginFunction() {
@@ -79,7 +69,7 @@ export class LoginDialogComponent {
     this.authService.loginWithEmailAndPassword(guestUser, guestPassword);
   }
 
-  forgotPasswort() {
+  forgotPassword() {
     let contactButton = document.getElementById('create-contact-button');
     let forgotPasswortDialog = document.getElementById(
       'forgot-passwort-dialog'

@@ -11,7 +11,7 @@ export class User{
         this.email = obj ? obj.email: '';
         this.authId = obj ? obj.authId: '';
         this.userId = obj ? obj.userId: '';
-        this.avatar = obj ? obj.avatar: './assets/img/login/SignIn/emptyProfile.png';
+        this.avatar = obj ? obj.avatar: './assets/img/login/signin/emptyProfile.png';
         this.online = obj ? obj.online: false;
     }
 

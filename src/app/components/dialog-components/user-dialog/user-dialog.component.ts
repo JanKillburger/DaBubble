@@ -24,10 +24,10 @@ export class UserDialogComponent {
     @Inject(MAT_DIALOG_DATA) public positionDetails: PositionDetails) { }
 
   showUserProfile() {
-    if (this.homeService.getScreenMode() === "small") {
-      this.dialog.open(UserProfileDialogComponent, { panelClass: 'fullscreen-container', data: this.authService.userProfile() });
+    if (this.homeService.screenMode() === "small") {
+      this.dialog.open(UserProfileDialogComponent, { panelClass: 'fullscreen-container', data: this.authService.userProfile()!.id });
     } else {
-      this.dialog.open(UserProfileDialogComponent, { panelClass: 'custom-container', position: this.positionDetails, data: this.authService.userProfile() });
+      this.dialog.open(UserProfileDialogComponent, { panelClass: 'custom-container', position: this.positionDetails, data: this.authService.userProfile()!.id });
     }
     this.dialogRef.close();
   }

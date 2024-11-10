@@ -3,7 +3,7 @@
     <button #callEditChannel (click)="editChannel()" class="btn title-text toggle-channel-menu flex ai-c">
       <mat-icon fontSet="material-symbols-outlined">tag</mat-icon>
       <span class="channel-name">{{
-        getChannel()?.channelName
+        hs.selectedChannel()?.channelName
       }}</span>
       <mat-icon fontSet="material-symbols-outlined"
         >keyboard_arrow_down</mat-icon
@@ -11,13 +11,14 @@
     </button>
     <div class="channel-users flex ai-c" #addMember>
       <button class="btn flex ai-c toggle-members-menu" #callChannelMembers (click)="openMembersListDialog()">
+        @for (user of hs.selectedChannel()?.previewUserIds; track user) {
         <img
           class="avatar avatar--small"
-          *ngFor="let member of getChannelUserAvatars()"
-          [src]="member"
+          [src]="hs.selectedChannel()?.previewUsers![user].avatar"
           [ngStyle]="{ 'margin-left.px': -8 }"
         />
-        <span class="members-count">{{getChannel()?.users?.length}}</span>
+      }
+        <span class="members-count">{{hs.selectedChannel()?.membersCount}}</span>
       </button>
       <button mat-icon-button (click)="addChannelMember()">
         <mat-icon fontSet="material-symbols-outlined">person_add</mat-icon>
@@ -27,7 +28,7 @@
 </header>
 <div class="messages-wrapper">
   <app-messages-container
-    *ngFor="let messagesByDay of getChannelMessages() | keyvalue"
+    *ngFor="let messagesByDay of messagesByDay$ | async | keyvalue"
     [messages]="messagesByDay.value"
     [date]="messagesByDay.key"
   ></app-messages-container>

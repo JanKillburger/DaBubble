@@ -1,8 +1,13 @@
-export class Channel {
+import { DocData, DocKind, DocPath } from "./app.model";
+
+class Channel {
   channelName: string;
   channelDescription: string;
   users: string[];
   channelCreator: string;
+  kind: DocKind = 'channel';
+  path: DocPath = 'channels';
+  id = ''
 
   constructor(obj?: any) {
     this.channelName = obj ? obj.channelName : '';

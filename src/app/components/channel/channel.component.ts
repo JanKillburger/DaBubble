@@ -1,11 +1,10 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MessageComponent } from '../message/message.component';
 import { MessagesContainerComponent } from '../messages-container/messages-container.component';
-import { JsonPipe, KeyValuePipe, NgFor, NgStyle } from '@angular/common';
-import { json } from 'stream/consumers';
-import { ChannelData, FirebaseChannelService, Message } from '../../services/firebase-channel.service';
+import { AsyncPipe, JsonPipe, KeyValuePipe, NgFor, NgStyle } from '@angular/common';
+import { FirebaseChannelService } from '../../services/firebase-channel.service';
 import { MessagesInputComponent } from '../messages-input/messages-input.component';
 import { HomeService } from '../../services/home.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,7 +12,9 @@ import { EditChannelComponent } from '../dialog-components/edit-channel/edit-cha
 import { ViewportService } from '../../services/viewport.service';
 import { ChannelMembersComponent } from '../dialog-components/channel-members/channel-members.component';
 import { AddChannelMemberDialog } from '../dialog-components/add-channel-member/add-channel-member.component';
-import { UserData } from '../../services/firebase-user.service';
+import { Message, MessagesByDay, UserData } from '../../models/app.model';
+import { DataService } from '../../services/data.service';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-channel',
@@ -25,6 +26,7 @@ import { UserData } from '../../services/firebase-user.service';
     MessagesContainerComponent,
     NgFor,
     NgStyle,
+    AsyncPipe,
     JsonPipe,
     MessagesInputComponent
     , KeyValuePipe],
@@ -36,14 +38,29 @@ export class ChannelComponent {
   @ViewChild('callEditChannel') callEditChannel!: ElementRef;
   @ViewChild('callChannelMembers') callChannelMembers!: ElementRef;
   @ViewChild('addMember') addMember!: ElementRef;
-  constructor(public channelService: FirebaseChannelService, private homeService: HomeService, private dialog: MatDialog, private viewport: ViewportService) { }
+  messagesByDay$!: Observable<MessagesByDay>
+
+  constructor(
+    public channelService: FirebaseChannelService,
+    public hs: HomeService,
+    private dialog: MatDialog,
+    private viewport: ViewportService,
+    private ds: DataService
+  ) {
+    effect(() => {
+      if (this.hs.selectedChannel()) {
+        this.messagesByDay$ = this.ds.getChannelMessages(this.hs.selectedChannel()!.id)
+      }
+    })
+  }
 
   openThread(message: Message) {
     this.openThreadEv.emit(message);
+    
   }
 
   getChannelMessages() {
-    const channelId = this.getChannel()?.id;
+    const channelId = this.hs.selectedChannel()?.id;
     if (channelId) {
       return this.channelService.userChannelsMessages.get(channelId);
     } else {
@@ -51,42 +68,25 @@ export class ChannelComponent {
     }
   }
 
-  getChannelUserAvatars() {
-    const users = this.getChannel()?.users;
-    let avatars = [];
-    if (users) {
-      for (let user of users) {
-        avatars.push(this.channelService.users.get(user)?.avatar)
-        if (avatars.length === 3) break;
-      }
-    }
-    return avatars;
-  }
-
-
-  getChannel() {
-    return this.homeService.getActiveChannel();
-  }
-
   editChannel() {
-    switch (this.homeService.getScreenMode()) {
+    switch (this.hs.screenMode()) {
       case "small":
         this.dialog.open(EditChannelComponent, {
           panelClass: 'fullscreen-container',
-          data: [this.getChannel(), this.getChannelUsers()]
+          data: [this.hs.selectedChannel(), this.getChannelUsers()]
         })
         break;
       case "medium":
         this.dialog.open(EditChannelComponent, {
           panelClass: 'default-container',
-          data: [this.getChannel(), this.getChannelUsers()]
+          data: [this.hs.selectedChannel(), this.getChannelUsers()]
         })
         break;
       case "large":
         this.dialog.open(EditChannelComponent, {
           panelClass: 'custom-container--top-left',
           position: this.viewport.getPositionRelativeTo(this.callEditChannel, "bottom", "left"),
-          data: [this.getChannel(), this.getChannelUsers()]
+          data: [this.hs.selectedChannel(), this.getChannelUsers()]
         })
         break;
     }
@@ -101,7 +101,7 @@ export class ChannelComponent {
   }
 
   addChannelMember() {
-    if (this.homeService.getScreenMode() === "small") {
+    if (this.hs.screenMode() === "small") {
       this.dialog.open(AddChannelMemberDialog, {
         panelClass: 'fullscreen-container'
       });
@@ -114,7 +114,7 @@ export class ChannelComponent {
   }
 
   getChannelUsers() {
-    const userIds = this.getChannel()?.users;
+    const userIds = this.hs.selectedChannel()?.users;
     if (userIds) {
       const users: UserData[] = [];
       for (const userId of userIds) {

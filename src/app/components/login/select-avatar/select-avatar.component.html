@@ -63,7 +63,7 @@
           <button
             class="button-filled"
             (click)="saveUser()"
-            [disabled]="!avatarSelected && userFirebaseService.loading"
+            [disabled]="!avatarSelected"
             [ngClass]="{ 'button-filled-not-valid': !avatarSelected }"
           >
             Weiter

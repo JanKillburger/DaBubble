@@ -5,7 +5,7 @@
   </button>
 </header>
 <p class="flex ai-c channel-name">
-  <mat-icon fontSet="material-symbols-outlined">tag</mat-icon>{{homeService.getActiveChannel()?.channelName}}
+  <mat-icon fontSet="material-symbols-outlined">tag</mat-icon>{{homeService.selectedChannel()?.channelName}}
 </p>
 <div class="search-wrapper">
   <input type="text" [(ngModel)]="query" placeholder="Name eingeben" [readOnly]="selectedUser" (keyup)="getUserResults()"/>

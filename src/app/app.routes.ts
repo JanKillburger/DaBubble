@@ -7,10 +7,11 @@ import { ResetPasswordComponent } from './components/login/reset-password/reset-
 import { SelectAvatarComponent } from './components/login/select-avatar/select-avatar.component';
 
 export const routes: Routes = [
-  { path: '', component: LoginComponent },
+  { path: "", component: HomeComponent },
+  { path: 'home', redirectTo: '' },
+  { path: 'login', component: LoginComponent },
   { path: "avatarPicker/:id", component: SelectAvatarComponent },
   { path: "reset-passwort", component: ResetPasswordComponent },
-  { path: "home", component: HomeComponent },
-  { path: "imprint", component:  LegalNoticeComponent},
-  { path: "privacy-policy", component:  PrivacyPolicyComponent}
+  { path: "imprint", component: LegalNoticeComponent },
+  { path: "privacy-policy", component: PrivacyPolicyComponent }
 ];

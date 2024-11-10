@@ -18,15 +18,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { UserProfileDialogComponent } from '../dialog-components/user-profile-dialog/user-profile-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
-import { UserData } from '../../services/firebase-user.service';
-import {
-  FirebaseChannelService,
-  Message,
-} from '../../services/firebase-channel.service';
+import { Emoji, Message, UserData } from '../../models/app.model';
+import { FirebaseChannelService } from '../../services/firebase-channel.service';
 import { HomeService } from '../../services/home.service';
 import { FirebaseMessageService } from '../../services/firebase-messages.service';
 import { LinkifyPipe } from '../../services/linkify.pipe';
 import { FirebaseAuthService } from '../../services/firebase-auth.service';
+import { SearchService } from '../../search.service';
 
 @Component({
   selector: 'app-message',
@@ -47,7 +45,7 @@ import { FirebaseAuthService } from '../../services/firebase-auth.service';
   styleUrl: './message.component.scss',
 })
 export class MessageComponent {
-  @Input() message?: Message;
+  @Input() message: Message | null = null;
   @Input() showReplies = false;
   @Input() container: 'thread' | 'channel' = 'thread';
   @Output() openThreadEv = new EventEmitter<Message>();
@@ -60,7 +58,8 @@ export class MessageComponent {
     public channelService: FirebaseChannelService,
     private homeService: HomeService,
     private messageService: FirebaseMessageService,
-    private authService: FirebaseAuthService
+    private authService: FirebaseAuthService,
+    private searchService: SearchService
   ) { }
 
   @NgModule({
@@ -123,7 +122,7 @@ export class MessageComponent {
 
   getReplies(): Message[] | undefined {
     if (this.message?.id) {
-      if (this.homeService.mainContent === "channel") {
+      if (this.homeService.mainContent() === "channel") {
         return this.channelService.replies.get(this.message?.id);
       } else {
         return this.channelService.userChatReplies.get(this.message.id);
@@ -173,16 +172,13 @@ export class MessageComponent {
     }
   }
 
-  getReactionsPeople(emoji:any) {
-    let names:any = [];
-    emoji.userId.forEach((id:any) => {
-      let index = this.authService.allUsers.findIndex((user) => user.userId === id);
-      if (index !== -1) {
-        if (id === this.authService.loggedInUser()) {
-          names.push('Du');
-        } else { names.push(this.authService.allUsers[index].name) }
+  getReactionsPeople(emoji: Emoji): string[] {
+    return emoji.userId.map(
+      (id) => {
+        return id === this.authService.loggedInUser() ?
+          'Du' :
+          this.searchService.users()!.find((user) => user.userId === id)?.name || ''
       }
-    });
-    return names;
+    );
   }
 }

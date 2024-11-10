@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, ElementRef, Input, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -18,6 +18,10 @@ import { FirebaseUserService } from '../../services/firebase-user.service';
 import { HomeService } from '../../services/home.service';
 import { FirebaseMessageService } from '../../services/firebase-messages.service';
 import { FirebaseAuthService } from '../../services/firebase-auth.service';
+import { DataService } from '../../services/data.service';
+import converters from '../../services/firestore-converters';
+import { timestamp } from 'rxjs';
+import { DbMessage, DbReply, Message, NewDocData, Reply } from '../../models/app.model';
 
 @Component({
   selector: 'app-messages-input',
@@ -49,10 +53,10 @@ export class MessagesInputComponent {
   userList: string[] = [];
   currentUserList: string[] = [];
   currentUserString: string = '';
-  fileToBig:boolean = false; 
+  fileToBig: boolean = false;
   wrongFileType: boolean = false;
   imageIsUploaded: boolean = false;
-  imagePath:string = ''
+  imagePath: string = ''
 
   constructor(
     private homeService: HomeService,
@@ -60,19 +64,13 @@ export class MessagesInputComponent {
     private channels: FirebaseChannelService,
     private users: FirebaseUserService,
     private messageService: FirebaseMessageService,
-    private authService: FirebaseAuthService
-  ) { }
-
-  ngOnInit() {
-    this.homeService.contentChange.subscribe((type: string) => {
-      if (this.container === type) {
-        this.messageEl.nativeElement.focus();
-      }
-    }
-    )
+    private authService: FirebaseAuthService,
+    private ds: DataService
+  ) {
+    effect(() => { if (this.homeService.activeMessageInput() === this.container) { this.messageEl.nativeElement.focus() } })
   }
 
-  deleteImg(){
+  deleteImg() {
     this.imageIsUploaded = false;
   }
 
@@ -102,8 +100,8 @@ export class MessagesInputComponent {
     if (!input.files?.length) return;
     const file = input.files[0];
     if (file.size < 2000000) {
-      this.handleFile(file) 
-    } else{
+      this.handleFile(file)
+    } else {
       this.fileToBig = true;
       setTimeout(() => {
         this.fileToBig = false;
@@ -136,7 +134,7 @@ export class MessagesInputComponent {
   async getUsersOfChannel() {
     this.userList = [];
     await this.users.getUserData();
-    this.homeService.selectedChannel?.users.forEach((usersInChannel) => {
+    this.homeService.selectedChannel()?.users.forEach((usersInChannel) => {
       this.filterUserName(usersInChannel);
     });
   }
@@ -199,14 +197,39 @@ export class MessagesInputComponent {
       const text = `${this.imagePath} ${this.message}`;
       this.message = text;
     }
-    this.channels.currentChannelForMessages;
-    let currentUser = this.authService.userProfile();
-    this.messageService.updateMessage(
-      this.message,
-      currentUser?.authId,
-      this.pathForMessage,
-      this.channelOrChat
-    );
+    switch (this.container) {
+      case "channel":
+        var docData: NewDocData = {
+          kind: "message",
+          path: ["channels", this.homeService.selectedChannel()!.id, "messages"],
+          converter: converters.message,
+          message: this.message,
+          timestamp: Date.now(),
+          from: this.authService.loggedInUser()
+        };
+        break;
+      case "chat":
+        var docData: NewDocData = {
+          kind: "message",
+          path: ["chats", this.homeService.selectedChat()!.id, "messages"],
+          converter: converters.message,
+          message: this.message,
+          timestamp: Date.now(),
+          from: this.authService.loggedInUser()
+        };
+        break;
+      case "thread":
+        var docData: NewDocData = {
+          kind: "reply",
+          path: [...this.homeService.selectedMessage()!.path, this.homeService.selectedMessage()!.id, "replies"],
+          converter: converters.reply,
+          message: this.message,
+          timestamp: Date.now(),
+          from: this.authService.loggedInUser()
+        };
+        break;
+    }
+    this.ds.saveDoc(docData)
     this.message = '';
     this.imageIsUploaded = false;
   }

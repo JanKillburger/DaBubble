@@ -1,4 +1,4 @@
-<div class="header" *ngIf="getScreenMode() !== 'small'">
+<div class="header" *ngIf="hs.screenMode() !== 'small'">
   <div class="title">
     <img src="assets/img/Workspace logo.png" alt="Code learning logo" />
     <span class="workspace-name">Code learning</span>
@@ -9,55 +9,46 @@
 </div>
 <div class="search-wrapper">
   <mat-icon fontSet="material-symbols-outlined">search</mat-icon>
-  <input #input (keyup)="filterLists(input.value)" type="text" class="searchbar" placeholder="Gehe zu..." />
+  <input #input type="text" class="searchbar" placeholder="Gehe zu..." [formControl]="searchInput"/>
 </div>
 <div class="scroll-wrapper">
-<div class="flex jc-sb ai-c">
-  <button class="icon-text heading" (click)="toggleChannels()">
-    <mat-icon fontSet="material-symbols-outlined" *ngIf="!channelsExpanded"
-      >arrow_right</mat-icon
-    >
-    <mat-icon fontSet="material-symbols-outlined" *ngIf="channelsExpanded"
-      >arrow_drop_down</mat-icon
-    >
-    <mat-icon fontSet="material-symbols-outlined" class="icon-text__icn"
-      >spoke</mat-icon
-    >
-    <span>Channels</span>
-  </button>
-  <button mat-icon-button (click)="openCreateChannelDialog()">
-    <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
-  </button>
-</div>
-<menu *ngIf="channelsExpanded" class="flow">
-  <div *ngFor="let channel of filterChannels(input.value); let i = index">
-    <button class="icon-text btn" (click)="openChannel(channel)">
-      <mat-icon class="icon-text__icn" fontSet="material-symbols-outlined">
-        tag
-      </mat-icon>
-      {{ channel.channelName }}
+  <div class="flex jc-sb ai-c">
+    <button class="icon-text heading" (click)="toggleChannels()">
+      <mat-icon fontSet="material-symbols-outlined" *ngIf="!channelsExpanded">arrow_right</mat-icon>
+      <mat-icon fontSet="material-symbols-outlined" *ngIf="channelsExpanded">arrow_drop_down</mat-icon>
+      <mat-icon fontSet="material-symbols-outlined" class="icon-text__icn">spoke</mat-icon>
+      <span>Channels</span>
+    </button>
+    <button mat-icon-button (click)="openCreateChannelDialog()">
+      <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
     </button>
   </div>
-  <button (click)="openCreateChannelDialog()" class="btn icon-text btn--text">
-    <mat-icon fontSet="material-symbols-outlined" class="icon-text__icn"
-      >add_circle</mat-icon
-    >
-    <span>Channel erstellen</span>
+  <menu *ngIf="channelsExpanded" class="flow">
+    <!-- <div *ngFor="let channel of filterChannels(input.value); let i = index"> -->
+    @for (channel of filteredChannels(); track channel.id) {
+    <div>
+      <button class="icon-text btn" (click)="openChannel(channel)">
+        <mat-icon class="icon-text__icn" fontSet="material-symbols-outlined">
+          tag
+        </mat-icon>
+        {{ channel.channelName }}
+      </button>
+    </div>
+    }
+    <button (click)="openCreateChannelDialog()" class="btn icon-text btn--text">
+      <mat-icon fontSet="material-symbols-outlined" class="icon-text__icn">add_circle</mat-icon>
+      <span>Channel erstellen</span>
+    </button>
+  </menu>
+  <button class="icon-text heading" (click)="toggleMessages()">
+    <mat-icon fontSet="material-symbols-outlined" *ngIf="!messagesExpanded">arrow_right</mat-icon>
+    <mat-icon fontSet="material-symbols-outlined" *ngIf="messagesExpanded">arrow_drop_down</mat-icon>
+    <mat-icon fontSet="material-symbols-outlined" class="icon-text__icn">account_circle</mat-icon>
+    <span>Direktnachrichten</span>
   </button>
-</menu>
-<button class="icon-text heading" (click)="toggleMessages()">
-  <mat-icon fontSet="material-symbols-outlined" *ngIf="!messagesExpanded"
-    >arrow_right</mat-icon
-  >
-  <mat-icon fontSet="material-symbols-outlined" *ngIf="messagesExpanded"
-    >arrow_drop_down</mat-icon
-  >
-  <mat-icon fontSet="material-symbols-outlined" class="icon-text__icn"
-    >account_circle</mat-icon
-  >
-  <span>Direktnachrichten</span>
-</button>
-<menu *ngIf="messagesExpanded">
-  <app-contact-button *ngFor="let chat of filterContacts(input.value)" (click)="openChat(chat)" [user]="getContact(chat)"></app-contact-button>
-</menu>
+  <menu *ngIf="messagesExpanded">
+    @for (chat of filteredChats(); track chat.id) {
+    <app-contact-button (click)="openChat(chat)" [user]="chat.recipient" />
+    }
+  </menu>
 </div>

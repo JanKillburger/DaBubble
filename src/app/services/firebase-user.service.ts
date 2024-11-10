@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, doc, getDocs, updateDoc } from '@angular/fire/firestore';
+import { UserData } from '../models/app.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,16 +23,4 @@ export class FirebaseUserService {
     const docRef = doc(this.firestore, "users", user.authId);
     const res = await updateDoc(docRef, {"name": user.name, "email": user.email, "avatar": user.avatar});
    }
-}
-
-
-
-export interface UserData {
-  name: string;
-  email: string;
-  authId: string
-  userId: string;
-  avatar: string;
-  online: boolean;
-  id?: string;
 }
