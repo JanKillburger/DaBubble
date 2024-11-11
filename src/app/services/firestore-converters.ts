@@ -111,12 +111,14 @@ const converters = {
         path: getPathFromSnap(snap) as Message['path'],
         repliesCount: snap.data().repliesCount,
         lastReplyAt: snap.data().lastReplyAt,
+        lastReplyDate: new Date(snap.data().lastReplyAt!),
         converter: converters.message,
         date: createdDate.toLocaleDateString(),
         message: snap.data().message,
         timestamp: snap.data().timestamp,
         reactions: snap.data().reactions,
-        created: createdDate
+        created: createdDate,
+        from: snap.data().from
       } :
       {
         id: snap.id,
@@ -127,7 +129,8 @@ const converters = {
         message: snap.data().message,
         timestamp: snap.data().timestamp,
         reactions: snap.data().reactions,
-        created: createdDate
+        created: createdDate,
+        from: snap.data().from
       }
     },
   },
@@ -149,7 +152,8 @@ const converters = {
         message: snap.data().message,
         timestamp: snap.data().timestamp,
         reactions: snap.data().reactions,
-        created: new Date(snap.data().timestamp)
+        created: new Date(snap.data().timestamp),
+        from: snap.data().from
       }
     }
   }

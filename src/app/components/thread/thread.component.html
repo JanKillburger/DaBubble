@@ -10,11 +10,11 @@
   </div>
 </header>
 <div class="messages-wrapper">
-  <app-message container="thread" [message]="hs.selectedMessage()" [showReplies]="false"></app-message>
-  <div class="replies-header flex ai-c inner-container" *ngIf="getReplies()?.length">
-    <span>{{getReplies()?.length}} @if(getReplies()!.length > 1) {Antworten} @else {Antwort} </span>
+  <app-message container="thread" [message]="hs.selectedMessage()!" [showReplies]="false"></app-message>
+  <div class="replies-header flex ai-c inner-container" *ngIf="hs.selectedMessage()?.repliesCount">
+    <span>{{hs.selectedMessage()?.repliesCount}} @if(hs.selectedMessage()?.repliesCount ?? 0 > 1) {Antworten} @else {Antwort} </span>
     <div class="separator"></div>
   </div>
-  <app-message *ngFor="let message of getReplies()" [message]="message"></app-message>
+  <app-message *ngFor="let message of replies$ | async" [message]="message"></app-message>
 </div>
 <app-messages-input container="thread" [pathForMessage]="'thread'" [channelOrChat]="getContext()"></app-messages-input>

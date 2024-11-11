@@ -60,11 +60,11 @@ export interface messages {
 
 interface AbstractMessage extends BaseProps {
   message: string;
-  readonly from?: string;
+  readonly from: string;
   readonly timestamp: number;
   readonly date?: string;
   reactions?: Emoji[];
-  readonly created?: Date;
+  readonly created: Date;
 }
 
 export interface Reply extends AbstractMessage {
@@ -84,6 +84,7 @@ export interface Message extends AbstractMessage {
   readonly path: ['channels' | 'chats', string, 'messages'],
   repliesCount?: number,
   lastReplyAt?: number,
+  lastReplyDate?: Date
 }
 
 export interface DbMessage extends DbReply {

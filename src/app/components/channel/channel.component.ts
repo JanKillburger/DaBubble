@@ -22,12 +22,10 @@ import { map, Observable } from 'rxjs';
   imports: [
     MatIconModule,
     MatButtonModule,
-    MessageComponent,
     MessagesContainerComponent,
     NgFor,
     NgStyle,
     AsyncPipe,
-    JsonPipe,
     MessagesInputComponent
     , KeyValuePipe],
   templateUrl: './channel.component.html',

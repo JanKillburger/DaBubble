@@ -1,28 +1,28 @@
 <div class="inner-container">
   <div
     class="message-wrapper"
-    [class.aligned-right]="currentUser() === getUser()"
+    [class.aligned-right]="currentUser()?.id === (user | async)?.id"
   >
-    <img class="avatar" [src]="getUser()?.avatar" alt="Profilbild" />
+    <img class="avatar" [src]="(user | async)?.avatar" alt="Profilbild" />
     <div class="message">
       <p
         class="message-meta-data flex ai-c"
-        [class.aligned-right]="currentUser() === getUser()"
+        [class.aligned-right]="currentUser()?.id === (user | async)?.id"
       >
         <button class="btn btn--text user-name" (click)="showUserProfile()">
-          {{ getUser()?.name }}
+          {{ (user | async)?.name }}
         </button>
         <span class="message-time">{{
-          getFormattedDay(message?.created)
+          getFormattedDay(message.created)
         }}</span>
       </p>
       <p
-        id="{{ message?.id }}"
+        id="{{ message.id }}"
         class="message-content"
-        [innerHTML]="message?.message! | linkify"
-        [class.message-content--aligned-right]="currentUser() === getUser()"
+        [innerHTML]="message.message! | linkify"
+        [class.message-content--aligned-right]="currentUser()?.id === (user | async)?.id"
       >
-        {{ message?.message }}
+        {{ message.message }}
       </p>
       <div class="reactions">
         <div
@@ -64,11 +64,11 @@
       <button
         (click)="openThread()"
         class="btn replies"
-        *ngIf="hasReplies() && container === 'channel'"
+        *ngIf="message.kind === 'message' && message?.repliesCount && container === 'channel'"
       >
-        {{ getReplies()?.length }} @if (hasReplies() && getReplies()!.length >
+        {{ message.repliesCount }} @if (message.repliesCount && message!.repliesCount! >
         1) {Antworten } @else {Antwort }
-        <span class="last-reply">Letzte Antwort {{ getLastReplyDate() }}</span>
+        <span class="last-reply">Letzte Antwort {{ message.lastReplyDate }}</span>
       </button>
     </div>
   </div>

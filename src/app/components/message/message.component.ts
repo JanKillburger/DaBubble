@@ -18,26 +18,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { UserProfileDialogComponent } from '../dialog-components/user-profile-dialog/user-profile-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
-import { Emoji, Message, UserData } from '../../models/app.model';
+import { Emoji, Message, Reply, UserData } from '../../models/app.model';
 import { FirebaseChannelService } from '../../services/firebase-channel.service';
 import { HomeService } from '../../services/home.service';
 import { FirebaseMessageService } from '../../services/firebase-messages.service';
 import { LinkifyPipe } from '../../services/linkify.pipe';
 import { FirebaseAuthService } from '../../services/firebase-auth.service';
 import { SearchService } from '../../search.service';
+import { Observable } from 'rxjs';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-message',
   standalone: true,
   imports: [
-    NgClass,
     NgIf,
     MatIconModule,
     PickerModule,
     MatButtonModule,
-    KeyValuePipe,
-    JsonPipe,
-    DatePipe,
     CommonModule,
     LinkifyPipe,
   ],
@@ -45,13 +43,14 @@ import { SearchService } from '../../search.service';
   styleUrl: './message.component.scss',
 })
 export class MessageComponent {
-  @Input() message: Message | null = null;
+  @Input() message!: Reply | Message;
   @Input() showReplies = false;
   @Input() container: 'thread' | 'channel' = 'thread';
   @Output() openThreadEv = new EventEmitter<Message>();
   showEmojiPicker = false;
   emoji = '';
   currentUser = this.authService.userProfile
+  user?: Observable<UserData | undefined>
 
   constructor(
     public dialog: MatDialog,
@@ -59,14 +58,14 @@ export class MessageComponent {
     private homeService: HomeService,
     private messageService: FirebaseMessageService,
     private authService: FirebaseAuthService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private ds: DataService
   ) { }
 
-  @NgModule({
-    declarations: [LinkifyPipe],
-    imports: [CommonModule],
-    exports: [LinkifyPipe], // Exportieren Sie die Pipe
-  })
+  ngOnInit() {
+    this.user = this.ds.getUser(this.message.from)
+  }
+
   toggleEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
@@ -87,8 +86,10 @@ export class MessageComponent {
   }
 
   openThread() {
-    this.homeService.setThreadMessage(this.message!);
-    this.channelService.currentThreadForMessage = this.message?.id;
+    if (this.message.kind === "message") {
+      this.homeService.setThreadMessage(this.message!);
+      this.channelService.currentThreadForMessage = this.message?.id;
+    }
   }
 
   showUserProfile() {

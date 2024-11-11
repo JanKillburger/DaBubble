@@ -55,6 +55,7 @@ export class FirebaseMessageService {
       message: message,
       reactions: [],
       timestamp: Date.now(),
+      created: new Date(),
       from: currentUser,
     };
     const messagesRef = collection(this.firestore, currentPath).withConverter(converters.message);

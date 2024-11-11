@@ -204,6 +204,7 @@ export class MessagesInputComponent {
           path: ["channels", this.homeService.selectedChannel()!.id, "messages"],
           converter: converters.message,
           message: this.message,
+          created: new Date(),
           timestamp: Date.now(),
           from: this.authService.loggedInUser()
         };
@@ -215,6 +216,7 @@ export class MessagesInputComponent {
           converter: converters.message,
           message: this.message,
           timestamp: Date.now(),
+          created: new Date(),
           from: this.authService.loggedInUser()
         };
         break;
@@ -225,11 +227,13 @@ export class MessagesInputComponent {
           converter: converters.reply,
           message: this.message,
           timestamp: Date.now(),
+          created: new Date(),
           from: this.authService.loggedInUser()
+          //TODO message repliesCount and lastReplyAt needs to be updated as well
         };
         break;
     }
-    this.ds.saveDoc(docData)
+    this.ds.saveDoc(docData);
     this.message = '';
     this.imageIsUploaded = false;
   }
