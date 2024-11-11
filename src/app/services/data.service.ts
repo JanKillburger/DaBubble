@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { collectionData, doc, docData, Firestore, orderBy, query, setDoc, where } from '@angular/fire/firestore';
+import { collectionData, doc, docData, Firestore, increment, orderBy, query, setDoc, where, writeBatch } from '@angular/fire/firestore';
 import { addDoc, collection, getDoc } from '@firebase/firestore';
 import { filter, firstValueFrom, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
 import converters from './firestore-converters';
 import { FirebaseAuthService } from './firebase-auth.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { Chat, ChatUser, DocData, Message, NewDocData, UserData } from '../models/app.model';
+import { Chat, ChatUser, DocData, Message, NewDocData, Reply, UserData } from '../models/app.model';
 import { HomeService } from './home.service';
 import { group } from 'console';
 
@@ -128,6 +128,13 @@ export class DataService {
 
   getUser(id: string) {
     return docData(doc(this.fs, 'users', id).withConverter(converters.user))
+  }
+
+  createReply(reply: Omit<Reply, "id">, message: Message) {
+    const batch = writeBatch(this.fs);
+    batch.set(doc(collection(this.fs, [...message.path, message.id, "replies"].join("/"))).withConverter(converters.reply), reply);
+    batch.update(doc(this.fs, [...message.path, message.id].join("/")), {repliesCount: increment(1), lastReplyAt: Date.now()});
+    batch.commit();
   }
 }
 

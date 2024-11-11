@@ -111,7 +111,7 @@ const converters = {
         path: getPathFromSnap(snap) as Message['path'],
         repliesCount: snap.data().repliesCount,
         lastReplyAt: snap.data().lastReplyAt,
-        lastReplyDate: new Date(snap.data().lastReplyAt!),
+        lastReplyDate: new Date(snap.data().lastReplyAt!).toLocaleString(),
         converter: converters.message,
         date: createdDate.toLocaleDateString(),
         message: snap.data().message,

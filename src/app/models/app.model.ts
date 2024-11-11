@@ -84,7 +84,7 @@ export interface Message extends AbstractMessage {
   readonly path: ['channels' | 'chats', string, 'messages'],
   repliesCount?: number,
   lastReplyAt?: number,
-  lastReplyDate?: Date
+  lastReplyDate?: string
 }
 
 export interface DbMessage extends DbReply {

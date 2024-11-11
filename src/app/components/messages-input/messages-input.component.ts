@@ -229,11 +229,14 @@ export class MessagesInputComponent {
           timestamp: Date.now(),
           created: new Date(),
           from: this.authService.loggedInUser()
-          //TODO message repliesCount and lastReplyAt needs to be updated as well
         };
+        this.ds.createReply(docData, this.homeService.selectedMessage()!)
         break;
     }
-    this.ds.saveDoc(docData);
+    if (this.container !== "thread") {
+      this.ds.saveDoc(docData);  
+    }
+    
     this.message = '';
     this.imageIsUploaded = false;
   }
