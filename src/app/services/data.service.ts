@@ -123,6 +123,8 @@ export class DataService {
     return collectionData(
       collection(this.fs, topCollection, topCollectionDocId, 'messages', message.id, 'replies')
         .withConverter(converters.reply)
+    ).pipe(
+      map(messages => messages.sort((a, b) => a.timestamp - b.timestamp))
     )
   }
 
