@@ -3,10 +3,11 @@
   <span class="date">{{ date }}</span>
   <div class="hl"></div>
 </div>
+@for (message of messages; track message.id) {
 <app-message
   container="channel"
-  *ngFor="let message of messages"
   [message]="message"
   [showReplies]="true"
   (openThreadEv)="openThread(message)"
 ></app-message>
+}

@@ -15,6 +15,8 @@
     <span>{{hs.selectedMessage()?.repliesCount}} @if(hs.selectedMessage()?.repliesCount ?? 0 > 1) {Antworten} @else {Antwort} </span>
     <div class="separator"></div>
   </div>
-  <app-message *ngFor="let message of replies$ | async" [message]="message"></app-message>
+  @for (message of replies$ | async;track message.id) {
+  <app-message [message]="message"></app-message>
+}
 </div>
 <app-messages-input container="thread" [pathForMessage]="'thread'" [channelOrChat]="getContext()"></app-messages-input>

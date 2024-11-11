@@ -27,10 +27,11 @@
   </div>
 </header>
 <div class="messages-wrapper">
+  @for (messagesByDay of messagesByDay$ | async | keyvalue; track messagesByDay.key) {
   <app-messages-container
-    *ngFor="let messagesByDay of messagesByDay$ | async | keyvalue"
     [messages]="messagesByDay.value"
     [date]="messagesByDay.key"
   ></app-messages-container>
+}
 </div>
 <app-messages-input container="channel" [pathForMessage]="'message'" [channelOrChat]="'channel'"></app-messages-input>
