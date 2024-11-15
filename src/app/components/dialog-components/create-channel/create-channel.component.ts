@@ -17,6 +17,10 @@ import { FirebaseChannelService } from '../../../services/firebase-channel.servi
 import { UsersToChannelComponent } from '../users-to-channel/users-to-channel.component';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { ChannelData } from '../../../models/app.model';
+import { DataService } from '../../../services/data.service';
+import converters from '../../../services/firestore-converters';
+import { DocumentReference } from '@angular/fire/firestore';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-create-channel',
@@ -36,7 +40,8 @@ export class CreateChannelComponent {
     public dialog: MatDialog,
     private dialogRef: MatDialogRef<CreateChannelComponent>,
     private channelService: FirebaseChannelService,
-    private authService: FirebaseAuthService
+    private authService: FirebaseAuthService,
+    private ds: DataService
   ) {}
   channel!: ChannelData;
   nameExists = false;
@@ -71,12 +76,18 @@ export class CreateChannelComponent {
   }
 
   async addToChannel() {
-    this.currentUser = this.authService.userProfile();
-    this.channel.channelName = this.channelName?.value;
-    this.channel.channelDescription = this.channelDescription?.value;
-    this.channel.users.push(this.currentUser.authId);
-    this.channelId = await this.channelService.addChannel(this.channel);
-    this.channel.channelCreator = this.currentUser.name;
+    this.channelId = (await this.ds.saveDoc({
+      kind: "channel",
+      path: ["channels"],
+      converter: converters.channel,
+      channelCreator: this.authService.userProfile()!.name,
+      channelName: this.channelName!.value,
+      channelDescription: this.channelDescription!.value,
+      users: [this.authService.userProfile()!.id]
+    }) as DocumentReference).id
+    this.ds.getChannel(this.channelId).pipe(first()).subscribe(
+      (channel) => this.channel = channel!
+    )
   }
 
   openUseToChannelDialog() {

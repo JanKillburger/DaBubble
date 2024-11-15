@@ -115,8 +115,8 @@ export class UserProfileDialogComponent {
       this.homeService.openChat(currentChat)
       this.closeDialog()
     } else {
-      let chatId = await this.channelService.addDirectChat(userId!);
-      let currentChat = this.channelService.getDirectChat(chatId)
+      let chatId = await this.authService.addDirectChat(userId!);
+      let currentChat = this.ds.getDirectChat(chatId)
       this.homeService.openChat(currentChat!)
       this.closeDialog()
     }

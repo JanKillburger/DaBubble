@@ -7,6 +7,7 @@ import { FirebaseAuthService } from '../../services/firebase-auth.service';
 import { FormsModule } from '@angular/forms';
 import { HomeService } from '../../services/home.service';
 import { SearchService } from '../../search.service';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-new-message',
@@ -20,6 +21,7 @@ export class NewMessageComponent {
   authService = inject(FirebaseAuthService);
   homeService = inject(HomeService);
   searchService = inject(SearchService);
+  ds = inject(DataService);
   channelSearchResults: ChannelData[] = [];
   userSearchResults: UserData[] = [];
   userId: string = ''
@@ -71,8 +73,8 @@ export class NewMessageComponent {
     if (currentChat) {
       this.homeService.selectedChat.set(currentChat)
     } else {
-      let chatId = await this.channelService.addDirectChat(userId);
-      this.homeService.selectedChat.set(this.channelService.getDirectChat(chatId))
+      let chatId = await this.authService.addDirectChat(userId);
+      this.homeService.selectedChat.set(this.ds.getDirectChat(chatId))
     }
   }
 

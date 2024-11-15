@@ -393,17 +393,5 @@ export class FirebaseChannelService {
       channelCreator: obj.channelCreater || '',
     };
   }
-
-  async addDirectChat(recipient: string) {
-    const docRef = await addDoc(collection(this.firestore, 'chats'), {
-      users: [this.authService.loggedInUser(), recipient],
-    });
-    let chatId = docRef.id;
-    return chatId;
-  }
-
-  getDirectChat(chatId: string) {
-    return this.userChats.find((chat) => chat.id === chatId) || null;
-  }
 }
 

@@ -305,4 +305,14 @@ export class FirebaseAuthService {
   signOut() {
     signOut(this.auth)
   }
+
+
+
+  async addDirectChat(recipient: string) {
+    const docRef = await addDoc(collection(this.firestore, 'chats'), {
+      users: [this.loggedInUser(), recipient],
+    });
+    let chatId = docRef.id;
+    return chatId;
+  }
 }

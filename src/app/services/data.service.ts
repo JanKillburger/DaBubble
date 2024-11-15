@@ -138,6 +138,10 @@ export class DataService {
     batch.update(doc(this.fs, [...message.path, message.id].join("/")), {repliesCount: increment(1), lastReplyAt: Date.now()});
     batch.commit();
   }
+
+  getDirectChat(chatId: string) {
+    return this.userChats().find((chat) => chat.id === chatId) || null;
+  }
 }
 
 
