@@ -42,7 +42,7 @@ export interface ChannelData extends BaseProps {
   users: string[],
   readonly membersCount?: number,
   previewUserIds?: string[],
-  previewUsers?: null | { [key: string]: { avatar: string } },
+  previewUsers?: null | { id: string, avatar: string }[],
 }
 
 export interface DbChannel {
@@ -50,7 +50,7 @@ export interface DbChannel {
   description: string,
   name: string,
   userIds: string[],
-  previewUsers: { [userId: string]: { avatar: string } } | null,
+  previewUsers: { id: string, avatar: string }[] | null,
   previewUserIds: string[]
 }
 

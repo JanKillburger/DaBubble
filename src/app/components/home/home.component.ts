@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UserDialogComponent } from '../dialog-components/user-dialog/user-dialog.component';
@@ -7,7 +7,6 @@ import { NavMenuComponent } from '../nav-menu/nav-menu.component';
 import { ChannelComponent } from '../channel/channel.component';
 import { ThreadComponent } from '../thread/thread.component';
 import { MatIconModule } from '@angular/material/icon';
-import { UsersToChannelComponent } from '../dialog-components/users-to-channel/users-to-channel.component';
 import { HomeService } from '../../services/home.service';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
@@ -30,7 +29,6 @@ import converters from '../../services/firestore-converters';
     MatDialogModule,
     NgIf,
     NgClass,
-    UsersToChannelComponent,
     MatButtonModule,
     FormsModule,
     NewMessageComponent,
@@ -41,23 +39,21 @@ import converters from '../../services/firestore-converters';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+  dialog = inject(MatDialog);
+  viewport = inject(ViewportService);
+  hs = inject(HomeService);
+  private authService = inject(FirebaseAuthService);
+  private searchService = inject(SearchService);
+  private ds = inject(DataService);
+
   @ViewChild('dialogTrigger') dialogTrigger!: ElementRef;
   @ViewChild('triggerUserDialog') triggerUserDialog!: ElementRef;
   channels: any[] = [];
   searchTerm: string = '';
-  filterdUserData: UserData[] = [];
-  filterdPrivateMessageData: SearchData[] = [];
-  filterdChannelsData: ChannelData[] = [];
-  filterdChannelMessageData: SearchData[] = [];
-
-  constructor(
-    public dialog: MatDialog,
-    public viewport: ViewportService,
-    public hs: HomeService,
-    private authService: FirebaseAuthService,
-    private searchService: SearchService,
-    private ds: DataService
-  ) { }
+  userSearchResults: UserData[] = [];
+  chatSearchResults: SearchData[] = [];
+  channelSearchResults: ChannelData[] = [];
+  messageSearchResults: SearchData[] = [];
 
   user = this.authService.userProfile
 
@@ -92,8 +88,8 @@ export class HomeComponent {
   }
 
   search() {
-    this.filterdChannelsData = this.ds.userChannels().filter(channel => channel.channelName.toLowerCase().includes(this.searchTerm.toLowerCase()));
-    this.filterdChannelMessageData = this.searchService.messages()!
+    this.channelSearchResults = this.ds.userChannels().filter(channel => channel.channelName.toLowerCase().includes(this.searchTerm.toLowerCase()));
+    this.messageSearchResults = this.searchService.messages()!
       .filter(message =>
         message.path.includes('channels') &&
         message.message.toLowerCase().includes(this.searchTerm.toLowerCase()))
@@ -103,8 +99,8 @@ export class HomeComponent {
         messageId: message.id,
         message: message.message
       }));
-    this.filterdUserData = this.searchService.users()!.filter(user => user.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
-    this.filterdPrivateMessageData = this.searchService.messages()!
+    this.userSearchResults = this.searchService.users()!.filter(user => user.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
+    this.chatSearchResults = this.searchService.messages()!
       .filter(message =>
         message.path.includes('chats') &&
         message.message.toLowerCase().includes(this.searchTerm.toLowerCase()))

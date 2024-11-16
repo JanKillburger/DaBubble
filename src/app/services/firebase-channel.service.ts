@@ -25,11 +25,8 @@ import converters from './firestore-converters';
 })
 export class FirebaseChannelService {
   firestore: Firestore = inject(Firestore)
-
-  // channels: ChannelData[] = [];
   channelId: string = '';
   currentUser: string = '';
-  // allChannels: ChannelData[] = [];
   currentChannel?: ChannelData;
   users: Map<string, UserData> = new Map();
   userChannels: ChannelData[] = [];
@@ -49,7 +46,6 @@ export class FirebaseChannelService {
     private router: Router,
     public authService: FirebaseAuthService
   ) {
-    // this.subChannelsList();
     this.authService.user$.subscribe(user => {
       if (user) {
         this.getUserChats(this.authService.loggedInUser());

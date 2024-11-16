@@ -14,31 +14,31 @@
       (keyup)="search()" />
 
     <div *ngIf="
-        filterdChannelsData.length > 0 && searchTerm.length > 0 ||
-        filterdUserData.length > 0 && searchTerm.length > 0 ||
-        filterdChannelMessageData.length > 0 && searchTerm.length > 0 ||
-        filterdPrivateMessageData.length > 0 && searchTerm.length > 0
+        channelSearchResults.length > 0 && searchTerm.length > 0 ||
+        userSearchResults.length > 0 && searchTerm.length > 0 ||
+        messageSearchResults.length > 0 && searchTerm.length > 0 ||
+        chatSearchResults.length > 0 && searchTerm.length > 0
       " class="search-result-container">
-      <div *ngIf="filterdUserData.length > 0" class="user-results-container">
+      <div *ngIf="userSearchResults.length > 0" class="user-results-container">
         <span>#Users</span>
-        <div class="user-result" *ngFor="let user of filterdUserData" (click)="openUserChat(user.userId)">
+        <div class="user-result" *ngFor="let user of userSearchResults" (click)="openUserChat(user.userId)">
           <img class="avatar-img" src="{{ user.avatar }}" alt="profile.img" />
           <span>{{ user.name }}</span>
         </div>
       </div>
 
-      <div *ngIf="filterdChannelsData.length > 0" class="channel-result-container">
+      <div *ngIf="channelSearchResults.length > 0" class="channel-result-container">
         <span>#Channels</span>
-        <div class="channel" *ngFor="let channel of filterdChannelsData">
+        <div class="channel" *ngFor="let channel of channelSearchResults">
           <div (click)="openUserChannel(channel.id!)">
             <span>{{ channel.channelName }}</span>
           </div>
         </div>
       </div>
 
-      <div *ngIf="filterdChannelMessageData.length > 0" class="pms-result-container">
+      <div *ngIf="messageSearchResults.length > 0" class="pms-result-container">
         <span>#Channel Nachrichten</span>
-        <div class="message" *ngFor="let message of filterdChannelMessageData">
+        <div class="message" *ngFor="let message of messageSearchResults">
           <div (click)="openMessageInChannel(message.channelId, message.messageId)">
             <span class="channelMessageText">{{ message.message.length > 30 ? (message.message | slice:0:30) + '...' :
               message.message }}</span>
@@ -48,9 +48,9 @@
         </div>
       </div>
 
-      <div *ngIf="filterdPrivateMessageData.length > 0" class="pms-result-container">
+      <div *ngIf="chatSearchResults.length > 0" class="pms-result-container">
         <span>#Direktnachrichten</span>
-        <div class="message" *ngFor="let message of filterdPrivateMessageData">
+        <div class="message" *ngFor="let message of chatSearchResults">
           <div (click)="openMessageInChat(message.channelId, message.messageId)">
             <span class="channelMessageText">{{ message.message.length > 20 ? (message.message | slice:0:20) + '...' :
               message.message }}</span>

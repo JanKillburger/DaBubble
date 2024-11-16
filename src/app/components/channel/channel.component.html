@@ -11,10 +11,10 @@
     </button>
     <div class="channel-users flex ai-c" #addMember>
       <button class="btn flex ai-c toggle-members-menu" #callChannelMembers (click)="openMembersListDialog()">
-        @for (user of hs.selectedChannel()?.previewUserIds; track user) {
+        @for (user of hs.selectedChannel()?.previewUsers; track user.id) {
         <img
           class="avatar avatar--small"
-          [src]="hs.selectedChannel()?.previewUsers![user].avatar"
+          [src]="user.avatar"
           [ngStyle]="{ 'margin-left.px': -8 }"
         />
       }

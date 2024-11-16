@@ -4,7 +4,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FirebaseUserService } from '../../../services/firebase-user.service';
 import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { HomeService } from '../../../services/home.service';
 import { FirebaseStorageService } from '../../../services/firebase-storage.service';
@@ -30,7 +29,6 @@ export class UserProfileDialogComponent {
     private channelService: FirebaseChannelService,
     private authService: FirebaseAuthService,
     private homeService: HomeService,
-    private userService: FirebaseUserService,
     private ds: DataService,
     public storageService: FirebaseStorageService,
     @Inject(MAT_DIALOG_DATA) private userId: string

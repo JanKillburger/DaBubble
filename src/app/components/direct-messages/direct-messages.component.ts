@@ -13,7 +13,7 @@ import { DataService } from '../../services/data.service';
 @Component({
   selector: 'app-direct-messages',
   standalone: true,
-  imports: [MessagesContainerComponent, AsyncPipe, KeyValuePipe, NgFor, ContactButtonComponent, MessagesInputComponent, NgIf],
+  imports: [MessagesContainerComponent, AsyncPipe, KeyValuePipe, ContactButtonComponent, MessagesInputComponent],
   templateUrl: './direct-messages.component.html',
   styleUrl: './direct-messages.component.scss'
 })

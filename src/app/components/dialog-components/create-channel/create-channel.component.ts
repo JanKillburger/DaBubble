@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -13,7 +13,6 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { UsersToChannelComponent } from '../users-to-channel/users-to-channel.component';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { ChannelData } from '../../../models/app.model';
@@ -36,13 +35,12 @@ import { first } from 'rxjs';
   styleUrl: './create-channel.component.scss',
 })
 export class CreateChannelComponent {
-  constructor(
-    public dialog: MatDialog,
-    private dialogRef: MatDialogRef<CreateChannelComponent>,
-    private channelService: FirebaseChannelService,
-    private authService: FirebaseAuthService,
-    private ds: DataService
-  ) {}
+
+  dialog = inject(MatDialog);
+  private dialogRef = inject(MatDialogRef<CreateChannelComponent>);
+  private authService = inject(FirebaseAuthService);
+  private ds = inject(DataService);
+
   channel!: ChannelData;
   nameExists = false;
   showCreateChannelDialog = false;
@@ -62,7 +60,7 @@ export class CreateChannelComponent {
   }
 
   async createChannel() {
-    let channelToModifyIndex = this.channelService.userChannels.findIndex(
+    let channelToModifyIndex = this.ds.userChannels().findIndex(
       (channel) => channel.channelName === this.channelName?.value
     );
     if (channelToModifyIndex === -1) {

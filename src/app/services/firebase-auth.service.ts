@@ -28,7 +28,7 @@ import {
   signOut,
   sendPasswordResetEmail
 } from '@angular/fire/auth';
-import { filter, shareReplay, switchMap } from 'rxjs';
+import { filter, of, shareReplay, switchMap, tap } from 'rxjs';
 import converters from './firestore-converters';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UserData } from '../models/app.model';
@@ -95,15 +95,11 @@ export class FirebaseAuthService {
             channelDescription: 'All new users are added to this channel to start talking to each other',
             users: [id],
             previewUserIds: [id],
-            previewUsers: {
-              [id]: {
-                avatar: './assets/img/login/signin/avatar1.png'
-              }
-            }
+            previewUsers: [{ id, avatar: './assets/img/login/signin/avatar1.png' }]
           }
         )
       } else {
-        this.addUserToChannel(userDoc.data()!, 'AllUsersChannel')
+        this.addUsersToChannel([userDoc.data()!], 'AllUsersChannel')
       }
     }
   }
@@ -169,29 +165,33 @@ export class FirebaseAuthService {
 
   //Add or remove a user to a channel
 
-  async addUserToChannel(user: UserData, channelId: string): Promise<void> {
+  async addUsersToChannel(users: UserData[], channelId: string): Promise<void> {
+    const MAX_PREVIEW_USERS = 3;
     const db = this.firestore
     return await runTransaction(this.firestore, async function _addUserToChannel(transaction) {
-      const channelDoc = await transaction.get(doc(db, 'channels', channelId).withConverter(converters.channel))
-      debugger
-      if (channelDoc.data()?.membersCount! < 3) {
+      const channelDoc = await transaction.get(doc(db, 'channels', channelId).withConverter(converters.channel));
+      if (channelDoc.data()?.membersCount! < MAX_PREVIEW_USERS) {
+        let newPreviewUsers = users.slice(0, Math.min(Math.max(0, MAX_PREVIEW_USERS - (channelDoc.data()?.membersCount || 0) + 1), users.length));
         transaction.update(
           channelDoc.ref,
-          'userIds', arrayUnion(user.id),
-          'previewUserIds', arrayUnion(user.id),
-          `previewUsers.${user.id}`, { avatar: user.avatar }
+          'userIds', arrayUnion(...users.map(u => u.id)),
+          'previewUserIds', arrayUnion(...newPreviewUsers.map(u => u.id)),
+          'previewUsers', arrayUnion(...newPreviewUsers.map(u => ({ id: u.id, avatar: u.avatar })))
         )
       } else {
         transaction.update(
           channelDoc.ref,
-          'userIds', arrayUnion(user.id)
+          'userIds', arrayUnion(users.map(u => u.id))
         )
       }
-      transaction.update(
-        doc(db, 'users', user.id)
-          .withConverter(converters.user),
-        { 'channelIds': arrayUnion(channelId) }
-      );
+      users.forEach(u => {
+        transaction.update(
+          doc(db, 'users', u.id)
+            .withConverter(converters.user),
+          { 'channelIds': arrayUnion(channelId) }
+        );
+      })
+
     })
   }
 
@@ -239,16 +239,20 @@ export class FirebaseAuthService {
   //"Cloud Functions Section" END
 
   private provider = new GoogleAuthProvider();
-  readonly user$ = user(this.auth).pipe(shareReplay());
+  readonly user$ = user(this.auth).pipe(tap((resp) => console.log('user$', resp)), shareReplay());
   readonly userProfile = toSignal(this.user$.pipe(
-    filter(user => user !== null),
-    switchMap(
-      user => docData(
-        doc(this.firestore, 'users', user!.uid)
-          .withConverter(converters.user)
-      )
+    switchMap(user => {
+      if (user) {
+        return docData(
+          doc(this.firestore, 'users', user!.uid)
+            .withConverter(converters.user)
+        )
+      } else {
+        return of(null)
+      }
+    }
     )
-  ), { initialValue: undefined })
+  ), { initialValue: null })
   loggedInUser = computed(() => this.userProfile()?.authId || '')
 
   constructor(private router: Router) { }
@@ -271,7 +275,9 @@ export class FirebaseAuthService {
     try {
       return await signInWithEmailAndPassword(this.auth, email, password).then(
         () => {
-          this.router.navigate(['/home']);
+          setTimeout(() => {
+            this.router.navigate(['home']);
+          }, 5000);
           return false;
         }
       );

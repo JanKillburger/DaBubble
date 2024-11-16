@@ -5,10 +5,13 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { FirebaseChannelService } from '../../../services/firebase-channel.service';
-import { FirebaseUserService } from '../../../services/firebase-user.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { HomeService } from '../../../services/home.service';
+import { SearchService } from '../../../search.service';
+import { DataService } from '../../../services/data.service';
+import { FirebaseAuthService } from '../../../services/firebase-auth.service';
+import { UserData } from '../../../models/app.model';
 
 @Component({
   selector: 'app-users-to-channel',
@@ -30,40 +33,23 @@ import { HomeService } from '../../../services/home.service';
 export class UsersToChannelComponent {
   userPicker = new FormControl();
   status: string = 'all';
-  userToPick: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public channelId: any,
     private channelService: FirebaseChannelService,
     private homeService: HomeService,
-    public userService: FirebaseUserService
-  ) {
-    this.userService.getUserData();
-    this.channelService.getCurrentChannel(this.channelId);
-  }
-
-  async migrateAllUser() {
-    this.userToPick = false;
-  }
-
-  userInputField() {
-    this.userToPick = true;
-  }
-
-  appendUserIds(userList: any[]) {
-    if (this.channelService.currentChannel && userList) {
-      this.channelService.currentChannel.users = [];
-      userList.forEach((user) => {
-        this.channelService.currentChannel?.users.push(user.userId);
-      });
-    }
-  }
+    public searchService: SearchService,
+    private as: FirebaseAuthService
+  ) { }
 
   updateChannelWithUser(){
-    if (this.userToPick) {
-      this.appendUserIds(this.userPicker.value)
-    } else {this.appendUserIds(this.userService.allUsers)}
-    this.channelService.updateChannel(this.channelService.currentChannel , this.channelId);
+    
+    if (this.userPicker.value?.length > 0) {
+      var usersToAdd = this.userPicker.value as UserData[];
+    } else {
+      var usersToAdd = this.searchService.users()! as UserData[]
+    }
+    this.as.addUsersToChannel(usersToAdd , this.channelId);
     this.homeService.setChannel(this.channelService.currentChannel!);
     this.homeService.openChannel();
   }

@@ -6,36 +6,31 @@
     </button>
   </div>
   <section>
-    <mat-radio-group
-      class="radio-inputs"
-      color="primary"
-      name="userSelection"
-      [(ngModel)]="status"
-    >
-      <mat-radio-button value="all" (click)="migrateAllUser()">
+    <mat-radio-group #addUserMode="ngModel" class="radio-inputs" color="primary" name="userSelection" [(ngModel)]="status">
+      <mat-radio-button value="all">
         Alle Mitglieder von
         <span class="highlightedText">Code learning</span>
         hinzufügen
       </mat-radio-button>
-      <mat-radio-button value="pick" (click)="userInputField()">
+      <mat-radio-button value="pick">
         Bestimmte Leute hinzufügen
       </mat-radio-button>
     </mat-radio-group>
-    <div class="inputContainer" *ngIf="userToPick">
+    <div class="inputContainer" *ngIf="addUserMode.value == 'pick'">
       <mat-form-field>
         <mat-label>User einbinden</mat-label>
         <mat-select [formControl]="userPicker" multiple>
           <mat-select-trigger>
             {{userPicker.value?.[0]?.name || ''}}
             @if ((userPicker.value?.length || 0) > 1) {
-              <span class="example-additional-selection">
-                (+{{(userPicker.value?.length || 0) - 1}} {{userPicker.value?.length === 2 ? 'other' : 'others'}})
-              </span>
+            <span class="example-additional-selection">
+              (+{{(userPicker.value?.length || 0) - 1}} {{userPicker.value?.length === 2 ? 'other' : 'others'}})
+            </span>
             }
           </mat-select-trigger>
-          @for (user of userService.allUsers; track user) {
-        <mat-option [value]=user>{{user.name}}</mat-option>
-      }
+          @for (user of searchService.users(); track user.id) {
+          <mat-option [value]="user">{{user.name}}</mat-option>
+          }
         </mat-select>
       </mat-form-field>
     </div>

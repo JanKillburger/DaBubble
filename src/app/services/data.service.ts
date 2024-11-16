@@ -18,6 +18,7 @@ export class DataService {
   private hs = inject(HomeService)
 
   userChannels = toSignal(toObservable(this.as.userProfile).pipe(
+    tap(r => console.log('userChannels', r)),
     switchMap(
       user => {
         if (user) {
@@ -47,6 +48,7 @@ export class DataService {
   }
 
   userChats = toSignal(toObservable(this.as.userProfile).pipe(
+    tap(r => console.log('userChats', r)),
     switchMap(
       user => {
         if (user) {
@@ -82,60 +84,94 @@ export class DataService {
   }
 
   getChannel(channelId: string) {
-    return docData(doc(this.fs, 'channels', channelId).withConverter(converters.channel))
+    return this.as.user$.pipe(
+      filter(user => user != null),
+      tap((r) => console.debug('getChannel', r)),
+      switchMap(() =>
+        docData(doc(this.fs, 'channels', channelId).withConverter(converters.channel))
+      )
+    )
   }
 
   getChannelMessages(channelId: string) {
-    return collectionData(
-      collection(
-        this.fs, 'channels', channelId, 'messages')
-        .withConverter(converters.message))
-      .pipe(
-        map(groupMessagesByDate)
+    return this.as.user$.pipe(
+      filter(user => user != null),
+      tap((r) => console.debug('getChannelMessages', r)),
+      switchMap(() =>
+        collectionData(
+          collection(
+            this.fs, 'channels', channelId, 'messages')
+            .withConverter(converters.message))
+          .pipe(
+            map(groupMessagesByDate)
+          )
       )
+    )
   }
 
   getChannelUsers(channelId: string) {
-    return collectionData(
-      query(
-        collection(this.fs, 'users').withConverter(converters.user),
-        where('channelIds', 'array-contains', channelId)
+    return this.as.user$.pipe(
+      filter(user => user != null),
+      tap((r) => console.debug('getChannelUsers', r)),
+      switchMap(() =>
+        collectionData(
+          query(
+            collection(this.fs, 'users').withConverter(converters.user),
+            where('channelIds', 'array-contains', channelId)
+          )
+        )
       )
     )
   }
 
   getChat(chatId: string) {
-    return docData(doc(this.fs, 'chats', chatId).withConverter(converters.chat))
+    return this.as.user$.pipe(
+      filter(user => user != null),
+      tap((r) => console.debug('getChat', r)),
+      switchMap(() => docData(doc(this.fs, 'chats', chatId).withConverter(converters.chat))
+      )
+    )
   }
 
   getChatMessages(chatId: string) {
-    return collectionData(
-      collection(this.fs, 'chats', chatId, 'messages')
-        .withConverter(converters.message)
-    ).pipe(
-      map(groupMessagesByDate)
+    return this.as.user$.pipe(
+      filter(user => user != null),
+      switchMap(() => collectionData(
+        collection(this.fs, 'chats', chatId, 'messages')
+          .withConverter(converters.message)
+      ).pipe(
+        tap((r) => console.debug('getChatMessages', r)),
+        map(groupMessagesByDate)
+      )
+      )
     )
   }
 
   getMessageReplies(message: Message) {
     const topCollection = message.path.includes('chats') ? 'chats' : 'channels';
-    const topCollectionDocId = message.path[1]
+    const topCollectionDocId = message.path[1];
     return collectionData(
       collection(this.fs, topCollection, topCollectionDocId, 'messages', message.id, 'replies')
         .withConverter(converters.reply)
     ).pipe(
+      tap(() => console.debug('getMessageReplies')),
       map(messages => messages.sort((a, b) => a.timestamp - b.timestamp))
     )
   }
 
   getUser(id: string) {
-    return docData(doc(this.fs, 'users', id).withConverter(converters.user))
+    return this.as.user$.pipe(
+      filter(user => user != null),
+      tap((r) => console.debug('getUser', r)),
+      switchMap(() => docData(doc(this.fs, 'users', id).withConverter(converters.user))
+      )
+    )
   }
 
   createReply(reply: Omit<Reply, "id">, message: Message) {
     const batch = writeBatch(this.fs);
     batch.set(doc(collection(this.fs, [...message.path, message.id, "replies"].join("/"))).withConverter(converters.reply), reply);
-    batch.update(doc(this.fs, [...message.path, message.id].join("/")), {repliesCount: increment(1), lastReplyAt: Date.now()});
+    batch.update(doc(this.fs, [...message.path, message.id].join("/")), { repliesCount: increment(1), lastReplyAt: Date.now() });
     batch.commit();
   }
 

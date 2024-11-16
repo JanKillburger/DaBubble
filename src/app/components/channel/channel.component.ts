@@ -1,10 +1,8 @@
-import { Component, effect, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MessageComponent } from '../message/message.component';
 import { MessagesContainerComponent } from '../messages-container/messages-container.component';
-import { AsyncPipe, JsonPipe, KeyValuePipe, NgFor, NgStyle } from '@angular/common';
-import { FirebaseChannelService } from '../../services/firebase-channel.service';
+import { AsyncPipe, KeyValuePipe, NgStyle } from '@angular/common';
 import { MessagesInputComponent } from '../messages-input/messages-input.component';
 import { HomeService } from '../../services/home.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,9 +10,9 @@ import { EditChannelComponent } from '../dialog-components/edit-channel/edit-cha
 import { ViewportService } from '../../services/viewport.service';
 import { ChannelMembersComponent } from '../dialog-components/channel-members/channel-members.component';
 import { AddChannelMemberDialog } from '../dialog-components/add-channel-member/add-channel-member.component';
-import { Message, MessagesByDay, UserData } from '../../models/app.model';
+import { Message, MessagesByDay } from '../../models/app.model';
 import { DataService } from '../../services/data.service';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-channel',
@@ -23,7 +21,6 @@ import { map, Observable } from 'rxjs';
     MatIconModule,
     MatButtonModule,
     MessagesContainerComponent,
-    NgFor,
     NgStyle,
     AsyncPipe,
     MessagesInputComponent
@@ -39,7 +36,6 @@ export class ChannelComponent {
   messagesByDay$!: Observable<MessagesByDay>
 
   constructor(
-    public channelService: FirebaseChannelService,
     public hs: HomeService,
     private dialog: MatDialog,
     private viewport: ViewportService,
@@ -57,34 +53,25 @@ export class ChannelComponent {
     
   }
 
-  getChannelMessages() {
-    const channelId = this.hs.selectedChannel()?.id;
-    if (channelId) {
-      return this.channelService.userChannelsMessages.get(channelId);
-    } else {
-      return undefined;
-    }
-  }
-
   editChannel() {
     switch (this.hs.screenMode()) {
       case "small":
         this.dialog.open(EditChannelComponent, {
           panelClass: 'fullscreen-container',
-          data: [this.hs.selectedChannel(), this.getChannelUsers()]
+          data: [this.hs.selectedChannel(), this.ds.getChannelUsers(this.hs.selectedChannel()!.id)]
         })
         break;
       case "medium":
         this.dialog.open(EditChannelComponent, {
           panelClass: 'default-container',
-          data: [this.hs.selectedChannel(), this.getChannelUsers()]
+          data: [this.hs.selectedChannel(), this.ds.getChannelUsers(this.hs.selectedChannel()!.id)]
         })
         break;
       case "large":
         this.dialog.open(EditChannelComponent, {
           panelClass: 'custom-container--top-left',
           position: this.viewport.getPositionRelativeTo(this.callEditChannel, "bottom", "left"),
-          data: [this.hs.selectedChannel(), this.getChannelUsers()]
+          data: [this.hs.selectedChannel(), this.ds.getChannelUsers(this.hs.selectedChannel()!.id)]
         })
         break;
     }
@@ -93,7 +80,7 @@ export class ChannelComponent {
   openMembersListDialog() {
     this.dialog.open(ChannelMembersComponent, {
       panelClass: 'custom-container',
-      data: [this.getChannelUsers(), this.viewport.getPositionRelativeTo(this.addMember, 'bottom', 'right')],
+      data: [this.ds.getChannelUsers(this.hs.selectedChannel()!.id), this.viewport.getPositionRelativeTo(this.addMember, 'bottom', 'right')],
       position: this.viewport.getPositionRelativeTo(this.callChannelMembers, 'bottom', 'right')
     })
   }
@@ -109,18 +96,5 @@ export class ChannelComponent {
         position: this.viewport.getPositionRelativeTo(this.addMember, 'bottom', 'right')
       });
     }
-  }
-
-  getChannelUsers() {
-    const userIds = this.hs.selectedChannel()?.users;
-    if (userIds) {
-      const users: UserData[] = [];
-      for (const userId of userIds) {
-        const user = this.channelService.users.get(userId);
-        if (user) users.push(user);
-      }
-      return users;
-    }
-    return undefined
   }
 }
