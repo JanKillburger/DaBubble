@@ -74,13 +74,13 @@
   <nav class="primary-nav main-item" [class.is-active]="hs.navVisible() || hs.screenMode() === 'large'">
     <app-nav-menu></app-nav-menu>
   </nav>
-  <section class="channel-container main-item" *ngIf="hs.channelVisible()">
+  <section class="channel-container main-item" [class.is-active]="hs.channelVisible()">
     <app-channel *ngIf="hs.mainContent() === 'channel'"></app-channel>
     <app-new-message *ngIf="hs.mainContent() === 'new-message'"></app-new-message>
     <app-direct-messages *ngIf="hs.mainContent() === 'direct-message'"></app-direct-messages>
   </section>
-  <aside class="thread-container main-item" [class.is-active]="hs.threadVisible()"
-    *ngIf="hs.threadVisible() && hs.selectedMessage()">
+  <aside class="thread-container main-item" [class.is-active]="hs.threadVisible() && hs.selectedMessage()"
+    >
     <app-thread (closeThreadEv)="closeThread()"></app-thread>
   </aside>
 </main>
