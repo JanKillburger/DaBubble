@@ -80,7 +80,7 @@
     <app-direct-messages *ngIf="hs.mainContent() === 'direct-message'"></app-direct-messages>
   </section>
   <aside class="thread-container main-item" [class.is-active]="hs.threadVisible()"
-    *ngIf="hs.screenMode() === 'large' && hs.selectedMessage()">
+    *ngIf="hs.threadVisible() && hs.selectedMessage()">
     <app-thread (closeThreadEv)="closeThread()"></app-thread>
   </aside>
 </main>
