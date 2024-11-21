@@ -28,7 +28,7 @@
         <div
           *ngFor="let reactions of message?.reactions"
           class="showEmoji"
-          (click)="addOrDeleteEmoji(reactions)" >
+          (click)="addOrDeleteEmoji(reactions.emoji)" >
           <div class="reactionsPeopleSubDiv" *ngFor="let name of getReactionsPeople(reactions); let i = index" >
             {{ name }}
             <span class="reactedSpan" *ngIf="getReactionsPeople(reactions).length > 1">
