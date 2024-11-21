@@ -13,12 +13,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { MatSelect } from '@angular/material/select';
 import { FirebaseStorageService } from '../../services/firebase-storage.service';
-import { FirebaseUserService } from '../../services/firebase-user.service';
 import { HomeService } from '../../services/home.service';
 import { FirebaseAuthService } from '../../services/firebase-auth.service';
 import { DataService } from '../../services/data.service';
 import converters from '../../services/firestore-converters';
 import { NewDocData} from '../../models/app.model';
+import { SearchService } from '../../search.service';
 
 @Component({
   selector: 'app-messages-input',
@@ -58,9 +58,9 @@ export class MessagesInputComponent {
   constructor(
     private homeService: HomeService,
     public storage: FirebaseStorageService,
-    private users: FirebaseUserService,
     private authService: FirebaseAuthService,
-    private ds: DataService
+    private ds: DataService,
+    private searchService: SearchService
   ) {
     effect(() => { if (this.homeService.activeMessageInput() === this.container) { this.messageEl.nativeElement.focus() } })
   }
@@ -128,15 +128,14 @@ export class MessagesInputComponent {
 
   async getUsersOfChannel() {
     this.userList = [];
-    await this.users.getUserData();
     this.homeService.selectedChannel()?.users.forEach((usersInChannel) => {
       this.filterUserName(usersInChannel);
     });
   }
 
   filterUserName(channelUsers: string) {
-    let searchedUser = this.users.allUsers.find(
-      (user) => user.userId === channelUsers
+    let searchedUser = this.searchService.users()?.find(
+      (user) => user.id === channelUsers
     );
     if (searchedUser) {
       this.userList.push(searchedUser.name);
