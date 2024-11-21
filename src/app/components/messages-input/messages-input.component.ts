@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { AfterViewInit, Component, effect, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, Input, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -13,15 +13,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { MatSelect } from '@angular/material/select';
 import { FirebaseStorageService } from '../../services/firebase-storage.service';
-import { FirebaseChannelService } from '../../services/firebase-channel.service';
 import { FirebaseUserService } from '../../services/firebase-user.service';
 import { HomeService } from '../../services/home.service';
-import { FirebaseMessageService } from '../../services/firebase-messages.service';
 import { FirebaseAuthService } from '../../services/firebase-auth.service';
 import { DataService } from '../../services/data.service';
 import converters from '../../services/firestore-converters';
-import { timestamp } from 'rxjs';
-import { DbMessage, DbReply, Message, NewDocData, Reply } from '../../models/app.model';
+import { NewDocData} from '../../models/app.model';
 
 @Component({
   selector: 'app-messages-input',

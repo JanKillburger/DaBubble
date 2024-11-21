@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { collectionData, doc, docData, Firestore, increment, orderBy, query, setDoc, where, writeBatch } from '@angular/fire/firestore';
-import { addDoc, collection, getDoc } from '@firebase/firestore';
-import { filter, firstValueFrom, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
+import { collectionData, doc, docData, Firestore, increment, orderBy, query, runTransaction, setDoc, where, writeBatch } from '@angular/fire/firestore';
+import { addDoc, collection, getDoc, Transaction } from '@firebase/firestore';
+import { filter, firstValueFrom, map, Observable, of, shareReplay, startWith, switchMap, tap } from 'rxjs';
 import converters from './firestore-converters';
 import { FirebaseAuthService } from './firebase-auth.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { Chat, ChatUser, DocData, Message, NewDocData, Reply, UserData } from '../models/app.model';
+import { Chat, ChatUser, DocData, Emoji, Message, NewDocData, Reply, UserData } from '../models/app.model';
 import { HomeService } from './home.service';
 import { group } from 'console';
 
@@ -36,7 +36,8 @@ export class DataService {
       if (channels.length > 0) {
         this.hs.selectedChannel.set(channels[0])
       }
-    })), { initialValue: [] })
+    }),
+  ), { initialValue: [] })
 
   private _getChatRecipient(chat: Chat, user: UserData): ChatUser {
     const recipientId = chat.users?.find(userId => userId != user.id);
@@ -81,6 +82,23 @@ export class DataService {
         docData
       );
     }
+  }
+
+  addReactionToMessage(emoji: string, message: Message) {
+    const db = this.fs;
+    const currentUserId = this.as.loggedInUser();
+    runTransaction(db, async function _addReactionToMessage(transaction: Transaction) {
+      const messageSnap = await transaction.get(doc(db, message.path.join("/"), message.id).withConverter(converters.message));
+      const reaction = messageSnap.data()?.reactions?.find(reaction => reaction.emoji == emoji);
+      const otherReactions = messageSnap.data()!.reactions!.filter(reaction => reaction.emoji != emoji);
+      if (reaction) {
+        if (!reaction.userId.includes(currentUserId)) {
+          transaction.update(messageSnap.ref, { reactions: [...otherReactions, { emoji, userId: [...reaction.userId, currentUserId] }] })
+        }
+      } else {
+        transaction.update(messageSnap.ref, {reactions: [...otherReactions, {emoji, userId: [currentUserId]}]})
+      }
+    })
   }
 
   getChannel(channelId: string) {
