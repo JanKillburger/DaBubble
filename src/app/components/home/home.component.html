@@ -79,10 +79,12 @@
     <app-new-message *ngIf="hs.mainContent() === 'new-message'"></app-new-message>
     <app-direct-messages *ngIf="hs.mainContent() === 'direct-message'"></app-direct-messages>
   </section>
-  <aside class="thread-container main-item" [class.is-active]="hs.threadVisible() && hs.selectedMessage()"
+  @if (hs.selectedMessage()) {
+  <aside class="thread-container main-item" [class.is-active]="hs.threadVisible()"
     >
     <app-thread (closeThreadEv)="closeThread()"></app-thread>
   </aside>
+}
 </main>
 <button (click)="toggleNav()" class="toggle-primary-nav" *ngIf="hs.screenMode() === 'medium'">
   @if (hs.navVisible()) { Workspace-Menü schließen
