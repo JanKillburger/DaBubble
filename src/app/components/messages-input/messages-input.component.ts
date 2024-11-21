@@ -61,9 +61,7 @@ export class MessagesInputComponent {
   constructor(
     private homeService: HomeService,
     public storage: FirebaseStorageService,
-    private channels: FirebaseChannelService,
     private users: FirebaseUserService,
-    private messageService: FirebaseMessageService,
     private authService: FirebaseAuthService,
     private ds: DataService
   ) {
