@@ -4,9 +4,7 @@ import {
 } from '@angular/common';
 import {
   Component,
-  EventEmitter,
   Input,
-  Output,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -40,9 +38,7 @@ export class MessageComponent {
   @Input() message!: Reply | Message;
   @Input() showReplies = false;
   @Input() container: 'thread' | 'channel' = 'thread';
-  @Output() openThreadEv = new EventEmitter<Message>();
   showEmojiPicker = false;
-  emoji = '';
   currentUser = this.authService.userProfile
   user?: Observable<UserData | undefined>
 
@@ -89,48 +85,6 @@ export class MessageComponent {
     return this.message?.from
       ? this.channelService.users.get(this.message.from)
       : undefined;
-  }
-
-  getFormattedDay(date: Date | undefined) {
-    if (date) {
-      const dateSection = new Date(date).toLocaleDateString('de-DE', {
-        day: '2-digit',
-        month: '2-digit',
-        year: '2-digit',
-      });
-      const timeSection = new Date(date).toLocaleTimeString('de-DE', {
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-      return `${dateSection} ${timeSection}`;
-    }
-    return undefined;
-  }
-
-  getReplies(): Message[] | undefined {
-    if (this.message?.id) {
-      if (this.homeService.mainContent() === "channel") {
-        return this.channelService.replies.get(this.message?.id);
-      } else {
-        return this.channelService.userChatReplies.get(this.message.id);
-      }
-    } else {
-      return undefined;
-    }
-  }
-
-  getLastReplyDate() {
-    const lastReply = this.getReplies()?.at(-1);
-    return lastReply ? this.getFormattedDay(lastReply.created) : undefined;
-  }
-
-  hasReplies() {
-    const replies = this.getReplies();
-    if (replies !== undefined) {
-      return replies.length > 0;
-    } else {
-      return false;
-    }
   }
 
   addOrDeleteEmoji(emoji: any) {

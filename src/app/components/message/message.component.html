@@ -13,7 +13,7 @@
           {{ (user | async)?.name }}
         </button>
         <span class="message-time">{{
-          getFormattedDay(message.created)
+          message.created | date:"dd.MM.yyyy HH:mm"
         }}</span>
       </p>
       <p
