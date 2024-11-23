@@ -8,7 +8,6 @@ import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { SelectedUserTagComponent } from '../../selected-user-tag/selected-user-tag.component';
 import { FormsModule } from '@angular/forms';
 import { HomeService } from '../../../services/home.service';
-import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { SearchService } from '../../../search.service';
 
 @Component({
@@ -21,7 +20,6 @@ import { SearchService } from '../../../search.service';
 export class AddChannelMemberComponent {
   authService = inject(FirebaseAuthService);
   homeService = inject(HomeService);
-  channelService = inject(FirebaseChannelService);
   searchService = inject(SearchService);
   selectedUser: UserData | null = null;
   results: UserData[] | undefined;
@@ -49,9 +47,7 @@ export class AddChannelMemberComponent {
   }
 
   addUser() {
-    let channel = this.homeService.selectedChannel()!;
-    channel.users.push(this.selectedUser?.userId!);
-    this.channelService.editChannel(channel);
+    if (this.selectedUser && this.homeService.selectedChannel()) this.authService.addUsersToChannel([this.selectedUser], this.homeService.selectedChannel()!.id)
     this.selectedUser = null;
     this.results = [];
     this.query = "";
