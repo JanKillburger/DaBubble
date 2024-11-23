@@ -133,7 +133,7 @@ export class UserProfileDialogComponent {
       } else {
         this.wrongFileFormat = false;
       }
-      if (file.size > 2e6) {
+      if (file.size > 1e6) {
         this.fileTooLarge = true;
       } else {
         this.fileTooLarge = false;

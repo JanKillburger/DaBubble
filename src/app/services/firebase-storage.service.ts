@@ -1,38 +1,38 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { getApp } from 'firebase/app';
-import { getStorage, ref, uploadBytes, getDownloadURL, StorageReference } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL, StorageReference } from '@angular/fire/storage';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirebaseStorageService {
+
+  fs = inject(Firestore);
+  storage = getStorage();
+
   private userImgUrlSource = new BehaviorSubject<string>('');
   userImgUrl = this.userImgUrlSource.asObservable();
   fileUrl: string = '';
-  firestore: Firestore = inject(Firestore);
 
-  async uploadImageInStorage(fileNam: string, file: any) {
-    const firebaseApp = getApp();
-    const storage = getStorage(firebaseApp, 'gs://dabubble-ea6d8.appspot.com');
-    const storageRef = ref(storage, fileNam);
+  async uploadImageInStorage(fileName: string, file: any): Promise<boolean> {
+    const storageRef = ref(this.storage, fileName);
     try {
       await uploadBytes(storageRef, file);
       return true;
-    } catch {
+    }
+    catch {
       return false;
     }
   }
 
   async getImageFromStorage(userId: string) {
-    const storage = getStorage();
-    const starsRef = ref(storage, userId);
+    const starsRef = ref(this.storage, userId);
     getDownloadURL(starsRef)
       .then((url) => {
         this.updateUserImgUrl(url);
       })
-      .catch((error) => {
+      .catch(() => {
         return 'error';
       });
   }
@@ -42,9 +42,7 @@ export class FirebaseStorageService {
   }
 
   saveUserAvatar(fileName: string, file: File) {
-    const firebaseApp = getApp();
-    const storage = getStorage(firebaseApp, 'gs://dabubble-ea6d8.appspot.com');
-    const storageRef = ref(storage, fileName);
+    const storageRef = ref(this.storage, fileName);
     return uploadBytes(storageRef, file);
   }
 
@@ -53,8 +51,7 @@ export class FirebaseStorageService {
   }
 
   async getFileFromStorage(filename: string) {
-    const storage = getStorage();
-    const starsRef = ref(storage, filename);
+    const starsRef = ref(this.storage, filename);
     await getDownloadURL(starsRef).then((url) => {
       this.fileUrl = url;
     });

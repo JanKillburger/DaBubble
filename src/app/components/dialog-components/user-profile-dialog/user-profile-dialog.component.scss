@@ -11,7 +11,8 @@
 
 .avatar-xlarge {
   height: 10em;
-  width: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
   margin-inline: auto;
   margin-block: 1em;
   border-radius: 50%;

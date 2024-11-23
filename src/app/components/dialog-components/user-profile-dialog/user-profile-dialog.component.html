@@ -27,7 +27,7 @@
     <label for="custom-avatar">Oder lade ein eigenes Bild hoch:</label>
     <input id="custom-avatar" type="file" class="file-input" accept="image/png, image/jpeg, image/jpg" (change)="validateImage($event)" (cancel)="onCancel()">
     <p *ngIf="wrongFileFormat" class="error-message">Bitte jpg oder png auswählen!</p>
-    <p *ngIf="fileTooLarge" class="error-message">Maximale Dateigröße ist 2MB!</p>
+    <p *ngIf="fileTooLarge" class="error-message">Maximale Dateigröße ist 1MB!</p>
   </div>
   <label
     for="name"
