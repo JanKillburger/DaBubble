@@ -50,6 +50,7 @@
         </button>
         <emoji-mart
           class="emoji-mart"
+          [class.aligned-left]="currentUser()?.id != (user | async)?.id"
           *ngIf="showEmojiPicker"
           (emojiSelect)="addEmoji($event)"
         ></emoji-mart>
