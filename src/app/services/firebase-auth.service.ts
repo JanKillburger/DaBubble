@@ -239,7 +239,7 @@ export class FirebaseAuthService {
   //"Cloud Functions Section" END
 
   private provider = new GoogleAuthProvider();
-  readonly user$ = user(this.auth).pipe(tap((resp) => console.log('user$', resp)), shareReplay());
+  readonly user$ = user(this.auth).pipe(tap(user => {if (!user) this.router.navigate(["login"])}), shareReplay());
   readonly userProfile = toSignal(this.user$.pipe(
     switchMap(user => {
       if (user) {
