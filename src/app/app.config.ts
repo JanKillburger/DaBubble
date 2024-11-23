@@ -17,16 +17,9 @@ export const appConfig: ApplicationConfig = {
         apiKey: "AIzaSyDOnSteBgs7gDR6lvOGmlzuuzQyZM_J-pU",
         authDomain: "da-bubble-1ecc6.firebaseapp.com",
         projectId: "da-bubble-1ecc6",
-        storageBucket: "da-bubble-1ecc6.appspot.com",
+        storageBucket: "da-bubble-1ecc6.firebasestorage.app",
         messagingSenderId: "985917454287",
         appId: "1:985917454287:web:d8adc94be02ed0473204ba"
-        //Team project data
-        // "projectId":"dabubble-ea6d8",
-        // "appId":"1:371227750144:web:c6d153d5e565d0c34c8de5",
-        // "storageBucket":"dabubble-ea6d8.appspot.com",
-        // "apiKey":"AIzaSyCYF6L2qsWD1xjhgVDk8zzewv2OEwzlKK0",
-        // "authDomain":"dabubble-ea6d8.firebaseapp.com",
-        // "messagingSenderId":"371227750144"
       })
     ),
     provideAuth(() => getAuth()),
