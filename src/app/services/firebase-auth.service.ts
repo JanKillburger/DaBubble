@@ -126,10 +126,11 @@ export class FirebaseAuthService {
             .withConverter(converters.channel),
           where('previewUserIds', 'array-contains', user.id)
         )
-      )).forEach(channel => transaction.update(
+      )).forEach(channel => {
+        transaction.update(
         channel.ref,
-        `previewUsers.${user.id}`, { avatar: user.avatar, name: user.name }
-      ))
+        `previewUsers`, [...(channel.data().previewUsers?.filter(u => u.id != user.id) || []), {id: user.id, avatar: user.avatar}]
+      )})
     }
     async function updateChats() {
       (await getDocs(
@@ -208,16 +209,14 @@ export class FirebaseAuthService {
             channel.ref,
             'userIds', arrayRemove(userId),
             'previewUserIds', [...otherUsers, newPreviewUserId],
-            `previewUsers.${userId}`, deleteField(),
-            `previewUsers.${newPreviewUserId}`,
-            { avatar: newPreviewUser.data().avatar }
+            `previewUsers`, [...otherUsers, newPreviewUser],
           )
         } else {
           transaction.update(
             channel.ref,
             'userIds', arrayRemove(userId),
             'previewUserIds', [...otherUsers],
-            `previewUsers.${userId}`, deleteField()
+            `previewUsers`, channel.data().previewUsers?.filter(u => u.id != userId) || []
           )
         }
       } else {
@@ -234,7 +233,7 @@ export class FirebaseAuthService {
     })
   }
 
-  //TODO createChannel, createChat, 
+  //TODO createChannel
 
   //"Cloud Functions Section" END
 
