@@ -3,13 +3,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { UserProfileDialogComponent } from '../user-profile-dialog/user-profile-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { FormsModule } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
 import { ChannelData, UserData } from '../../../models/app.model';
 import { ChannelMembersListComponent } from '../../shared/channel-members-list/channel-members-list.component';
 import { HomeService } from '../../../services/home.service';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
+import { DataService } from '../../../services/data.service';
 
 @Component({
   selector: 'app-edit-channel',
@@ -20,9 +20,9 @@ import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 })
 export class EditChannelComponent {
   constructor(public dialogRef: MatDialogRef<UserProfileDialogComponent>,
-    private channelService: FirebaseChannelService,
     private homeService: HomeService,
     private authService: FirebaseAuthService,
+    private ds: DataService,
     @Inject(MAT_DIALOG_DATA) public data: [ChannelData, UserData[]]) { }
 
   name = this.data[0].channelName;
@@ -43,22 +43,23 @@ export class EditChannelComponent {
   }
 
   saveName() {
-    this.data[0].channelName = this.name;
-    this.channelService.editChannel(this.data[0]);
+    if (this.homeService.selectedChannel()?.kind !== undefined) {
+      this.ds.saveDoc({ ...this.homeService.selectedChannel()!, channelName: this.name })
+    }
     this.nameDisplayMode = 'view';
   }
 
   saveDesc() {
-    this.data[0].channelDescription = this.desc;
-    this.channelService.editChannel(this.data[0]);
+    if (this.homeService.selectedChannel()?.kind !== undefined) {
+      this.ds.saveDoc({ ...this.homeService.selectedChannel()!, channelDescription: this.desc });
+    }
     this.descDisplayMode = 'view';
   }
 
   leaveChannel() {
-    this.data[0].users = this.data[0].users.filter(el => el !== this.authService.loggedInUser());
-    this.channelService.editChannel(this.data[0]);
-    const newChannel = this.channelService.userChannels.find(channel => this.homeService.selectedChannel()?.id !== channel.id);
-    if (newChannel) this.homeService.setChannel(newChannel);
+    if (this.homeService.selectedChannel()?.id) {
+      this.authService.removeUserFromChannel(this.authService.loggedInUser(), this.homeService.selectedChannel()!.id);
+    }
     this.dialogRef.close();
   }
 

@@ -33,10 +33,12 @@ export class DataService {
       }
     ),
     tap(channels => {
-      if (channels.length > 0) {
+      //Set selectedChannel if it is undefined (initial load) or not contained in the user channels since user just left the channel
+      if (channels.length > 0 && (!this.hs.selectedChannel() || !channels.find(ch => ch.id == this.hs.selectedChannel()!.id))) {
         this.hs.selectedChannel.set(channels[0])
       }
-    }),
+    }
+    ),
   ), { initialValue: [] })
 
   private _getChatRecipient(chat: Chat, user: UserData): ChatUser {
@@ -96,7 +98,7 @@ export class DataService {
           transaction.update(messageSnap.ref, { reactions: [...otherReactions, { emoji, userId: [...reaction.userId, currentUserId] }] })
         }
       } else {
-        transaction.update(messageSnap.ref, {reactions: [...otherReactions, {emoji, userId: [currentUserId]}]})
+        transaction.update(messageSnap.ref, { reactions: [...otherReactions, { emoji, userId: [currentUserId] }] })
       }
     })
   }

@@ -4,12 +4,10 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
-import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { HomeService } from '../../../services/home.service';
 import { SearchService } from '../../../search.service';
-import { DataService } from '../../../services/data.service';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
 import { UserData } from '../../../models/app.model';
 
@@ -36,7 +34,6 @@ export class UsersToChannelComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public channelId: any,
-    private channelService: FirebaseChannelService,
     private homeService: HomeService,
     public searchService: SearchService,
     private as: FirebaseAuthService
@@ -50,7 +47,6 @@ export class UsersToChannelComponent {
       var usersToAdd = this.searchService.users()! as UserData[]
     }
     this.as.addUsersToChannel(usersToAdd , this.channelId);
-    this.homeService.setChannel(this.channelService.currentChannel!);
     this.homeService.openChannel();
   }
 }

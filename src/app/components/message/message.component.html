@@ -1,16 +1,16 @@
 <div class="inner-container">
   <div
     class="message-wrapper"
-    [class.aligned-right]="currentUser()?.id === (user | async)?.id"
+    [class.aligned-right]="currentUser()?.id === user?.id"
   >
-    <img class="avatar" [src]="(user | async)?.avatar" alt="Profilbild" />
+    <img class="avatar" [src]="user?.avatar" alt="Profilbild" />
     <div class="message">
       <p
         class="message-meta-data flex ai-c"
-        [class.aligned-right]="currentUser()?.id === (user | async)?.id"
+        [class.aligned-right]="currentUser()?.id === user?.id"
       >
         <button class="btn btn--text user-name" (click)="showUserProfile()">
-          {{ (user | async)?.name }}
+          {{ user?.name }}
         </button>
         <span class="message-time">{{
           message.created | date:"dd.MM.yyyy HH:mm"
@@ -20,7 +20,7 @@
         id="{{ message.id }}"
         class="message-content"
         [innerHTML]="message.message! | linkify"
-        [class.message-content--aligned-right]="currentUser()?.id === (user | async)?.id"
+        [class.message-content--aligned-right]="currentUser()?.id === user?.id"
       >
         {{ message.message }}
       </p>
@@ -50,7 +50,7 @@
         </button>
         <emoji-mart
           class="emoji-mart"
-          [class.aligned-left]="currentUser()?.id != (user | async)?.id"
+          [class.aligned-left]="currentUser()?.id != user?.id"
           *ngIf="showEmojiPicker"
           (emojiSelect)="addEmoji($event)"
         ></emoji-mart>

@@ -1,6 +1,5 @@
 import { Component, effect, inject } from '@angular/core';
 import { MessagesContainerComponent } from '../messages-container/messages-container.component';
-import { FirebaseChannelService } from '../../services/firebase-channel.service';
 import { AsyncPipe, KeyValuePipe, NgFor, NgIf } from '@angular/common';
 import { HomeService } from '../../services/home.service';
 import { ContactButtonComponent } from '../contact-button/contact-button.component';
@@ -18,7 +17,6 @@ import { DataService } from '../../services/data.service';
   styleUrl: './direct-messages.component.scss'
 })
 export class DirectMessagesComponent {
-  channelService = inject(FirebaseChannelService);
   hs = inject(HomeService);
   ds = inject(DataService);
   authService = inject(FirebaseAuthService)

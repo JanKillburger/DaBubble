@@ -4,7 +4,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FirebaseChannelService } from '../../../services/firebase-channel.service';
 import { HomeService } from '../../../services/home.service';
 import { FirebaseStorageService } from '../../../services/firebase-storage.service';
 import { FirebaseAuthService } from '../../../services/firebase-auth.service';
@@ -26,7 +25,6 @@ export class UserProfileDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<UserProfileDialogComponent>,
-    private channelService: FirebaseChannelService,
     private authService: FirebaseAuthService,
     private homeService: HomeService,
     private ds: DataService,
@@ -108,7 +106,7 @@ export class UserProfileDialogComponent {
 
   async createChat() {
     const userId = this.user?.id || this.user?.authId || this.user?.userId;
-    let currentChat = this.channelService.userChats.find((chat) => chat.users.includes(userId!))
+    let currentChat = this.ds.userChats().find((chat) => chat.users.includes(userId!))
     if (currentChat) {
       this.homeService.openChat(currentChat)
       this.closeDialog()

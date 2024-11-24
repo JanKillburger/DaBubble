@@ -12,12 +12,11 @@ import { UserProfileDialogComponent } from '../dialog-components/user-profile-di
 import { MatDialog } from '@angular/material/dialog';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { Emoji, Message, Reply, UserData } from '../../models/app.model';
-import { FirebaseChannelService } from '../../services/firebase-channel.service';
 import { HomeService } from '../../services/home.service';
 import { LinkifyPipe } from '../../services/linkify.pipe';
 import { FirebaseAuthService } from '../../services/firebase-auth.service';
 import { SearchService } from '../../search.service';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { DataService } from '../../services/data.service';
 
 @Component({
@@ -40,11 +39,11 @@ export class MessageComponent {
   @Input() container: 'thread' | 'channel' = 'thread';
   showEmojiPicker = false;
   currentUser = this.authService.userProfile
-  user?: Observable<UserData | undefined>
+  unsubUser: Subscription | null = null
+  user?: UserData | undefined
 
   constructor(
     public dialog: MatDialog,
-    public channelService: FirebaseChannelService,
     private homeService: HomeService,
     private authService: FirebaseAuthService,
     private searchService: SearchService,
@@ -52,7 +51,11 @@ export class MessageComponent {
   ) { }
 
   ngOnInit() {
-    this.user = this.ds.getUser(this.message.from)
+    this.unsubUser = this.ds.getUser(this.message.from).subscribe(user => this.user = user);
+  }
+
+  ngOnDestroy() {
+    this.unsubUser?.unsubscribe()
   }
 
   toggleEmojiPicker() {
@@ -70,21 +73,13 @@ export class MessageComponent {
   openThread() {
     if (this.message.kind === "message") {
       this.homeService.setThreadMessage(this.message!);
-      this.channelService.currentThreadForMessage = this.message?.id;
     }
   }
 
   showUserProfile() {
-    const user = this.getUser();
-    if (user) {
-      this.dialog.open(UserProfileDialogComponent, { data: user });
+    if (this.user) {
+      this.dialog.open(UserProfileDialogComponent, { data: this.user.id });
     }
-  }
-
-  getUser(): UserData | undefined {
-    return this.message?.from
-      ? this.channelService.users.get(this.message.from)
-      : undefined;
   }
 
   addOrDeleteEmoji(emoji: any) {

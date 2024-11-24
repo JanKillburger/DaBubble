@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { MessagesInputComponent } from '../messages-input/messages-input.component';
 import { NgFor, NgIf } from '@angular/common';
 import { ChannelData, UserData } from '../../models/app.model';
-import { FirebaseChannelService } from '../../services/firebase-channel.service';
 import { FirebaseAuthService } from '../../services/firebase-auth.service';
 import { FormsModule } from '@angular/forms';
 import { HomeService } from '../../services/home.service';
@@ -17,7 +16,6 @@ import { DataService } from '../../services/data.service';
   styleUrl: './new-message.component.scss'
 })
 export class NewMessageComponent {
-  channelService = inject(FirebaseChannelService);
   authService = inject(FirebaseAuthService);
   homeService = inject(HomeService);
   searchService = inject(SearchService);
@@ -36,7 +34,7 @@ export class NewMessageComponent {
     }
     if (this.query.startsWith("#")) {
       this.userSearchResults = [];
-      this.channelSearchResults = this.getFirstN(this.channelService.userChannels.filter(channel => channel.channelName.toLowerCase().includes(this.query.replace('#', '').toLowerCase())), 5);
+      this.channelSearchResults = this.getFirstN(this.ds.userChannels().filter(channel => channel.channelName.toLowerCase().includes(this.query.replace('#', '').toLowerCase())), 5);
     } else if (this.query.startsWith("@")) {
       this.channelSearchResults = [];
       this.userSearchResults = this.getFirstN(this.searchService.users()!.filter(user => user.name.toLowerCase().includes(this.query.replace('@', '').toLowerCase())), 5);
@@ -69,7 +67,7 @@ export class NewMessageComponent {
   }  
 
   async createChat(userId:string) {    
-    let currentChat = this.channelService.userChats.find((chat) => chat.users.includes(userId))
+    let currentChat = this.ds.userChats().find((chat) => chat.users.includes(userId))
     if (currentChat) {
       this.homeService.selectedChat.set(currentChat)
     } else {
