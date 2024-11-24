@@ -127,9 +127,10 @@ export class FirebaseAuthService {
         )
       )).forEach(channel => {
         transaction.update(
-        channel.ref,
-        `previewUsers`, [...(channel.data().previewUsers?.filter(u => u.id != user.id) || []), {id: user.id, avatar: user.avatar}]
-      )})
+          channel.ref,
+          `previewUsers`, [...(channel.data().previewUsers?.filter(u => u.id != user.id) || []), { id: user.id, avatar: user.avatar }]
+        )
+      })
     }
     async function updateChats() {
       (await getDocs(
@@ -237,7 +238,13 @@ export class FirebaseAuthService {
   //"Cloud Functions Section" END
 
   private provider = new GoogleAuthProvider();
-  readonly user$ = user(this.auth).pipe(tap(user => {if (!user) this.router.navigate(["login"])}), shareReplay());
+  readonly user$ = user(this.auth).pipe(
+    tap(user => {
+      if (!user && !location.href.includes("reset-password")) {
+        this.router.navigate(["login"]);
+      }
+    }),
+    shareReplay());
   readonly userProfile = toSignal(this.user$.pipe(
     switchMap(user => {
       if (user) {
