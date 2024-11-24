@@ -13,7 +13,6 @@ import {
   query,
   runTransaction,
   setDoc,
-  updateDoc,
   where,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
@@ -27,7 +26,7 @@ import {
   signOut,
   sendPasswordResetEmail
 } from '@angular/fire/auth';
-import { filter, firstValueFrom, of, shareReplay, switchMap, tap } from 'rxjs';
+import { filter, firstValueFrom, of, shareReplay, switchMap } from 'rxjs';
 import converters from './firestore-converters';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UserData } from '../models/app.model';
