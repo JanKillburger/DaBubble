@@ -6,7 +6,6 @@ import {
   arrayRemove,
   arrayUnion,
   collection,
-  deleteField,
   doc,
   docData,
   getDoc,
@@ -182,7 +181,7 @@ export class FirebaseAuthService {
       } else {
         transaction.update(
           channelDoc.ref,
-          'userIds', arrayUnion(users.map(u => u.id))
+          'userIds', arrayUnion(...users.map(u => u.id))
         )
       }
       users.forEach(u => {

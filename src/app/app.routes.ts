@@ -11,7 +11,7 @@ export const routes: Routes = [
   { path: 'home', redirectTo: '' },
   { path: 'login', component: LoginComponent },
   { path: "avatarPicker/:id", component: SelectAvatarComponent },
-  { path: "reset-passwort", component: ResetPasswordComponent },
+  { path: "reset-password", component: ResetPasswordComponent },
   { path: "imprint", component: LegalNoticeComponent },
   { path: "privacy-policy", component: PrivacyPolicyComponent }
 ];
