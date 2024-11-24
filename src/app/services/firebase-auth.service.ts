@@ -27,7 +27,7 @@ import {
   signOut,
   sendPasswordResetEmail
 } from '@angular/fire/auth';
-import { filter, of, shareReplay, switchMap, tap } from 'rxjs';
+import { filter, firstValueFrom, of, shareReplay, switchMap, tap } from 'rxjs';
 import converters from './firestore-converters';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UserData } from '../models/app.model';
@@ -239,12 +239,8 @@ export class FirebaseAuthService {
 
   private provider = new GoogleAuthProvider();
   readonly user$ = user(this.auth).pipe(
-    tap(user => {
-      if (!user && !location.href.includes("reset-password")) {
-        this.router.navigate(["login"]);
-      }
-    }),
-    shareReplay());
+    shareReplay()
+  );
   readonly userProfile = toSignal(this.user$.pipe(
     switchMap(user => {
       if (user) {
@@ -279,10 +275,9 @@ export class FirebaseAuthService {
   async loginWithEmailAndPassword(email: string, password: string) {
     try {
       return await signInWithEmailAndPassword(this.auth, email, password).then(
-        () => {
-          setTimeout(() => {
-            this.router.navigate(['home']);
-          }, 5000);
+        async () => {
+          await firstValueFrom(this.user$.pipe(filter(user => user !== null)));
+          this.router.navigate(['home']);
           return false;
         }
       );
@@ -304,6 +299,7 @@ export class FirebaseAuthService {
     signInWithPopup(this.auth, this.provider)
       .then(async (result) => {
         const userRef = await getDoc(doc(this.firestore, 'users', result.user.uid));
+        await firstValueFrom(this.user$.pipe(filter(user => user !== null)));
         if (userRef.exists()) {
           this.router.navigate(['home']);
         } else {
@@ -316,8 +312,6 @@ export class FirebaseAuthService {
   signOut() {
     signOut(this.auth)
   }
-
-
 
   async addDirectChat(recipient: string) {
     const docRef = await addDoc(collection(this.firestore, 'chats'), {
