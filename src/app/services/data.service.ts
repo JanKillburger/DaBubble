@@ -1,13 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { collectionData, doc, docData, Firestore, increment, orderBy, query, runTransaction, setDoc, where, writeBatch } from '@angular/fire/firestore';
-import { addDoc, collection, getDoc, Transaction } from '@firebase/firestore';
-import { filter, firstValueFrom, map, Observable, of, shareReplay, startWith, switchMap, tap } from 'rxjs';
+import { collectionData, doc, docData, Firestore, increment, query, runTransaction, setDoc, where, writeBatch } from '@angular/fire/firestore';
+import { addDoc, collection, Transaction } from '@firebase/firestore';
+import { filter, map, of, switchMap, tap } from 'rxjs';
 import converters from './firestore-converters';
 import { FirebaseAuthService } from './firebase-auth.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { Chat, ChatUser, DocData, Emoji, Message, NewDocData, Reply, UserData } from '../models/app.model';
+import { Chat, ChatUser, DocData, Message, NewDocData, Reply, UserData } from '../models/app.model';
 import { HomeService } from './home.service';
-import { group } from 'console';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,6 @@ export class DataService {
   private hs = inject(HomeService)
 
   userChannels = toSignal(toObservable(this.as.userProfile).pipe(
-    tap(r => console.log('userChannels', r)),
     switchMap(
       user => {
         if (user) {
@@ -51,7 +49,6 @@ export class DataService {
   }
 
   userChats = toSignal(toObservable(this.as.userProfile).pipe(
-    tap(r => console.log('userChats', r)),
     switchMap(
       user => {
         if (user) {
@@ -106,7 +103,6 @@ export class DataService {
   getChannel(channelId: string) {
     return this.as.user$.pipe(
       filter(user => user != null),
-      tap((r) => console.debug('getChannel', r)),
       switchMap(() =>
         docData(doc(this.fs, 'channels', channelId).withConverter(converters.channel))
       )
@@ -116,7 +112,6 @@ export class DataService {
   getChannelMessages(channelId: string) {
     return this.as.user$.pipe(
       filter(user => user != null),
-      tap((r) => console.debug('getChannelMessages', r)),
       switchMap(() =>
         collectionData(
           collection(
@@ -132,7 +127,6 @@ export class DataService {
   getChannelUsers(channelId: string) {
     return this.as.user$.pipe(
       filter(user => user != null),
-      tap((r) => console.debug('getChannelUsers', r)),
       switchMap(() =>
         collectionData(
           query(
@@ -147,7 +141,6 @@ export class DataService {
   getChat(chatId: string) {
     return this.as.user$.pipe(
       filter(user => user != null),
-      tap((r) => console.debug('getChat', r)),
       switchMap(() => docData(doc(this.fs, 'chats', chatId).withConverter(converters.chat))
       )
     )
@@ -160,7 +153,6 @@ export class DataService {
         collection(this.fs, 'chats', chatId, 'messages')
           .withConverter(converters.message)
       ).pipe(
-        tap((r) => console.debug('getChatMessages', r)),
         map(groupMessagesByDate)
       )
       )
@@ -174,7 +166,6 @@ export class DataService {
       collection(this.fs, topCollection, topCollectionDocId, 'messages', message.id, 'replies')
         .withConverter(converters.reply)
     ).pipe(
-      tap(() => console.debug('getMessageReplies')),
       map(messages => messages.sort((a, b) => a.timestamp - b.timestamp))
     )
   }
@@ -182,7 +173,6 @@ export class DataService {
   getUser(id: string) {
     return this.as.user$.pipe(
       filter(user => user != null),
-      tap((r) => console.debug('getUser', r)),
       switchMap(() => docData(doc(this.fs, 'users', id).withConverter(converters.user))
       )
     )

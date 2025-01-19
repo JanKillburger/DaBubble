@@ -64,9 +64,7 @@ export class LoginDialogComponent {
   }
 
   guestLogin() {
-    let guestUser = 'guest@mail.com';
-    let guestPassword = 'guestPasswort123!';
-    this.authService.loginWithEmailAndPassword(guestUser, guestPassword);
+    this.authService.loginWithEmailAndPassword('guest@example.com', 'guestPassword123!');
   }
 
   forgotPassword() {

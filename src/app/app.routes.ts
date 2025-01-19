@@ -8,28 +8,38 @@ import { SelectAvatarComponent } from './components/login/select-avatar/select-a
 import { inject } from '@angular/core';
 import { FirebaseAuthService } from './services/firebase-auth.service';
 import { map } from 'rxjs';
+import { UploadJsonComponent } from './upload-json/upload-json.component';
 
 function redirectIfNotAuthenticated() {
   const router = inject(Router);
   const as = inject(FirebaseAuthService);
 
   return as.user$.pipe(
-    map(user => {
+    map((user) => {
       if (user) {
         return true;
       } else {
-        return router.parseUrl("login");
+        return router.parseUrl('login');
       }
     })
-  )
+  );
 }
 
 export const routes: Routes = [
-  { path: "", component: HomeComponent, canActivate: [redirectIfNotAuthenticated] },
+  {
+    path: '',
+    component: HomeComponent,
+    canActivate: [redirectIfNotAuthenticated],
+  },
   { path: 'home', redirectTo: '', canActivate: [redirectIfNotAuthenticated] },
   { path: 'login', component: LoginComponent },
-  { path: "avatarPicker/:id", component: SelectAvatarComponent, canActivate: [redirectIfNotAuthenticated] },
-  { path: "reset-password", component: ResetPasswordComponent },
-  { path: "imprint", component: LegalNoticeComponent },
-  { path: "privacy-policy", component: PrivacyPolicyComponent }
+  {
+    path: 'avatarPicker/:id',
+    component: SelectAvatarComponent,
+    canActivate: [redirectIfNotAuthenticated],
+  },
+  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'imprint', component: LegalNoticeComponent },
+  { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  // { path: 'upload-sample-data', component: UploadJsonComponent },
 ];
